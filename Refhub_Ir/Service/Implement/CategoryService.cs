@@ -26,13 +26,7 @@ namespace Refhub_Ir.Service.Implement
                     Name = c.Name,
                     Slug = c.slug,
                     Description = c.Description,
-                    Books = c.Books.Select(b => new BookVM
-                    {
-                        Id = b.Id,
-                        Title = b.Title,
-                        Slug = b.Slug,
-                        ImagePath = b.ImagePath
-                    }).ToList()
+      
                 }).ToListAsync(ct);
         }
 
@@ -50,13 +44,7 @@ namespace Refhub_Ir.Service.Implement
                 Name = category.Name,
                 Slug = category.slug,
                 Description = category.Description,
-                Books = category.Books.Select(b => new BookVM
-                {
-                    Id = b.Id,
-                    Title = b.Title,
-                    Slug = b.Slug,
-                    ImagePath = b.ImagePath
-                }).ToList()
+           
             };
         }
 
