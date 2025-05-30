@@ -9,7 +9,6 @@ namespace Refhub_Ir.Service.Interface
         Task<bool> CreateAnotherAsync(string fullname, string slug, CancellationToken ct);
         Task<IEnumerable<BookVM>> GetBooksAsync(string? searchText, CancellationToken ct);
         Task<UpdateBookVM> GetBookDetialsForUpdateAsync(int Id, CancellationToken ct);
-        Task<IEnumerable<BookVM>> GetBookAsync(int Id, CancellationToken ct);
         Task<bool> CreateBookAsync(CreateBookVM book, CancellationToken ct);
         Task<bool> UpdateBookAsync(UpdateBookVM book, CancellationToken ct);
         Task<bool> DeleteBookAsync(int Id, CancellationToken ct);
