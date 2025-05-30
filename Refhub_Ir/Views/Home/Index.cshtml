@@ -270,69 +270,9 @@
 	</section>
 	<!-- =======================
 	Main Banner END -->
-	<!-- =======================
-	Counter START -->
-	<section class="py-0 py-xl-5">
-		<div class="container">
-			<div class="row g-4">
-				<!-- Counter item -->
-				<div class="col-sm-6 col-xl-3">
-					<div class="d-flex justify-content-center align-items-center p-4 bg-warning bg-opacity-15 rounded-3">
-						<span class="display-6 lh-1 text-warning mb-0"><i class="fas fa-tv"></i></span>
-						<div class="ms-4 h6 fw-normal mb-0">
-							<div class="d-flex">
-								<h5 class="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200">0</h5>
-								<span class="mb-0 h5">دوره</span>
-							</div>
-							<p class="mb-0">آموزش آنلاین</p>
-						</div>
-					</div>
-				</div>
-				<!-- Counter item -->
-				<div class="col-sm-6 col-xl-3">
-					<div class="d-flex justify-content-center align-items-center p-4 bg-blue bg-opacity-10 rounded-3">
-						<span class="display-6 lh-1 text-blue mb-0"><i class="fas fa-user-tie"></i></span>
-						<div class="ms-4 h6 fw-normal mb-0">
-							<div class="d-flex">
-								<h5 class="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="200" data-purecounter-delay="200">0</h5>
-								<span class="mb-0 h5">مـدرس</span>
-							</div>
-							<p class="mb-0">مجرب و باسابقه</p>
-						</div>
-					</div>
-				</div>
-				<!-- Counter item -->
-				<div class="col-sm-6 col-xl-3">
-					<div class="d-flex justify-content-center align-items-center p-4 bg-purple bg-opacity-10 rounded-3">
-						<span class="display-6 lh-1 text-purple mb-0"><i class="fas fa-user-graduate"></i></span>
-						<div class="ms-4 h6 fw-normal mb-0">
-							<div class="d-flex">
-								<h5 class="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="60" data-purecounter-delay="200">0</h5>
-								<span class="mb-0 h5">هنرجـو</span>
-							</div>
-							<p class="mb-0">دانشجوی آنلاین</p>
-						</div>
-					</div>
-				</div>
-				<!-- Counter item -->
-				<div class="col-sm-6 col-xl-3">
-					<div class="d-flex justify-content-center align-items-center p-4 bg-info bg-opacity-10 rounded-3">
-						<span class="display-6 lh-1 text-info mb-0"><i class="bi bi-patch-check-fill"></i></span>
-						<div class="ms-4 h6 fw-normal mb-0">
-							<div class="d-flex">
-								<h5 class="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300">0</h5>
-								<span class="mb-0 h5">مدرک بین المللی</span>
-							</div>
-							<p class="mb-0">دوره های گواهی شده</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- =======================
-	Counter END -->
-	<!-- =======================
+@await Component.InvokeAsync("CounterHome")
+
+<!-- =======================
 	Popular course START -->
 	<section>
 		<div class="container">
@@ -1179,52 +1119,7 @@
 	<!-- =======================
 	Popular course END -->
 	<!-- =======================
-	Action box START -->
-	<section class="pt-0 pt-lg-5">
-		<div class="container position-relative">
-			<!-- SVG decoration START -->
-			<figure class="position-absolute top-50 start-50 translate-middle ms-2">
-				<svg>
-					<path class="fill-white opacity-4" d="m496 22.999c0 10.493-8.506 18.999-18.999 18.999s-19-8.506-19-18.999 8.507-18.999 19-18.999 18.999 8.506 18.999 18.999z" />
-					<path class="fill-white opacity-4" d="m775 102.5c0 5.799-4.701 10.5-10.5 10.5-5.798 0-10.499-4.701-10.499-10.5 0-5.798 4.701-10.499 10.499-10.499 5.799 0 10.5 4.701 10.5 10.499z" />
-					<path class="fill-white opacity-4" d="m192 102c0 6.626-5.373 11.999-12 11.999s-11.999-5.373-11.999-11.999c0-6.628 5.372-12 11.999-12s12 5.372 12 12z" />
-					<path class="fill-white opacity-4" d="m20.499 10.25c0 5.66-4.589 10.249-10.25 10.249-5.66 0-10.249-4.589-10.249-10.249-0-5.661 4.589-10.25 10.249-10.25 5.661-0 10.25 4.589 10.25 10.25z" />
-				</svg>
-			</figure>
-			<!-- SVG decoration END -->
 
-			<div class="row">
-				<div class="col-12">
-					<div class="bg-info p-4 p-sm-5 rounded-3">
-						<div class="row position-relative">
-							<!-- Svg decoration -->
-							<figure class="fill-white opacity-1 position-absolute top-50 start-0 translate-middle-y">
-								<svg width="141px" height="141px">
-									<path d="M140.520,70.258 C140.520,109.064 109.062,140.519 70.258,140.519 C31.454,140.519 -0.004,109.064 -0.004,70.258 C-0.004,31.455 31.454,-0.003 70.258,-0.003 C109.062,-0.003 140.520,31.455 140.520,70.258 Z" />
-								</svg>
-							</figure>
-							<!-- Action box -->
-							<div class="col-11 mx-auto position-relative">
-								<div class="row align-items-center">
-									<!-- Title -->
-									<div class="col-lg-7">
-										<h3 class="text-white">مدرس شویـد!</h3>
-										<p class="text-white mb-3 mb-lg-0">ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
-									</div>
-									<!-- Content and input -->
-									<div class="col-lg-5 text-lg-end">
-										<a href="#" class="btn btn-outline-warning mb-0">ثبت نام</a>
-									</div>
-								</div>
-							</div>
-						</div> <!-- Row END -->
-					</div>
-				</div>
-			</div> <!-- Row END -->
-		</div>
-	</section>
-	<!-- =======================
-	Action box END -->
 	<!-- =======================
 	Trending courses START -->
 	<section class="pb-5 pt-0 pt-lg-5">
@@ -1677,5 +1572,5 @@
 	<!-- =======================
 	Reviews END -->
 
-</main>
+
 <!-- **************** MAIN CONTENT END **************** -->
