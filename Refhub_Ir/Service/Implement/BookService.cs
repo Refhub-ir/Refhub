@@ -12,9 +12,7 @@ using ErrorOr;
 
 namespace Refhub_Ir.Service.Implement
 {
-    public class BookService(
-                             AppDbContext context,
-                             IFileUploaderService uploaderService) : IBookService
+    public class BookService(AppDbContext context, IFileUploaderService uploaderService) : IBookService
     {
         public async Task<IEnumerable<CategoryDropDownVM>> GetCategoriesAsync(int selectedCategoryId, CancellationToken ct)
         {
@@ -30,7 +28,7 @@ namespace Refhub_Ir.Service.Implement
             return categories;
         }
 
-        public async Task<IEnumerable<CategoryDropDownVM>> GetAnothersAsync(List<int> selectedAuthorIds, CancellationToken ct)
+        public async Task<IEnumerable<CategoryDropDownVM>> GetAnotherAsync(List<int> selectedAuthorIds, CancellationToken ct)
         {
             // بررسی ورودی
             if (selectedAuthorIds == null || !selectedAuthorIds.Any())
@@ -73,7 +71,6 @@ namespace Refhub_Ir.Service.Implement
             {
                 Id = a.Id,
                 Title = a.Title,
-                UserId = a.UserId,
                 ImagePath = a.ImagePath,
                 Slug = a.Slug
             }).ToListAsync(ct);
