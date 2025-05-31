@@ -38,15 +38,15 @@ namespace Refhub_Ir.Service.Implement
             }
 
             //todo
-            var anothers = context.Authors.AsQueryable();
-
-            return await anothers.Select(a => new CategoryDropDownVM()
-            {
-                Id = a.Id,
-                CategoryName = a.FullName,
-                IsSelected = Ids.Contains(a.Id),
-
-            }).ToListAsync(ct);
+            var authors = await context.Authors
+                .Select(a => new CategoryDropDownVM
+                {
+                    Id = a.Id,
+                    CategoryName = a.FullName,
+                    IsSelected = Ids.Contains(a.Id)
+                })
+                .ToListAsync(ct);
+            return authors;
         }
 
         public async Task<bool> CreateAnotherAsync(string fullname, string slug, CancellationToken ct)
