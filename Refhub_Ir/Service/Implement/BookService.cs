@@ -29,12 +29,12 @@ namespace Refhub_Ir.Service.Implement
             return categories;
         }
 
-        public async Task<IEnumerable<CategoryDropDownVM>> GetAnothersAsync(List<int> Ids, CancellationToken ct)
+        public async Task<IEnumerable<CategoryDropDownVM>> GetAnothersAsync(List<int> selectedAuthorIds, CancellationToken ct)
         {
             // بررسی ورودی
-            if (Ids == null || !Ids.Any())
+            if (selectedAuthorIds == null || !selectedAuthorIds.Any())
             {
-                Ids = new List<int>();
+                selectedAuthorIds = new List<int>();
             }
 
             //todo
@@ -43,7 +43,7 @@ namespace Refhub_Ir.Service.Implement
                 {
                     Id = a.Id,
                     CategoryName = a.FullName,
-                    IsSelected = Ids.Contains(a.Id)
+                    IsSelected = selectedAuthorIds.Contains(a.Id)
                 })
                 .ToListAsync(ct);
             return authors;
@@ -51,8 +51,11 @@ namespace Refhub_Ir.Service.Implement
 
         public async Task<bool> CreateAnotherAsync(string fullname, string slug, CancellationToken ct)
         {
-            await context.Authors.AddAsync(new Author() { Slug = slug, FullName = fullname }, ct);
-            await context.SaveChangesAsync(ct);
+            if (await context.Authors.AnyAsync(a => a.Slug == slug, ct))
+                return false;
+
+            var author = new Author { FullName = fullname, Slug = slug };
+            await context.Authors.AddAsync(author, ct);
             return true;
         }
 
