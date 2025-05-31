@@ -102,10 +102,7 @@ namespace Refhub_Ir.Service.Implement
             };
         }
 
-        public Task<IEnumerable<BookVM>> GetBookAsync(int Id, CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public async Task<bool> CreateBookAsync(CreateBookVM book, CancellationToken ct)
         {
