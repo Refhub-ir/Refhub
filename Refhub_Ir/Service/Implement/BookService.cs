@@ -15,19 +15,18 @@ namespace Refhub_Ir.Service.Implement
                              AppDbContext context,
                              IFileUploaderService uploaderService) : IBookService
     {
-        public async Task<IEnumerable<CategoryDropDownVM>> GetCategoriesAsync(int Id, CancellationToken ct)
+        public async Task<IEnumerable<CategoryDropDownVM>> GetCategoriesAsync(int selectedCategoryId, CancellationToken ct)
         {
-            var category = context.Categories.AsQueryable();
+            var categories = await context.Categories
+                .Select(a => new CategoryDropDownVM
+                {
+                    Id = a.Id,
+                    CategoryName = a.Name,
+                    IsSelected = a.Id == selectedCategoryId
+                })
+                .ToListAsync(ct);
 
-
-
-            return await category.Select(a => new CategoryDropDownVM()
-            {
-                Id = a.Id,
-                CategoryName = a.Name,
-                IsSelected = a.Id.Equals(Id)
-
-            }).ToListAsync(ct);
+            return categories;
         }
 
         public async Task<IEnumerable<CategoryDropDownVM>> GetAnothersAsync(List<int> Ids, CancellationToken ct)
