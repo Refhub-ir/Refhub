@@ -234,6 +234,7 @@ namespace Refhub_Ir.Service.Implement
                 .Include(b => b.BookAuthors).ThenInclude(ba => ba.Author)
                 .Include(b => b.BookKeywords).ThenInclude(bk => bk.Keyword)
                 .Include(b => b.RelatedTo).ThenInclude(r => r.RelatedBook)
+                .Include(b => b.RelatedFrom).ThenInclude(r => r.RelatedBook)
                 .FirstOrDefaultAsync(b => b.Slug == slug, ct);
 
             if (book == null) return null;
@@ -244,50 +245,63 @@ namespace Refhub_Ir.Service.Implement
                 Slug = book.Slug,
                 FilePath = book.FilePath,
                 ImagePath = book.ImagePath,
-                BookAuthorsVM = book.BookAuthors.Select(ba => new BookAuthorVM
-                {
-                    BookId = ba.BookId,
-                    AuthorId = ba.AuthorId,
-                    Author = new AuthorDTO
+
+                BookAuthorsVM = book.BookAuthors
+                    .Where(ba => ba.Author != null)
+                    .Select(ba => new BookAuthorVM
                     {
-                        Id = ba.Author.Id,
-                        FullName = ba.Author.FullName
-                    }
-                }).ToList(),
-                BookKeywordsVM = book.BookKeywords.Select(bk => new BookKeywordVM
-                {
-                    BookId = bk.BookId,
-                    KeywordId = bk.KeywordId,
-                    Keyword = new KeywordDTO
+                        BookId = ba.BookId,
+                        AuthorId = ba.AuthorId,
+                        Author = new AuthorDTO
+                        {
+                            Id = ba.Author.Id,
+                            FullName = ba.Author.FullName
+                        }
+                    }).ToList(),
+
+                BookKeywordsVM = book.BookKeywords
+                    .Where(bk => bk.Keyword != null)
+                    .Select(bk => new BookKeywordVM
                     {
-                        Id = bk.Keyword.Id,
-                        Word = bk.Keyword.Word
-                    }
-                }).ToList(),
-                RelatedToVM = book.RelatedTo.Select(r => new BookRelationVM
-                {
-                    BookId = r.BookId,
-                    RelatedBookId = r.RelatedBookId,
-                    RelatedBook = new BookVM
+                        BookId = bk.BookId,
+                        KeywordId = bk.KeywordId,
+                        Keyword = new KeywordDTO
+                        {
+                            Id = bk.Keyword.Id,
+                            Word = bk.Keyword.Word
+                        }
+                    }).ToList(),
+
+                RelatedToVM = book.RelatedTo
+                    .Where(r => r.RelatedBook != null)
+                    .Select(r => new BookRelationVM
                     {
-                        Id = r.RelatedBook.Id,
-                        Title = r.RelatedBook.Title,
-                        Slug = r.RelatedBook.Slug
-                    }
-                }).ToList(),
-                RelatedFromVM = book.RelatedFrom.Select(r => new BookRelationVM
-                {
-                    BookId = r.BookId,
-                    RelatedBookId = r.RelatedBookId,
-                    RelatedBook = new BookVM
+                        BookId = r.BookId,
+                        RelatedBookId = r.RelatedBookId,
+                        RelatedBook = new BookVM
+                        {
+                            Id = r.RelatedBook.Id,
+                            Title = r.RelatedBook.Title,
+                            Slug = r.RelatedBook.Slug
+                        }
+                    }).ToList(),
+
+                RelatedFromVM = book.RelatedFrom
+                    .Where(r => r.RelatedBook != null)
+                    .Select(r => new BookRelationVM
                     {
-                        Id = r.RelatedBook.Id,
-                        Title = r.RelatedBook.Title,
-                        Slug = r.RelatedBook.Slug
-                    }
-                }).ToList()
+                        BookId = r.BookId,
+                        RelatedBookId = r.RelatedBookId,
+                        RelatedBook = new BookVM
+                        {
+                            Id = r.RelatedBook.Id,
+                            Title = r.RelatedBook.Title,
+                            Slug = r.RelatedBook.Slug
+                        }
+                    }).ToList()
             };
         }
+
 
         public async Task<ListBooksVM> GetListAsync(string searchText, string authorFilter, string categoryFilter, int pageSize, int page, CancellationToken ct)
         {
