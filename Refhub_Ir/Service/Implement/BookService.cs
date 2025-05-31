@@ -202,22 +202,31 @@ namespace Refhub_Ir.Service.Implement
         }
 
 
-        public async Task<bool> DeleteBookAsync(int Id, CancellationToken ct)
+        public async Task<bool> DeleteBookAsync(int bookId, CancellationToken ct)
         {
-            var book = context.Books.FirstOrDefault(a => a.Id.Equals(Id));
-            if (book != null)
+            try
             {
-                await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks,
-                    FolderNameStatic.GetDirectoryImages, book.ImagePath);
-                await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks,
-                    FolderNameStatic.GetDirectoryImages, book.FilePath);
+                var book = await context.Books.FirstOrDefaultAsync(b => b.Id == bookId, ct);
+                if (book == null)
+                    return false;
+
+                if (!string.IsNullOrWhiteSpace(book.ImagePath))
+                    await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.ImagePath);
+
+                if (!string.IsNullOrWhiteSpace(book.FilePath))
+                    await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.FilePath);
+
                 context.Books.Remove(book);
                 await context.SaveChangesAsync(ct);
                 return true;
             }
-
-            return false;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message); 
+                return false;
+            }
         }
+
 
         public async Task<BookDetailsVM> GetBookDetailsBySlugAsync(string slug, CancellationToken ct)
         {
