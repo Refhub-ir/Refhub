@@ -149,52 +149,58 @@ namespace Refhub_Ir.Service.Implement
         {
             try
             {
+                var existingBook = await context.Books
+                    .Include(b => b.BookAuthors)
+                    .FirstOrDefaultAsync(b => b.Id == book.Id, ct);
 
-                var _book = await context.Books.FirstOrDefaultAsync(a => a.Id.Equals(book.Id), ct);
+                if (existingBook == null)
+                    return false;
 
-                _book.CategoryId = book.CategoryId;
-                _book.Slug = book.Slug;
+                existingBook.CategoryId = book.CategoryId;
+                existingBook.Slug = book.Slug;
+                existingBook.PageCount = book.PageCount;
+                existingBook.Title = book.Title;
+                existingBook.UserId = book.UserId;
 
-                _book.PageCount = book.PageCount;
                 if (book.File != null)
                 {
+                    if (!string.IsNullOrWhiteSpace(existingBook.FilePath))
+                        await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, existingBook.FilePath);
 
-                    await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks,
-                        FolderNameStatic.GetDirectoryImages, _book.FilePath);
-                    _book.FilePath = await uploaderService.UpdloadFile(book.File, FolderNameStatic.GetDirectoryBooks,
-                        FolderNameStatic.GetDirectoryImages, book.Slug);
-
+                    existingBook.FilePath = await uploaderService.UpdloadFile(book.File, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug);
                 }
+
                 if (book.Image != null)
                 {
-                    await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks,
-                        FolderNameStatic.GetDirectoryImages, _book.ImagePath);
-                    _book.ImagePath = await uploaderService.UpdloadFile(book.Image, FolderNameStatic.GetDirectoryBooks,
-                        FolderNameStatic.GetDirectoryImages, book.Slug);
+                    if (!string.IsNullOrWhiteSpace(existingBook.ImagePath))
+                        await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, existingBook.ImagePath);
 
+                    existingBook.ImagePath = await uploaderService.UpdloadFile(book.Image, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug);
                 }
-                _book.Title = book.Title;
-                _book.UserId = book.UserId;
-                context.BookAuthors.RemoveRange(context.BookAuthors.Where(a => a.BookId.Equals(book.Id)));
-                await context.SaveChangesAsync(ct);
-                var BookAuthors = book.AnotherId.Select(a => new BookAuthor()
+
+                // حذف نویسنده‌های قبلی و اضافه کردن جدید
+                context.BookAuthors.RemoveRange(context.BookAuthors.Where(a => a.BookId == book.Id));
+
+                var bookAuthors = book.AnotherId.Select(authorId => new BookAuthor
                 {
-                    AuthorId = a
-                });
+                    AuthorId = authorId,
+                    BookId = book.Id
+                }).ToList();
 
-                _book.BookAuthors = BookAuthors.ToList();
+                existingBook.BookAuthors = bookAuthors;
 
-                context.Books.Update(_book);
+                context.Books.Update(existingBook);
                 await context.SaveChangesAsync(ct);
+
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e); // بهتره از ILogger استفاده کنی
                 return false;
             }
-
         }
+
 
         public async Task<bool> DeleteBookAsync(int Id, CancellationToken ct)
         {
