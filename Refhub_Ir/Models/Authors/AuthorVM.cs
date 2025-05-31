@@ -9,5 +9,7 @@ namespace Refhub_Ir.Areas.Admin.DTOs
 
         [Required(ErrorMessage = "اسلاگ الزامی است")]
         public string Slug { get; set; }
+
+        public bool IsSelected { get; set; }
     }
 }
