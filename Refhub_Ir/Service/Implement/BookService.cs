@@ -63,21 +63,21 @@ namespace Refhub_Ir.Service.Implement
         {
             var books = context.Books.AsQueryable();
 
-            if (!string.IsNullOrEmpty(searchText))
+            if (!string.IsNullOrWhiteSpace(searchText))
             {
-                books = books.Where(a => a.Title.Contains(searchText));
+                books = books.Where(a => EF.Functions.Like(a.Title, $"%{searchText}%"));   // for best Translate in Sql
             }
 
-            return await books
-               .Select(a => new BookVM()
-               {
-                   Id = a.Id,
-                   Title = a.Title,
-                   UserId = a.UserId,
-                   ImagePath = a.ImagePath,
-                   Slug = a.Slug,
+            var result = await books.Select(a => new BookVM
+            {
+                Id = a.Id,
+                Title = a.Title,
+                UserId = a.UserId,
+                ImagePath = a.ImagePath,
+                Slug = a.Slug
+            }).ToListAsync(ct);
 
-               }).ToListAsync(ct);
+            return result;
         }
 
         public async Task<UpdateBookVM> GetBookDetialsForUpdateAsync(int Id, CancellationToken ct)
