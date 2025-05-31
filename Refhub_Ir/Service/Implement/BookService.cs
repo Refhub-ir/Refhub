@@ -222,7 +222,7 @@ namespace Refhub_Ir.Service.Implement
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message); 
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -305,7 +305,7 @@ namespace Refhub_Ir.Service.Implement
 
         public async Task<ListBooksVM> GetListAsync(string searchText, string authorFilter, string categoryFilter, int pageSize, int page, CancellationToken ct)
         {
-            var booksquery = context.Books
+            var booksQuery = context.Books
                                     .Include(b => b.Category)
                                     .Include(x => x.BookAuthors)
                                     .ThenInclude(x => x.Author)
@@ -313,32 +313,32 @@ namespace Refhub_Ir.Service.Implement
 
             if (!string.IsNullOrEmpty(searchText))
             {
-                searchText = searchText.Trim().ToLower();
-                booksquery = booksquery.Where(b => b.Title.ToLower().Contains(searchText));
+                var normalizedSearch = searchText.Trim();
+                booksQuery = booksQuery.Where(b =>
+                    EF.Functions.Like(b.Title, $"%{normalizedSearch}%"));
             }
 
             if (!string.IsNullOrEmpty(authorFilter))
             {
-                var normalizedAuthor = authorFilter.Trim().ToLower();
-                booksquery = booksquery.Where(x => x.BookAuthors.Any(c => c.Author.FullName.ToLower().Contains(normalizedAuthor)));
+                var normalizedAuthor = authorFilter.Trim();
+                booksQuery = booksQuery.Where(b =>
+                    b.BookAuthors.Any(ba =>
+                        EF.Functions.Like(ba.Author.FullName, $"%{normalizedAuthor}%")));
             }
 
             if (!string.IsNullOrEmpty(categoryFilter))
             {
-                var normalizedCategory = categoryFilter.Trim().ToLower();
-                booksquery = booksquery.Where(x => x.Category.Name.ToLower().Contains(normalizedCategory));
+                var normalizedCategory = categoryFilter.Trim();
+                booksQuery = booksQuery.Where(b =>
+                    EF.Functions.Like(b.Category.Name, $"%{normalizedCategory}%"));
             }
 
 
-            var totalItems = await booksquery.CountAsync();
+            var totalItems = await booksQuery.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-
-
             page = Math.Max(1, Math.Min(page, Math.Max(1, totalPages)));
 
-
-
-            var books = await booksquery
+            var books = await booksQuery
                               .OrderBy(x => x.Title)
                               .Skip((page - 1) * pageSize)
                               .Take(pageSize)
@@ -353,19 +353,25 @@ namespace Refhub_Ir.Service.Implement
                               .ToListAsync(cancellationToken: ct);
 
             var authors = await context.Authors
-                                        .OrderBy(a => a.FullName).Select(x => new AuthorVM
-                                        {
-                                            FullName = x.FullName,
-                                        })
-                                        .ToListAsync(cancellationToken: ct);
+        .OrderBy(a => a.FullName)
+        .Select(a => new AuthorVM
+        {
+            FullName = a.FullName,
+            IsSelected = !string.IsNullOrWhiteSpace(authorFilter) &&
+                         a.FullName.Contains(authorFilter.Trim(), StringComparison.OrdinalIgnoreCase)
+        })
+        .ToListAsync(ct);
 
 
             var categories = await context.Categories
-                                           .OrderBy(c => c.Name).Select(x => new CategoryVM
-                                           {
-                                               Name = x.Name
-                                           })
-                                           .ToListAsync(cancellationToken: ct);
+     .OrderBy(c => c.Name)
+     .Select(c => new CategoryVM
+     {
+         Name = c.Name,
+         IsSelected = !string.IsNullOrWhiteSpace(categoryFilter) &&
+                      c.Name.Contains(categoryFilter.Trim(), StringComparison.OrdinalIgnoreCase)
+     })
+     .ToListAsync(ct);
 
             return new ListBooksVM
             {
