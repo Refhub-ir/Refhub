@@ -29,19 +29,16 @@ namespace Refhub_Ir.Areas.Admin.Controllers
             return View(model);
         }
 
-
-
-
         [HttpGet]
         public async Task<IActionResult> Update(int Id, CancellationToken ct)
         {
-            var book = await bookService.GetBookDetialsForUpdateAsync(Id, ct);
-            if (book != null)
+            var book = await bookService.GetBookDetailsForUpdateAsync(Id, ct);
+            if (book == null)
             {
-                return View(book);
+                return NotFound();
             }
-
-            return NotFound();
+            return View(book);
+   
         }
 
         [HttpPost, ValidateAntiForgeryToken]

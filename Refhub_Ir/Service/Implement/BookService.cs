@@ -78,7 +78,7 @@ namespace Refhub_Ir.Service.Implement
             return result;
         }
 
-        public async Task<UpdateBookVM> GetBookDetialsForUpdateAsync(int bookId, CancellationToken ct)
+        public async Task<UpdateBookVM> GetBookDetailsForUpdateAsync(int bookId, CancellationToken ct)
         {
             var book = await context.Books
                 .Include(b => b.BookAuthors)
