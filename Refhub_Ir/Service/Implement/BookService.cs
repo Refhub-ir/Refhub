@@ -80,23 +80,26 @@ namespace Refhub_Ir.Service.Implement
             return result;
         }
 
-        public async Task<UpdateBookVM> GetBookDetialsForUpdateAsync(int Id, CancellationToken ct)
+        public async Task<UpdateBookVM> GetBookDetialsForUpdateAsync(int bookId, CancellationToken ct)
         {
-            UpdateBookVM model = new UpdateBookVM();
-            var book = await context.Books.Include(a => a.BookAuthors).FirstOrDefaultAsync(a => a.Id.Equals(Id), ct);
-            if (book != null)
-            {
-                model.Slug = book.Slug;
-                model.Title = book.Title;
-                model.CategoryId = book.CategoryId;
-                model.FilePath = book.FilePath;
-                model.ImagePath = book.ImagePath;
-                model.PageCount = book.PageCount;
-                model.UserId = book.UserId;
-                model.AnotherId = book.BookAuthors.Select(a => a.AuthorId).ToList();
-            }
+            var book = await context.Books
+                .Include(b => b.BookAuthors)
+                .FirstOrDefaultAsync(b => b.Id == bookId, ct);
 
-            return model;
+            if (book == null)
+                return null;
+
+            return new UpdateBookVM
+            {
+                Slug = book.Slug,
+                Title = book.Title,
+                CategoryId = book.CategoryId,
+                FilePath = book.FilePath,
+                ImagePath = book.ImagePath,
+                PageCount = book.PageCount,
+                UserId = book.UserId,
+                AnotherId = book.BookAuthors.Select(a => a.AuthorId).ToList()
+            };
         }
 
         public Task<IEnumerable<BookVM>> GetBookAsync(int Id, CancellationToken ct)
