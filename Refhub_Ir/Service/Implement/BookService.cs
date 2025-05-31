@@ -8,6 +8,7 @@ using Refhub_Ir.Models.Categories;
 using Refhub_Ir.Service.Interface;
 using Refhub_Ir.Tools.Static;
 using System.Drawing.Printing;
+using ErrorOr;
 
 namespace Refhub_Ir.Service.Implement
 {
@@ -108,29 +109,37 @@ namespace Refhub_Ir.Service.Implement
         {
             try
             {
-                var BookAuthors = book.AnotherId.Select(a => new BookAuthor()
+                var bookAuthors = book.AnotherId.Select(a => new BookAuthor
                 {
                     AuthorId = a
-                });
-                var _book = new Book()
+                }).ToList();
+
+                var filePath = await uploaderService.UpdloadFile(book.File, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug);
+                var imagePath = await uploaderService.UpdloadFile(book.Image, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug);
+
+                if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrWhiteSpace(imagePath))
+                    return false;
+
+                var newBook = new Book
                 {
                     CategoryId = book.CategoryId,
                     Slug = book.Slug,
-
                     PageCount = book.PageCount,
-                    FilePath = await uploaderService.UpdloadFile(book.File, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug),
-                    ImagePath = await uploaderService.UpdloadFile(book.Image, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug),
-
+                    FilePath = filePath,
+                    ImagePath = imagePath,
                     Title = book.Title,
                     UserId = book.UserId,
-                    BookAuthors = BookAuthors.ToList()
+                    BookAuthors = bookAuthors
                 };
-                await context.Books.AddAsync(_book, ct);
+
+                await context.Books.AddAsync(newBook, ct);
                 await context.SaveChangesAsync(ct);
+
                 return true;
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return false;
             }
 
