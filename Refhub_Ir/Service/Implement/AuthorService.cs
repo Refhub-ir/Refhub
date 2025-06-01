@@ -18,6 +18,10 @@ namespace Refhub_Ir.Service.Implement
         public async Task<List<AuthorVM>> GetAllAuthorsAsync( CancellationToken ct)
         {
             var authors = await _authorRepository.GetAllAsync(ct);
+
+            if (authors == null || authors.Count == 0)
+                return new List<AuthorVM>();
+
             return authors.Select(a => new AuthorVM
             {
                 FullName = a.FullName,
