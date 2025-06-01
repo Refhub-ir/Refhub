@@ -80,11 +80,12 @@ namespace Refhub_Ir.Service.Implement
 
         public async Task DeleteCategoryAsync(int id, CancellationToken ct)
         {
-            var category = await _context.Categories.FindAsync(id,ct);
+            var category = await _context.Categories.FindAsync(new object[] { id }, ct);
             if (category == null) return;
 
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync(ct);
         }
+
     }
 }
