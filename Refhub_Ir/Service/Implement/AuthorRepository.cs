@@ -58,7 +58,7 @@ namespace Refhub_Ir.Service.Implement
                 await _context.SaveChangesAsync(ct);
             }
         }
-        public async Task<bool> SlugExistsAsync(string slug, string excludeSlug = null, CancellationToken ct = default)
+        public async Task<bool> SlugExistsAsync(string slug, string? excludeSlug, CancellationToken ct)
         {
             if (!string.IsNullOrEmpty(excludeSlug))
             {
