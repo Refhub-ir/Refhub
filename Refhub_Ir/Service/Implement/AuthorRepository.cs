@@ -22,7 +22,7 @@ namespace Refhub_Ir.Service.Implement
             return await _context.Authors.ToListAsync(ct);
         }
 
-        public async Task<Author> GetAllAuthorsBooksAsync(string slug, CancellationToken ct)
+        public async Task<Author> GetAuthorWithBooksBySlugAsync(string slug, CancellationToken ct)
         {
          return   await _context.Authors
                 .Include(a => a.BookAuthors)
