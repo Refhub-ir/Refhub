@@ -19,6 +19,10 @@ namespace Refhub_Ir.Service.Implement
         public async Task<List<AuthorVM>> GetAllAuthorsAsync( CancellationToken ct)
         {
             var authors = await _authorRepository.GetAllAsync(ct);
+
+            if (authors == null || authors.Count == 0)
+                return new List<AuthorVM>();
+
             return authors.Select(a => new AuthorVM
             {
                 FullName = a.FullName,
@@ -29,10 +33,11 @@ namespace Refhub_Ir.Service.Implement
         public async Task<BooksList_VM> GetAllAuthorsBooksAsync(string slug, CancellationToken ct)
         {
             var viewModel = new BooksList_VM();
-            var author =await _authorRepository.GetAllAuthorsBooksAsync(slug, ct);
 
+            var author = await _authorRepository.GetAuthorWithBooksBySlugAsync(slug, ct);
             if (author == null)
                 return viewModel;
+
 
             var bookVMs = author.BookAuthors.Select(ba => new BookVM
             {
@@ -49,15 +54,22 @@ namespace Refhub_Ir.Service.Implement
                 Books = bookVMs,
            
                 AuthorFilter = author.FullName,
+
             };
-            return viewModel;
+                  return viewModel;
         }
 
 
-        public async Task<AuthorVM> GetAuthorBySlugAsync(string slug, CancellationToken ct)
+
+        public async Task<AuthorVM?> GetAuthorBySlugAsync(string slug, CancellationToken ct)
         {
-            var author = await _authorRepository.GetBySlugAsync(slug, ct);
-            if (author == null) return null;
+            if (string.IsNullOrWhiteSpace(slug))
+                return null;
+
+            var author = await _authorRepository.GetBySlugAsync(slug.Trim(), ct);
+            if (author == null)
+                return null;
+
             return new AuthorVM
             {
                 FullName = author.FullName,
@@ -65,10 +77,11 @@ namespace Refhub_Ir.Service.Implement
             };
         }
 
+
         public async Task CreateAuthorAsync(AuthorVM authorVm, CancellationToken ct)
         {
             // چک کردن منحصربه‌فرد بودن Slug
-            if (await _authorRepository.SlugExistsAsync(ct,authorVm.Slug))
+            if (await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: null, ct: ct))
             {
                 throw new Exception(AuthorMessage.Error_SlugExists);
             }
@@ -78,15 +91,20 @@ namespace Refhub_Ir.Service.Implement
                 FullName = authorVm.FullName,
                 Slug = authorVm.Slug
             };
-            await _authorRepository.AddAsync(author,ct);
+
+            await _authorRepository.AddAsync(author, ct);
         }
+
 
         public async Task UpdateAuthorAsync(AuthorVM authorVm, string originalSlug, CancellationToken ct)
         {
             var author = await _authorRepository.GetBySlugAsync(originalSlug, ct);
+
             if (author == null) throw new Exception(AuthorMessage.Error_AuthorNotfound);
 
-            if (authorVm.Slug != originalSlug && await _authorRepository.SlugExistsAsync(ct,authorVm.Slug))
+
+            if (authorVm.Slug != originalSlug &&
+                await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: originalSlug, ct: ct))
             {
                 throw new Exception(AuthorMessage.Error_SlugExists);
             }
@@ -94,15 +112,17 @@ namespace Refhub_Ir.Service.Implement
             author.FullName = authorVm.FullName;
             author.Slug = authorVm.Slug;
 
-            await _authorRepository.UpdateAsync(author,ct);
+            await _authorRepository.UpdateAsync(author, ct);
         }
-
 
         public async Task DeleteAuthorAsync(string slug, CancellationToken ct)
         {
+
             var author = await _authorRepository.GetBySlugAsync(slug,ct);
             if (author == null) throw new Exception(AuthorMessage.Error_AuthorNotfound);
+
             await _authorRepository.DeleteAsync(slug, ct);
         }
+
     }
 }

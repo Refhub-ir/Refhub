@@ -22,7 +22,7 @@ namespace Refhub_Ir.Service.Implement
             return await _context.Authors.ToListAsync(ct);
         }
 
-        public async Task<Author> GetAllAuthorsBooksAsync(string slug, CancellationToken ct)
+        public async Task<Author> GetAuthorWithBooksBySlugAsync(string slug, CancellationToken ct)
         {
          return   await _context.Authors
                 .Include(a => a.BookAuthors)
@@ -58,7 +58,7 @@ namespace Refhub_Ir.Service.Implement
                 await _context.SaveChangesAsync(ct);
             }
         }
-        public async Task<bool> SlugExistsAsync( CancellationToken ct,string slug, string excludeSlug = null)
+        public async Task<bool> SlugExistsAsync(string slug, string? excludeSlug, CancellationToken ct)
         {
             if (!string.IsNullOrEmpty(excludeSlug))
             {
