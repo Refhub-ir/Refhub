@@ -65,16 +65,22 @@ namespace Refhub_Ir.Service.Implement
 
 
 
-        public async Task<AuthorVM> GetAuthorBySlugAsync(string slug, CancellationToken ct)
+        public async Task<AuthorVM?> GetAuthorBySlugAsync(string slug, CancellationToken ct)
         {
-            var author = await _authorRepository.GetBySlugAsync(slug, ct);
-            if (author == null) return null;
+            if (string.IsNullOrWhiteSpace(slug))
+                return null;
+
+            var author = await _authorRepository.GetBySlugAsync(slug.Trim(), ct);
+            if (author == null)
+                return null;
+
             return new AuthorVM
             {
                 FullName = author.FullName,
                 Slug = author.Slug
             };
         }
+
 
         public async Task CreateAuthorAsync(AuthorVM authorVm, CancellationToken ct)
         {
