@@ -59,9 +59,11 @@ namespace Refhub_Ir.Service.Implement
                 slug = model.Slug,
                 Description = model.Description
             };
-           await _context.Categories.AddAsync(category, ct);
+
+            await _context.Categories.AddAsync(category, ct);
             await _context.SaveChangesAsync(ct);
         }
+
 
         public async Task UpdateCategoryAsync(UpdateCategoryVM model, CancellationToken ct)
         {
