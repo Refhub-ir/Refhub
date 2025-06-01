@@ -32,12 +32,13 @@ namespace Refhub_Ir.Service.Implement
 
         public async Task DeleteAsync(int id, CancellationToken ct)
         {
-            var keyword = await _context.Keywords.FindAsync(id, ct);
+            var keyword = await _context.Keywords.FindAsync(new object[] { id }, ct);
             if (keyword == null) return;
 
             _context.Keywords.Remove(keyword);
             await _context.SaveChangesAsync(ct);
         }
+
 
         public Task<List<KeywordListVM>> GetAllKeywordForListAsync(CancellationToken ct)
         {
