@@ -32,35 +32,37 @@ namespace Refhub_Ir.Service.Implement
         public async Task<BooksList_VM> GetAllAuthorsBooksAsync(string slug, CancellationToken ct)
         {
             var viewModel = new BooksList_VM();
-            var author =await _authorRepository.GetAuthorWithBooksBySlugAsync(slug, ct);
 
+            var author = await _authorRepository.GetAuthorWithBooksBySlugAsync(slug, ct);
             if (author == null)
                 return viewModel;
 
-            var books = author.BookAuthors.Select(ba => ba.Book).ToList();
+            var books = author.BookAuthors
+                              .Where(ba => ba.Book != null)
+                              .Select(ba => ba.Book)
+                              .Distinct()
+                              .ToList();
 
-            var bookVMs = books.Select(b => new BookVM
+            var bookVMs = books.Select(book => new BookVM
             {
-                Id = b.Id,
-                Title = b.Title,
-                ImagePath = b.ImagePath,
-                AuthorFullName = b.BookAuthors.FirstOrDefault()?.Author.FullName ?? "نامشخص",
+                Id = book.Id,
+                Title = book.Title,
+                ImagePath = book.ImagePath,
+                AuthorFullName = string.Join("، ",
+                    book.BookAuthors.Select(ba => ba.Author?.FullName).Where(name => !string.IsNullOrEmpty(name)))
             }).ToList();
 
-             viewModel = new BooksList_VM
+            return new BooksList_VM
             {
                 Books = bookVMs,
-                Authors = new List<AuthorVM> // اگر لازم نیست حذفش کن
-                {
-                    new AuthorVM
+                Authors = new List<AuthorVM>
                     {
-                        FullName = author.FullName
-                    }
-                },
-                AuthorFilter = author.FullName,
+                         new AuthorVM { FullName = author.FullName }
+                    },
+                AuthorFilter = author.FullName
             };
-            return viewModel;
         }
+
 
 
         public async Task<AuthorVM> GetAuthorBySlugAsync(string slug, CancellationToken ct)
