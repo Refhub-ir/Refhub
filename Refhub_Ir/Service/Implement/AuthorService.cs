@@ -118,13 +118,14 @@ namespace Refhub_Ir.Service.Implement
             await _authorRepository.UpdateAsync(author, ct);
         }
 
-
-
         public async Task DeleteAuthorAsync(string slug, CancellationToken ct)
         {
-            var author = await _authorRepository.GetBySlugAsync(slug,ct);
-            if (author == null) throw new Exception("نویسنده پیدا نشد");
+            var author = await _authorRepository.GetBySlugAsync(slug, ct);
+            if (author is null)
+                throw new KeyNotFoundException("نویسنده‌ای با این اسلاگ پیدا نشد.");
+
             await _authorRepository.DeleteAsync(slug, ct);
         }
+
     }
 }
