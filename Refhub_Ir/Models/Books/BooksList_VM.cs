@@ -7,7 +7,7 @@ namespace Refhub_Ir.Models.Books
     {
         public List<BookVM> Books { get; set; } = new();
         public List<CategoryVM> Categories { get; set; } = new();
-        public List<AuthorVM> Authors { get; set; } = new();
+       
 
         public string AuthorSlug { get; set; }
         public string? AuthorFilter { get; set; }
