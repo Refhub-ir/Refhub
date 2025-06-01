@@ -95,7 +95,6 @@ namespace Refhub_Ir.Service.Implement
                 FilePath = book.FilePath,
                 ImagePath = book.ImagePath,
                 PageCount = book.PageCount,
-                UserId = book.UserId,
                 AnotherId = book.BookAuthors.Select(a => a.AuthorId).ToList()
             };
         }
@@ -125,7 +124,6 @@ namespace Refhub_Ir.Service.Implement
                     FilePath = filePath,
                     ImagePath = imagePath,
                     Title = book.Title,
-                    UserId = book.UserId,
                     BookAuthors = bookAuthors
                 };
 
@@ -350,25 +348,25 @@ namespace Refhub_Ir.Service.Implement
                               .ToListAsync(cancellationToken: ct);
 
             var authors = await context.Authors
-        .OrderBy(a => a.FullName)
-        .Select(a => new AuthorVM
-        {
-            FullName = a.FullName,
-            IsSelected = !string.IsNullOrWhiteSpace(authorFilter) &&
-                         a.FullName.Contains(authorFilter.Trim(), StringComparison.OrdinalIgnoreCase)
-        })
-        .ToListAsync(ct);
+                 .OrderBy(a => a.FullName)
+                 .Select(a => new AuthorVM
+                 {
+                     FullName = a.FullName,
+                     IsSelected = !string.IsNullOrWhiteSpace(authorFilter) &&
+                                  a.FullName.Contains(authorFilter.Trim(), StringComparison.OrdinalIgnoreCase)
+                 }).ToListAsync(ct);
+
 
 
             var categories = await context.Categories
-     .OrderBy(c => c.Name)
-     .Select(c => new CategoryVM
-     {
-         Name = c.Name,
-         IsSelected = !string.IsNullOrWhiteSpace(categoryFilter) &&
+                .OrderBy(c => c.Name)
+                .Select(c => new CategoryVM
+                 {                  
+                    Name = c.Name,  
+                    IsSelected = !string.IsNullOrWhiteSpace(categoryFilter) &&
                       c.Name.Contains(categoryFilter.Trim(), StringComparison.OrdinalIgnoreCase)
-     })
-     .ToListAsync(ct);
+                 }).ToListAsync(ct);
+
 
             return new ListBooksVM
             {
