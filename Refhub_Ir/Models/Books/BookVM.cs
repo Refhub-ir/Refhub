@@ -10,7 +10,7 @@
         //public int PageCount { get; set; }
 
         public string FilePath { get; set; }
-   
+
 
         //public string FilePath { get; set; }
         public string? ImagePath { get; set; }
@@ -28,9 +28,7 @@
 
     public class CategoryDropDownVM
     {
-
         public int Id { get; set; }
-
 
         public string CategoryName { get; set; }
         public bool IsSelected { get; set; } = false;

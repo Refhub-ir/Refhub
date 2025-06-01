@@ -11,7 +11,7 @@ namespace Refhub_Ir.Components.Handlers.Admin.Another
         public async Task<IViewComponentResult> InvokeAsync(List<int> Ids, CancellationToken ct)
         {
             string viewPath = this.GetDefaultViewPath();
-            return View(viewPath, await bookService.GetAnothersAsync(Ids, ct));
+            return View(viewPath, await bookService.GetAnotherAsync(Ids, ct));
         }
 
     }

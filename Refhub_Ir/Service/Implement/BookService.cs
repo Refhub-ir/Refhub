@@ -12,9 +12,7 @@ using ErrorOr;
 
 namespace Refhub_Ir.Service.Implement
 {
-    public class BookService(
-                             AppDbContext context,
-                             IFileUploaderService uploaderService) : IBookService
+    public class BookService(AppDbContext context, IFileUploaderService uploaderService) : IBookService
     {
         public async Task<IEnumerable<CategoryDropDownVM>> GetCategoriesAsync(int selectedCategoryId, CancellationToken ct)
         {
@@ -30,7 +28,7 @@ namespace Refhub_Ir.Service.Implement
             return categories;
         }
 
-        public async Task<IEnumerable<CategoryDropDownVM>> GetAnothersAsync(List<int> selectedAuthorIds, CancellationToken ct)
+        public async Task<IEnumerable<CategoryDropDownVM>> GetAnotherAsync(List<int> selectedAuthorIds, CancellationToken ct)
         {
             // بررسی ورودی
             if (selectedAuthorIds == null || !selectedAuthorIds.Any())
@@ -73,7 +71,6 @@ namespace Refhub_Ir.Service.Implement
             {
                 Id = a.Id,
                 Title = a.Title,
-                UserId = a.UserId,
                 ImagePath = a.ImagePath,
                 Slug = a.Slug
             }).ToListAsync(ct);
@@ -81,7 +78,7 @@ namespace Refhub_Ir.Service.Implement
             return result;
         }
 
-        public async Task<UpdateBookVM> GetBookDetialsForUpdateAsync(int bookId, CancellationToken ct)
+        public async Task<UpdateBookVM> GetBookDetailsForUpdateAsync(int bookId, CancellationToken ct)
         {
             var book = await context.Books
                 .Include(b => b.BookAuthors)
@@ -98,7 +95,6 @@ namespace Refhub_Ir.Service.Implement
                 FilePath = book.FilePath,
                 ImagePath = book.ImagePath,
                 PageCount = book.PageCount,
-                UserId = book.UserId,
                 AnotherId = book.BookAuthors.Select(a => a.AuthorId).ToList()
             };
         }
@@ -128,7 +124,6 @@ namespace Refhub_Ir.Service.Implement
                     FilePath = filePath,
                     ImagePath = imagePath,
                     Title = book.Title,
-                    UserId = book.UserId,
                     BookAuthors = bookAuthors
                 };
 
@@ -353,25 +348,25 @@ namespace Refhub_Ir.Service.Implement
                               .ToListAsync(cancellationToken: ct);
 
             var authors = await context.Authors
-        .OrderBy(a => a.FullName)
-        .Select(a => new AuthorVM
-        {
-            FullName = a.FullName,
-            IsSelected = !string.IsNullOrWhiteSpace(authorFilter) &&
-                         a.FullName.Contains(authorFilter.Trim(), StringComparison.OrdinalIgnoreCase)
-        })
-        .ToListAsync(ct);
+                 .OrderBy(a => a.FullName)
+                 .Select(a => new AuthorVM
+                 {
+                     FullName = a.FullName,
+                     IsSelected = !string.IsNullOrWhiteSpace(authorFilter) &&
+                                  a.FullName.Contains(authorFilter.Trim(), StringComparison.OrdinalIgnoreCase)
+                 }).ToListAsync(ct);
+
 
 
             var categories = await context.Categories
-     .OrderBy(c => c.Name)
-     .Select(c => new CategoryVM
-     {
-         Name = c.Name,
-         IsSelected = !string.IsNullOrWhiteSpace(categoryFilter) &&
+                .OrderBy(c => c.Name)
+                .Select(c => new CategoryVM
+                 {                  
+                    Name = c.Name,  
+                    IsSelected = !string.IsNullOrWhiteSpace(categoryFilter) &&
                       c.Name.Contains(categoryFilter.Trim(), StringComparison.OrdinalIgnoreCase)
-     })
-     .ToListAsync(ct);
+                 }).ToListAsync(ct);
+
 
             return new ListBooksVM
             {

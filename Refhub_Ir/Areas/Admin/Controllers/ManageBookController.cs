@@ -21,7 +21,7 @@ namespace Refhub_Ir.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            //model.UserId = "b0052a44-4253-4da6-8e26-0e42e7fac925";
+         
             var res = await bookService.CreateBookAsync(model, ct);
             if (res)
                 return RedirectToAction("Index");
@@ -29,19 +29,16 @@ namespace Refhub_Ir.Areas.Admin.Controllers
             return View(model);
         }
 
-
-
-
         [HttpGet]
         public async Task<IActionResult> Update(int Id, CancellationToken ct)
         {
-            var book = await bookService.GetBookDetialsForUpdateAsync(Id, ct);
-            if (book != null)
+            var book = await bookService.GetBookDetailsForUpdateAsync(Id, ct);
+            if (book == null)
             {
-                return View(book);
+                return NotFound();
             }
-
-            return NotFound();
+            return View(book);
+   
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -49,7 +46,7 @@ namespace Refhub_Ir.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            //model.UserId = "b0052a44-4253-4da6-8e26-0e42e7fac925";
+     
             var res = await bookService.UpdateBookAsync(model, ct);
             if (res)
                 return RedirectToAction("Index");
