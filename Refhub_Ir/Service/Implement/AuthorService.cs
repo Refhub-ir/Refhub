@@ -85,8 +85,7 @@ namespace Refhub_Ir.Service.Implement
         public async Task CreateAuthorAsync(AuthorVM authorVm, CancellationToken ct)
         {
             // چک کردن منحصربه‌فرد بودن Slug
-            if (await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: null, ct: ct)
-)
+            if (await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: null, ct: ct))
             {
                 throw new Exception("اسلاگ قبلاً استفاده شده است");
             }
@@ -104,9 +103,11 @@ namespace Refhub_Ir.Service.Implement
         public async Task UpdateAuthorAsync(AuthorVM authorVm, string originalSlug, CancellationToken ct)
         {
             var author = await _authorRepository.GetBySlugAsync(originalSlug, ct);
-            if (author == null) throw new Exception("نویسنده پیدا نشد");
+            if (author == null)
+                throw new Exception("نویسنده پیدا نشد");
 
-            if (authorVm.Slug != originalSlug && await _authorRepository.SlugExistsAsync(ct,authorVm.Slug))
+            if (authorVm.Slug != originalSlug &&
+                await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: originalSlug, ct: ct))
             {
                 throw new Exception("اسلاگ قبلاً استفاده شده است");
             }
@@ -114,8 +115,9 @@ namespace Refhub_Ir.Service.Implement
             author.FullName = authorVm.FullName;
             author.Slug = authorVm.Slug;
 
-            await _authorRepository.UpdateAsync(author,ct);
+            await _authorRepository.UpdateAsync(author, ct);
         }
+
 
 
         public async Task DeleteAuthorAsync(string slug, CancellationToken ct)
