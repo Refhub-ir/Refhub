@@ -67,7 +67,7 @@ namespace Refhub_Ir.Service.Implement
 
         public async Task UpdateCategoryAsync(UpdateCategoryVM model, CancellationToken ct)
         {
-            var category = await _context.Categories.FindAsync(model.Id, ct);
+            var category = await _context.Categories.FindAsync(new object[] { model.Id }, ct);
             if (category == null) return;
 
             category.Name = model.Name;
@@ -76,6 +76,7 @@ namespace Refhub_Ir.Service.Implement
 
             await _context.SaveChangesAsync(ct);
         }
+
 
         public async Task DeleteCategoryAsync(int id, CancellationToken ct)
         {
