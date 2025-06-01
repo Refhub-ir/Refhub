@@ -28,7 +28,7 @@ namespace Refhub_Ir.Service.Implement
         public async Task<BooksList_VM> GetAllAuthorsBooksAsync(string slug, CancellationToken ct)
         {
             var viewModel = new BooksList_VM();
-            var author =await _authorRepository.GetAllAuthorsBooksAsync(slug, ct);
+            var author =await _authorRepository.GetAuthorWithBooksBySlugAsync(slug, ct);
 
             if (author == null)
                 return viewModel;
