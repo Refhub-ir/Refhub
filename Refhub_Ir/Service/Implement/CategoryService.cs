@@ -19,16 +19,18 @@ namespace Refhub_Ir.Service.Implement
         public async Task<List<CategoryVM>> GetAllCategoriesAsync(CancellationToken ct)
         {
             return await _context.Categories
-                .Include(c => c.Books)
+                .AsNoTracking()
+                .OrderBy(c => c.Name) // مرتب‌سازی اختیاری برای نظم
                 .Select(c => new CategoryVM
                 {
                     Id = c.Id,
                     Name = c.Name,
                     Slug = c.slug,
                     Description = c.Description,
-      
-                }).ToListAsync(ct);
+                })
+                .ToListAsync(ct);
         }
+
 
         public async Task<CategoryVM> GetCategoryByIdAsync(int id, CancellationToken ct)
         {
