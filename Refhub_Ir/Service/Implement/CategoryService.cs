@@ -35,20 +35,21 @@ namespace Refhub_Ir.Service.Implement
         public async Task<CategoryVM> GetCategoryByIdAsync(int id, CancellationToken ct)
         {
             var category = await _context.Categories
-                .Include(c => c.Books)
-                .FirstOrDefaultAsync(c => c.Id == id,ct);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id, ct);
 
-            if (category == null) return null;
+            if (category is null)
+                return null;
 
             return new CategoryVM
             {
                 Id = category.Id,
                 Name = category.Name,
-                Slug = category.slug,
-                Description = category.Description,
-           
+                Slug = category.slug, // اطمینان از PascalCase بودن
+                Description = category.Description
             };
         }
+
 
         public async Task CreateCategoryAsync(CreateCategoryVM model, CancellationToken ct)
         {
