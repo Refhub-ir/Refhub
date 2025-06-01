@@ -7,7 +7,7 @@ namespace Refhub_Ir.Service.Interface
     public interface IAuthorRepository
     {
         Task<List<Author>> GetAllAsync( CancellationToken ct);
-        Task<Author> GetAllAuthorsBooksAsync( string slug,CancellationToken ct);
+        Task<Author> GetAuthorWithBooksBySlugAsync( string slug,CancellationToken ct);
         Task<Author> GetBySlugAsync(string slug, CancellationToken ct);
         Task AddAsync(Author author, CancellationToken ct);
         Task UpdateAsync(Author author, CancellationToken ct);
