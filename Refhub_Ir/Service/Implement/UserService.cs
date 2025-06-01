@@ -28,6 +28,7 @@ namespace Refhub_Ir.Service.Implement
                 users = users.Where(a => a.UserName.Contains(name));
             }
             var result = new List<UserListAdminVM>();
+
             foreach (var user in users)
             {
                 var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
@@ -41,7 +42,6 @@ namespace Refhub_Ir.Service.Implement
                     IsAdmin = isAdmin
                 });
             }
-
             return result;
         }
 
@@ -49,20 +49,34 @@ namespace Refhub_Ir.Service.Implement
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(a => a.Id.Equals(id), ct);
             if (user == null)
-                return Error.NotFound();
+            {
+                return Error.NotFound("User.NotFound", "کاربر مورد نظر یافت نشد");
+            }
 
-            if (!await _roleManager.RoleExistsAsync(RolesNameStatic.Admin))
-                await _roleManager.CreateAsync(new IdentityRole() { Name = RolesNameStatic.Admin, NormalizedName = RolesNameStatic.Admin });
-
+            if (!await _roleManager.RoleExistsAsync(RolesNameStatic.Admin).ConfigureAwait(false))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(RolesNameStatic.Admin)).ConfigureAwait(false);
+            }
+                
             IdentityResult res;
+
             if (await _userManager.IsInRoleAsync(user, RolesNameStatic.Admin))
+            {
                 res = await _userManager.RemoveFromRoleAsync(user, RolesNameStatic.Admin);
+            }
             else
+            {
                 res = await _userManager.AddToRoleAsync(user, RolesNameStatic.Admin);
+
+            }
             if (res.Succeeded)
+            {
                 return new UserListAdminVM();
+            }
             else
+            {
                 return Error.Validation(ErrorMessageAuthenticationStatic.Error_AddToRole);
+            }
         }
 
         public async Task<ErrorOr<LoginVM>> Login(LoginVM model, CancellationToken ct)
