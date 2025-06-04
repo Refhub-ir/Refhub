@@ -5,12 +5,14 @@ namespace Refhub_Ir.Service.Interface
     public interface IBookService
     {
         Task<IEnumerable<CategoryDropDownVM>> GetCategoriesAsync(int Id, CancellationToken ct);
+
         Task<IEnumerable<CategoryDropDownVM>> GetAnothersAsync(List<int> Id, CancellationToken ct);
         Task<IEnumerable<BookItemVM>> GetLastBooksAsync( CancellationToken ct);
         Task<IEnumerable<BookItemVM>> GetBestBooksAsync( CancellationToken ct);
+
         Task<bool> CreateAnotherAsync(string fullname, string slug, CancellationToken ct);
         Task<IEnumerable<BookVM>> GetBooksAsync(string? searchText, CancellationToken ct);
-        Task<UpdateBookVM> GetBookDetialsForUpdateAsync(int Id, CancellationToken ct);
+        Task<UpdateBookVM> GetBookDetailsForUpdateAsync(int Id, CancellationToken ct);
         Task<bool> CreateBookAsync(CreateBookVM book, CancellationToken ct);
         Task<bool> UpdateBookAsync(UpdateBookVM book, CancellationToken ct);
         Task<bool> DeleteBookAsync(int Id, CancellationToken ct);
