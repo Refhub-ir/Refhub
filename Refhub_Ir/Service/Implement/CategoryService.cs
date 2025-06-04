@@ -31,6 +31,21 @@ namespace Refhub_Ir.Service.Implement
                 .ToListAsync(ct);
         }
 
+        public async Task<List<CategoryItemHomePageVM>> GetAllCategoriesHomePageAsync(CancellationToken ct, int take = 8)
+        {
+            return await _context.Categories
+                .AsNoTracking()
+                .OrderBy(c => c.Name) // مرتب‌سازی اختیاری برای نظم
+                .Select(c => new CategoryItemHomePageVM
+                {
+                    
+                    Name = c.Name,
+                    Slug = c.slug,
+                    BookCount = c.Books.Count,
+                })
+                .ToListAsync(ct);
+        }
+
 
         public async Task<CategoryVM> GetCategoryByIdAsync(int id, CancellationToken ct)
         {
