@@ -12,4 +12,14 @@ namespace Refhub_Ir.Models.Categories
 
         public bool IsSelected { get; set; }
     }
+
+    public class CategoryItemHomePageVM
+    {
+      
+        public string? Name { get; set; }
+        public string? Slug { get; set; }
+        public int? BookCount { get; set; }
+
+
+    }
 }

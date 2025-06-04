@@ -48,6 +48,50 @@ namespace Refhub_Ir.Service.Implement
             return authors;
         }
 
+        public async Task<IEnumerable<BookItemVM>> GetLastBooksAsync(CancellationToken ct)
+        {
+            var books = context.Books
+                .Include(a => a.Category)
+                .OrderByDescending(_ => _.Id)
+                .Take(8).AsQueryable();
+
+
+            var result = await books.Select(a => new BookItemVM()
+            {
+                Id = a.Id,
+                Title = a.Title,
+                //UserId = a.UserId,
+                ImagePath = a.ImagePath,
+                CategoryName = a.Category.Name,
+                Authores = string.Join(',', a.BookAuthors.Select(_ => _.Author.FullName)),
+                Slug = a.Slug
+            }).ToListAsync(ct);
+
+            return result;
+        }
+
+        public async Task<IEnumerable<BookItemVM>> GetBestBooksAsync(CancellationToken ct)
+        {
+            var books = context.Books
+                .Include(a => a.Category)
+                //order by view todo
+                .Take(8).AsQueryable();
+
+
+            var result = await books.Select(a => new BookItemVM()
+            {
+                Id = a.Id,
+                Title = a.Title,
+                //UserId = a.UserId,
+                ImagePath = a.ImagePath,
+                CategoryName = a.Category.Name,
+                Authores = string.Join(',', a.BookAuthors.Select(_ => _.Author.FullName)),
+                Slug = a.Slug
+            }).ToListAsync(ct);
+
+            return result;
+        }
+
         public async Task<bool> CreateAnotherAsync(string fullname, string slug, CancellationToken ct)
         {
             if (await context.Authors.AnyAsync(a => a.Slug == slug, ct))
