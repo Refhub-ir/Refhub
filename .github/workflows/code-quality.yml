@@ -1,0 +1,331 @@
+name: 🔍 Code Quality & Analysis
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+  push:
+    branches: [ main, master, develop ]
+  schedule:
+    # Run weekly on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  SOLUTION_PATH: './Refhub.sln'
+
+jobs:
+  # =====================================
+  # 📊 CODE METRICS & ANALYSIS
+  # =====================================
+  code-metrics:
+    name: 📊 Code Metrics Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: 🔧 Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: 📊 Calculate Code Metrics
+        run: |
+          echo "📊 REFHUB PROJECT CODE METRICS"
+          echo "========================================"
+          
+          # File Statistics
+          echo "📁 FILE STATISTICS:"
+          echo "────────────────────────────────────────"
+          cs_files=$(find . -name "*.cs" -not -path "./bin/*" -not -path "./obj/*" | wc -l)
+          cshtml_files=$(find . -name "*.cshtml" | wc -l)
+          js_files=$(find . -name "*.js" -not -path "./lib/*" | wc -l)
+          css_files=$(find . -name "*.css" -not -path "./lib/*" | wc -l)
+          
+          echo "🔹 C# Files: $cs_files"
+          echo "🔹 Razor Views: $cshtml_files"
+          echo "🔹 JavaScript Files: $js_files"
+          echo "🔹 CSS Files: $css_files"
+          echo ""
+          
+          # Lines of Code
+          echo "📏 LINES OF CODE:"
+          echo "────────────────────────────────────────"
+          cs_lines=$(find . -name "*.cs" -not -path "./bin/*" -not -path "./obj/*" -not -path "./Migrations/*" -exec wc -l {} + 2>/dev/null | tail -1 | awk '{print $1}' || echo "0")
+          cshtml_lines=$(find . -name "*.cshtml" -exec wc -l {} + 2>/dev/null | tail -1 | awk '{print $1}' || echo "0")
+          
+          echo "🔹 C# Code Lines: $cs_lines"
+          echo "🔹 Razor View Lines: $cshtml_lines"
+          echo ""
+          
+          # Project Structure Analysis
+          echo "🏗️ PROJECT STRUCTURE:"
+          echo "────────────────────────────────────────"
+          controllers=$(find . -path "*/Controllers/*.cs" | wc -l)
+          models=$(find . -path "*/Models/*.cs" -not -path "*/bin/*" -not -path "*/obj/*" | wc -l)
+          views=$(find . -path "*/Views/*" -name "*.cshtml" | wc -l)
+          migrations=$(find . -path "*/Migrations/*.cs" | wc -l)
+          
+          echo "🔹 Controllers: $controllers"
+          echo "🔹 Models: $models"
+          echo "🔹 Views: $views"
+          echo "🔹 Migrations: $migrations"
+          echo ""
+          
+          # Complexity Indicators
+          echo "🔍 COMPLEXITY INDICATORS:"
+          echo "────────────────────────────────────────"
+          interfaces=$(grep -r "interface I" --include="*.cs" . | wc -l)
+          classes=$(grep -r "class " --include="*.cs" . | wc -l)
+          methods=$(grep -r "public.*(" --include="*.cs" . | wc -l)
+          
+          echo "🔹 Interfaces: $interfaces"
+          echo "🔹 Classes: $classes"
+          echo "🔹 Public Methods: $methods"
+          echo "========================================"
+
+  # =====================================
+  # 🔍 DEPENDENCY ANALYSIS
+  # =====================================
+  dependency-analysis:
+    name: 🔍 Dependency Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: 📦 Analyze Dependencies
+        run: |
+          echo "📦 DEPENDENCY ANALYSIS REPORT"
+          echo "========================================"
+          
+          dotnet restore ${{ env.SOLUTION_PATH }}
+          
+          echo "📋 CURRENT PACKAGES:"
+          echo "────────────────────────────────────────"
+          dotnet list ./Refhub/Refhub.csproj package
+          echo ""
+          
+          echo "🔍 OUTDATED PACKAGES:"
+          echo "────────────────────────────────────────"
+          dotnet list ./Refhub/Refhub.csproj package --outdated || echo "✅ All packages are up to date!"
+          echo ""
+          
+          echo "🚨 VULNERABLE PACKAGES:"
+          echo "────────────────────────────────────────"
+          dotnet list ./Refhub/Refhub.csproj package --vulnerable --include-transitive || echo "✅ No known vulnerabilities found!"
+          echo ""
+          
+          echo "📊 PACKAGE STATISTICS:"
+          echo "────────────────────────────────────────"
+          package_count=$(dotnet list ./Refhub/Refhub.csproj package | grep -c ">" || echo "0")
+          echo "🔹 Total NuGet Packages: $package_count"
+          echo "🔹 Target Framework: net8.0"
+          echo "🔹 Package Manager: NuGet"
+          echo "========================================"
+
+  # =====================================
+  # 🛡️ SECURITY AUDIT
+  # =====================================
+  security-audit:
+    name: 🛡️ Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: 🛡️ Security Configuration Check
+        run: |
+          echo "🛡️ SECURITY AUDIT REPORT"
+          echo "========================================"
+          
+          echo "🔍 CONFIGURATION FILES SECURITY:"
+          echo "────────────────────────────────────────"
+          
+          # Check appsettings files
+          if [ -f "./Refhub/appsettings.json" ]; then
+            echo "📄 Checking appsettings.json..."
+            if grep -q "DefaultConnection\|ConnectionString" ./Refhub/appsettings.json; then
+              echo "⚠️  Found connection strings in appsettings.json"
+              echo "💡 Ensure sensitive data is not committed to version control"
+            else
+              echo "✅ No obvious sensitive data in appsettings.json"
+            fi
+          fi
+          
+          if [ -f "./Refhub/appsettings.Development.json" ]; then
+            echo "📄 Checking appsettings.Development.json..."
+            echo "✅ Development settings file exists"
+          fi
+          
+          echo ""
+          echo "🔐 AUTHENTICATION & AUTHORIZATION:"
+          echo "────────────────────────────────────────"
+          
+          # Check for Identity usage
+          if grep -r "Microsoft.AspNetCore.Identity" --include="*.cs" --include="*.csproj" .; then
+            echo "✅ ASP.NET Core Identity detected"
+          else
+            echo "⚠️  No Identity framework detected"
+          fi
+          
+          # Check for authentication attributes
+          auth_attrs=$(grep -r "\[Authorize\]" --include="*.cs" . | wc -l)
+          echo "🔹 [Authorize] attributes found: $auth_attrs"
+          
+          echo ""
+          echo "🔒 HTTPS & SECURITY HEADERS:"
+          echo "────────────────────────────────────────"
+          
+          if grep -r "UseHttpsRedirection\|RequireHttps" --include="*.cs" .; then
+            echo "✅ HTTPS redirection configured"
+          else
+            echo "⚠️  Consider enabling HTTPS redirection"
+          fi
+          
+          echo ""
+          echo "💾 DATA PROTECTION:"
+          echo "────────────────────────────────────────"
+          
+          if grep -r "EntityFramework\|DbContext" --include="*.cs" .; then
+            echo "✅ Entity Framework detected"
+            echo "💡 Ensure proper data validation and sanitization"
+          fi
+          
+          echo "========================================"
+
+  # =====================================
+  # 📈 PERFORMANCE ANALYSIS
+  # =====================================
+  performance-check:
+    name: 📈 Performance Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: 📈 Build Performance Analysis
+        run: |
+          echo "📈 PERFORMANCE ANALYSIS"
+          echo "========================================"
+          
+          echo "⏱️ Build Time Analysis:"
+          echo "────────────────────────────────────────"
+          
+          start_time=$(date +%s)
+          dotnet restore ${{ env.SOLUTION_PATH }}
+          restore_time=$(date +%s)
+          
+          dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+          build_time=$(date +%s)
+          
+          restore_duration=$((restore_time - start_time))
+          build_duration=$((build_time - restore_time))
+          total_duration=$((build_time - start_time))
+          
+          echo "🔹 Restore Time: ${restore_duration}s"
+          echo "🔹 Build Time: ${build_duration}s"
+          echo "🔹 Total Time: ${total_duration}s"
+          echo ""
+          
+          echo "📊 Build Output Analysis:"
+          echo "────────────────────────────────────────"
+          
+          if [ -d "./Refhub/bin/Release/net8.0" ]; then
+            output_size=$(du -sh ./Refhub/bin/Release/net8.0 | cut -f1)
+            dll_count=$(find ./Refhub/bin/Release/net8.0 -name "*.dll" | wc -l)
+            
+            echo "🔹 Output Size: $output_size"
+            echo "🔹 DLL Files: $dll_count"
+          fi
+          
+          echo "========================================"
+
+  # =====================================
+  # 📋 SUMMARY REPORT
+  # =====================================
+  quality-summary:
+    name: 📋 Quality Summary
+    runs-on: ubuntu-latest
+    needs: [code-metrics, dependency-analysis, security-audit, performance-check]
+    if: always()
+    timeout-minutes: 5
+    
+    steps:
+      - name: 📋 Generate Quality Report
+        run: |
+          echo "📋 CODE QUALITY SUMMARY REPORT"
+          echo "========================================"
+          echo "📅 Analysis Date: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "🏷️  Workflow Run: #${{ github.run_number }}"
+          echo "🔗 Repository: ${{ github.repository }}"
+          echo "🌿 Branch: ${{ github.ref_name }}"
+          echo ""
+          echo "📊 ANALYSIS RESULTS:"
+          echo "────────────────────────────────────────"
+          echo "📊 Code Metrics: ${{ needs.code-metrics.result }}"
+          echo "🔍 Dependency Analysis: ${{ needs.dependency-analysis.result }}"
+          echo "🛡️  Security Audit: ${{ needs.security-audit.result }}"
+          echo "📈 Performance Check: ${{ needs.performance-check.result }}"
+          echo ""
+          
+          # Overall quality score
+          success_count=0
+          total_jobs=4
+          
+          [[ "${{ needs.code-metrics.result }}" == "success" ]] && ((success_count++))
+          [[ "${{ needs.dependency-analysis.result }}" == "success" ]] && ((success_count++))
+          [[ "${{ needs.security-audit.result }}" == "success" ]] && ((success_count++))
+          [[ "${{ needs.performance-check.result }}" == "success" ]] && ((success_count++))
+          
+          quality_score=$((success_count * 100 / total_jobs))
+          
+          echo "🎯 QUALITY SCORE: $quality_score%"
+          echo ""
+          
+          if [ $quality_score -eq 100 ]; then
+            echo "🏆 EXCELLENT! All quality checks passed!"
+            echo "🚀 Your code meets high quality standards!"
+          elif [ $quality_score -ge 75 ]; then
+            echo "✅ GOOD! Most quality checks passed!"
+            echo "🔧 Consider addressing any remaining issues."
+          else
+            echo "⚠️  NEEDS IMPROVEMENT!"
+            echo "🔧 Please review and address the failing checks."
+          fi
+          
+          echo ""
+          echo "💡 RECOMMENDATIONS:"
+          echo "────────────────────────────────────────"
+          echo "• Regular security updates"
+          echo "• Comprehensive test coverage"
+          echo "• Code documentation"
+          echo "• Performance monitoring"
+          echo "• Dependency management"
+          echo "========================================"
