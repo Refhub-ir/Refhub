@@ -1,8 +1,7 @@
-﻿namespace Refhub_Ir.Models.Keywords
+﻿namespace Refhub_Ir.Models.Keywords;
+
+public class KeywordListVM
 {
-    public class KeywordListVM
-    {
-        public int Id { get; set; }
-        public string Word { get; set; }
-    }
+    public int Id { get; set; }
+    public string Word { get; set; }
 }

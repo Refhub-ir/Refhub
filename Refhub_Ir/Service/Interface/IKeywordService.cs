@@ -1,17 +1,14 @@
-﻿using Refhub_Ir.Data.Context;
-using Refhub_Ir.Models;
-using Refhub_Ir.Models.Keywords;
+﻿using Refhub_Ir.Models.Keywords;
 
 
-namespace Refhub_Ir.Service.Interface
+namespace Refhub_Ir.Service.Interface;
+
+
+public interface IKeywordService
 {
-
-    public interface IKeywordService
-    {
-        Task<List<KeywordListVM>> GetAllKeywordForListAsync();
-        Task AddKeywordAsync(CreateKeywordVM model);
-       Task<EditKeywordVM> GetForEdit(int id);
-        Task UpdateAsync(EditKeywordVM vm);
-        Task DeleteAsync(int id);
-    }
+    Task<List<KeywordListVM>> GetAllKeywordForListAsync();
+    Task AddKeywordAsync(CreateKeywordVM model);
+    Task<EditKeywordVM> GetForEdit(int id);
+    Task UpdateAsync(EditKeywordVM vm);
+    Task DeleteAsync(int id);
 }

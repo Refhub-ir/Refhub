@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Refhub_Ir.Areas.Admin.Controllers
+namespace Refhub_Ir.Areas.Admin.Controllers;
+
+[Area("Admin")]
+public class AdminController : Controller
 {
-    [Area("Admin")]
-    public class AdminController : Controller
+    public IActionResult Dashboard()
     {
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
+        return View();
     }
 }

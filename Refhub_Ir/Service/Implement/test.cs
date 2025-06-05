@@ -1,6 +1,5 @@
-﻿namespace Refhub_Ir.Service.Interface
+﻿namespace Refhub_Ir.Service.Interface;
+
+public class test
 {
-    public class test
-    {
-    }
 }
