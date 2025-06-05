@@ -2,14 +2,14 @@ name: 🚀 Continuous Integration
 
 on:
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [ main, master, develop, stage ]
     paths-ignore:
       - '**.md'
       - 'docs/**'
       - '.gitignore'
       - 'LICENSE'
   push:
-    branches: [ main, master, develop ]
+    branches: [ main, master, develop, stage ]
     paths-ignore:
       - '**.md'
       - 'docs/**'

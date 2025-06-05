@@ -2,9 +2,9 @@ name: 🔍 Code Quality & Analysis
 
 on:
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [ main, master, develop, stage ]
   push:
-    branches: [ main, master, develop ]
+    branches: [ main, master, develop, stage ]
   schedule:
     # Run weekly on Sundays at 2 AM UTC
     - cron: '0 2 * * 0'
