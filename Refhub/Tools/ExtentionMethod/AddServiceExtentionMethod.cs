@@ -1,4 +1,6 @@
-﻿using Refhub_Ir.Service.Implement;
+﻿using Refhub.Service.Implement;
+using Refhub.Service.Interface;
+using Refhub_Ir.Service.Implement;
 using Refhub_Ir.Service.Interface;
 using Refhub_Ir.Service.Interfaces;
 
@@ -15,6 +17,8 @@ public static class AddServiceExtentionMethod
         collection.AddScoped<IKeywordService, KeywordService>();
 
         collection.AddScoped<IFileUploaderService, LocalFileUploaderService>();
+
+        collection.AddScoped<IMessageService, MessageService>();
         return collection;
     }
 }
