@@ -13,7 +13,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllersWithViews()
+            .AddMultiLanguage();
 
 
         //Add  CUstomServices
@@ -55,7 +56,7 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-
+        app.UseMultiLanguage();
         app.UseRouting();
 
         app.UseAuthentication();
