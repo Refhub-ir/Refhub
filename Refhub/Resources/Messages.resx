@@ -123,6 +123,27 @@
   <data name="SlugRequired" xml:space="preserve">
     <value>Slug  is Required</value>
   </data>
+  <data name="Book_TitleRequired" xml:space="preserve">
+    <value>Enter the book title</value>
+  </data>
+  <data name="Book_SlugRequired" xml:space="preserve">
+    <value>Enter the title in the browser.</value>
+  </data>
+  <data name="Book_PageCountRequired" xml:space="preserve">
+    <value>Enter the number of pages and select</value>
+  </data>
+  <data name="Book_FileRequired" xml:space="preserve">
+    <value>Select a file</value>
+  </data>
+  <data name="Book_ImageRequired" xml:space="preserve">
+    <value>Select a Image</value>
+  </data>
+  <data name="Book_CategoryIdRequired" xml:space="preserve">
+    <value>Choose a category</value>
+  </data>
+  <data name="Book_AnotherIdRequired" xml:space="preserve">
+    <value>Choose a writer</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>refhub</value>
   </data>

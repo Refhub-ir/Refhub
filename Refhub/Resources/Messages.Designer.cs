@@ -61,6 +61,69 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose a writer.
+        /// </summary>
+        public static string Book_AnotherIdRequired {
+            get {
+                return ResourceManager.GetString("Book_AnotherIdRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a category.
+        /// </summary>
+        public static string Book_CategoryIdRequired {
+            get {
+                return ResourceManager.GetString("Book_CategoryIdRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a file.
+        /// </summary>
+        public static string Book_FileRequired {
+            get {
+                return ResourceManager.GetString("Book_FileRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a Image.
+        /// </summary>
+        public static string Book_ImageRequired {
+            get {
+                return ResourceManager.GetString("Book_ImageRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the number of pages and select.
+        /// </summary>
+        public static string Book_PageCountRequired {
+            get {
+                return ResourceManager.GetString("Book_PageCountRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the title in the browser..
+        /// </summary>
+        public static string Book_SlugRequired {
+            get {
+                return ResourceManager.GetString("Book_SlugRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the book title.
+        /// </summary>
+        public static string Book_TitleRequired {
+            get {
+                return ResourceManager.GetString("Book_TitleRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FullName is Required.
         /// </summary>
         public static string FullNameRequired {
