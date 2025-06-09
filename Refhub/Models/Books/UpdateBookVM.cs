@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Refhub.Resources;
+using System.ComponentModel.DataAnnotations;
 
 namespace Refhub_Ir.Models.Books;
 
@@ -6,11 +7,18 @@ public class UpdateBookVM
 {
 
     public int Id { get; set; }
-    [Required(ErrorMessage = "عنوان کتاب را وارد کنید")]
+
+    [Required(ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.Book_TitleRequired))]
     public string Title { get; set; }
-    [Required(ErrorMessage = "عنوان در مرورگر را وارد کنید")]
+
+    [Required(ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.Book_SlugRequired))]
     public string Slug { get; set; }
-    [Required(ErrorMessage = "تعداد صفحه را وارد کنید انتخاب کنید")]
+
+
+    [Required(ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.Book_PageCountRequired))]
     public int PageCount { get; set; }
 
     public IFormFile? File { get; set; }
@@ -21,8 +29,11 @@ public class UpdateBookVM
 
     public string? UserId { get; set; }
     // Foreign Key
-    [Required(ErrorMessage = "یک دسته بندی انتخاب کنید")]
+    [Required(ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.Book_CategoryIdRequired))]
     public int CategoryId { get; set; }
-    [Required(ErrorMessage = "یک نویسند انتخاب کنید")]
+
+    [Required(ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.Book_AnotherIdRequired))]
     public List<int> AnotherId { get; set; }
 }
