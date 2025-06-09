@@ -61,6 +61,33 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The email entered is already registered..
+        /// </summary>
+        public static string Account_EmailAleady {
+            get {
+                return ResourceManager.GetString("Account_EmailAleady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The login attempt is invalid..
+        /// </summary>
+        public static string Account_LoginInvalid {
+            get {
+                return ResourceManager.GetString("Account_LoginInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration encountered an error..
+        /// </summary>
+        public static string Account_RegisterInValid {
+            get {
+                return ResourceManager.GetString("Account_RegisterInValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose a writer.
         /// </summary>
         public static string Book_AnotherIdRequired {

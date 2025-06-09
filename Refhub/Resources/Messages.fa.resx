@@ -147,4 +147,13 @@
   <data name="Title" xml:space="preserve">
     <value>رفهاب</value>
   </data>
+  <data name="Account_EmailAleady" xml:space="preserve">
+    <value>ایمیل وارد شده قبلاً ثبت شده است.</value>
+  </data>
+  <data name="Account_RegisterInValid" xml:space="preserve">
+    <value>ثبت نام با ارور مواجه شده است </value>
+  </data>
+  <data name="Account_LoginInvalid" xml:space="preserve">
+    <value>تلاش برای ورود نامعتبر است.</value>
+  </data>
 </root>
