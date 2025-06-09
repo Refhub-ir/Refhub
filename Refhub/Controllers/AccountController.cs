@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Refhub.Service.Interface;
 using Refhub_Ir.Models.Users;
 
 namespace Refhub_Ir.Controllers;
@@ -8,11 +9,13 @@ public class AccountController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly IMessageService _messageService;
 
-    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMessageService messageService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        this._messageService = messageService;
     }
 
     #region Register
@@ -40,11 +43,11 @@ public class AccountController : Controller
             {
                 if (error.Code is "DuplicateUserName" or "DuplicateEmail")
                 {
-                    ModelState.AddModelError("Email", "ایمیل وارد شده قبلاً ثبت شده است.");
+                    ModelState.AddModelError("Email", _messageService.Get("Account_EmailAleady"));
                 }
                 else
                 {
-                    ModelState.AddModelError("Email", "ثبت نام با ارور مواجه شده است ");
+                    ModelState.AddModelError("Email", _messageService.Get("Account_RegisterInValid"));
                 }
             }
 
@@ -72,7 +75,7 @@ public class AccountController : Controller
                 return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError("Email", "تلاش برای ورود نامعتبر است.");
+            ModelState.AddModelError("Email", _messageService.Get("Account_LoginInvalid"));
         }
         return View(model);
     }
