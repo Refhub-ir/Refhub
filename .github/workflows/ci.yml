@@ -93,14 +93,79 @@ jobs: # =====================================
           echo "🔹 Target Framework: net8.0"
           echo "🔹 Platform: Any CPU"
           echo "================================"
+  # =====================================
+  # 🐳 DOCKER BUILD & TEST
+  # =====================================
+  docker:
+    name: 🐳 Docker Build & Test
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: success()
+    timeout-minutes: 20
 
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🏷️ Generate Docker Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: refhub
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: 🐳 Build Docker Image
+        run: |
+          echo "🐳 Building Docker image..."
+          docker build -t refhub:${{ github.sha }} .
+          echo "✅ Docker image built successfully!"
+
+      - name: 🔍 Test Docker Image
+        run: |
+          echo "🔍 Testing Docker image..."
+          # Start container in detached mode
+          CONTAINER_ID=$(docker run -d -p 8080:8080 refhub:${{ github.sha }})
+          echo "📦 Container started with ID: $CONTAINER_ID"
+
+          # Wait for container to be ready
+          echo "⏳ Waiting for container to start..."
+          sleep 10
+
+          # Check if container is running
+          if docker ps | grep $CONTAINER_ID; then
+            echo "✅ Container is running successfully!"
+          else
+            echo "❌ Container failed to start"
+            echo "📋 Container logs:"
+            docker logs $CONTAINER_ID
+            exit 1
+          fi
+
+          # Cleanup
+          docker stop $CONTAINER_ID
+          docker rm $CONTAINER_ID
+          echo "🧹 Container cleaned up"
+
+      - name: 📊 Docker Build Summary
+        run: |
+          echo "🐳 Docker Build Summary:"
+          echo "================================"
+          echo "✅ Image: Built successfully"
+          echo "🔹 Image Tag: refhub:${{ github.sha }}"
+          echo "🔹 Base Image: mcr.microsoft.com/dotnet/aspnet:9.0"
+          echo "🔹 Platform: linux/amd64"
+          echo "================================"
   # =====================================
   # 📦 PACKAGE & ARTIFACT CREATION
   # =====================================
   package:
     name: 📦 Create Artifacts
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [build, docker]
     if: success()
     timeout-minutes: 15
 
@@ -160,14 +225,13 @@ jobs: # =====================================
           path: ./publish
           retention-days: 7
           compression-level: 6
-
   # =====================================
   # 📊 FINAL STATUS REPORT
   # =====================================
   status-report:
     name: 📊 Build Status Report
     runs-on: ubuntu-latest
-    needs: [build, package]
+    needs: [build, docker, package]
     if: always()
     timeout-minutes: 5
 
@@ -182,15 +246,16 @@ jobs: # =====================================
           echo "🌿 Branch: ${{ github.ref_name }}"
           echo "👤 Triggered by: ${{ github.actor }}"
           echo "⚡ Event: ${{ github.event_name }}"
-          echo ""
-          echo "📋 JOB STATUS SUMMARY:"
+          echo ""          echo "📋 JOB STATUS SUMMARY:"
           echo "========================================"
           echo "🏗️  Build: ${{ needs.build.result }}"
-          echo "📦 Package: ${{ needs.package.result }}"
+          echo "� Docker: ${{ needs.docker.result }}"
+          echo "�📦 Package: ${{ needs.package.result }}"
           echo ""
 
           # Determine overall status
           if [[ "${{ needs.build.result }}" == "success" && 
+                "${{ needs.docker.result }}" == "success" && 
                 "${{ needs.package.result }}" == "success" ]]; then
             echo "🎉 OVERALL STATUS: ✅ SUCCESS"
             echo "🚀 Build completed successfully!"
@@ -240,9 +305,9 @@ jobs: # =====================================
               **Build Status**: Passed ✅
               **Run ID**: ${{ github.run_id }}
               **Commit**: ${{ github.sha }}
-              
-              ### 🎉 Build Completed:
+                ### 🎉 Build Completed:
               - ✅ Build successful (Debug & Release)
+              - ✅ Docker image built and tested
               - ✅ Artifacts created
               
               **Ready for review and merge!** 🚀
@@ -256,6 +321,7 @@ jobs: # =====================================
 # =====================================
 # This simplified workflow provides:
 # ✅ Multi-configuration builds (Debug/Release)
+# ✅ Docker image build and testing
 # ✅ NuGet package caching for faster builds
 # ✅ Artifact generation and upload
 # ✅ Automatic PR comments

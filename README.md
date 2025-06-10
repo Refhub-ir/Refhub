@@ -1,7 +1,7 @@
-# DaneshkarTeam1403.1
+# Refhub
 
 ## Overview
-DaneshkarTeam1403.1 is a web application built using ASP.NET Core. It provides functionalities for managing books, authors, categories, and keywords. The application is structured with areas for Admin and User, and includes features such as account management, book relations, and more.
+Refhub is a web application built using ASP.NET Core. It provides functionalities for managing books, authors, categories, and keywords. The application is structured with areas for Admin and User, and includes features such as account management, book relations, and more.
 
 ## Features
 - User and Admin areas with separate controllers and views.
@@ -27,11 +27,11 @@ The project is organized as follows:
 ## Setup Instructions
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Refhub-ir/DaneshkarTeam1403.1.git
+   git clone https://github.com/Refhub-ir/Refhub.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd DaneshkarTeam1403.1/Refhub_Ir
+   cd Refhub/Refhub_Ir
    ```
 3. Restore dependencies:
    ```bash
