@@ -25,7 +25,7 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
         return categories;
     }
 
-    public async Task<IEnumerable<CategoryDropDownVM>> GetAnotherAsync(List<int> selectedAuthorIds, CancellationToken ct)
+    public async Task<IEnumerable<CategoryDropDownVM>> GetAnothersAsync(List<int> selectedAuthorIds, CancellationToken ct)
     {
         // بررسی ورودی
         if (selectedAuthorIds == null || !selectedAuthorIds.Any())
@@ -435,10 +435,5 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
             AuthorFilter = authorFilter,
             CategoryFilter = categoryFilter
         };
-    }
-
-    public Task<IEnumerable<CategoryDropDownVM>> GetAnothersAsync(List<int> Id, CancellationToken ct)
-    {
-        throw new NotImplementedException();
     }
 }
