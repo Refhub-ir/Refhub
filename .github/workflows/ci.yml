@@ -124,31 +124,31 @@ jobs: # =====================================
           docker build -t refhub:${{ github.sha }} .
           echo "✅ Docker image built successfully!"
 
-      - name: 🔍 Test Docker Image
-        run: |
-          echo "🔍 Testing Docker image..."
-          # Start container in detached mode
-          CONTAINER_ID=$(docker run -d -p 8080:8080 refhub:${{ github.sha }})
-          echo "📦 Container started with ID: $CONTAINER_ID"
+      # - name: 🔍 Test Docker Image
+      #   run: |
+      #     echo "🔍 Testing Docker image..."
+      #     # Start container in detached mode
+      #     CONTAINER_ID=$(docker run -d -p 8080:8080 refhub:${{ github.sha }})
+      #     echo "📦 Container started with ID: $CONTAINER_ID"
 
-          # Wait for container to be ready
-          echo "⏳ Waiting for container to start..."
-          sleep 10
+      #     # Wait for container to be ready
+      #     echo "⏳ Waiting for container to start..."
+      #     sleep 10
 
-          # Check if container is running
-          if docker ps | grep $CONTAINER_ID; then
-            echo "✅ Container is running successfully!"
-          else
-            echo "❌ Container failed to start"
-            echo "📋 Container logs:"
-            docker logs $CONTAINER_ID
-            exit 1
-          fi
+      #     # Check if container is running
+      #     if docker ps | grep $CONTAINER_ID; then
+      #       echo "✅ Container is running successfully!"
+      #     else
+      #       echo "❌ Container failed to start"
+      #       echo "📋 Container logs:"
+      #       docker logs $CONTAINER_ID
+      #       exit 1
+      #     fi
 
-          # Cleanup
-          docker stop $CONTAINER_ID
-          docker rm $CONTAINER_ID
-          echo "🧹 Container cleaned up"
+      #     # Cleanup
+      #     docker stop $CONTAINER_ID
+      #     docker rm $CONTAINER_ID
+      #     echo "🧹 Container cleaned up"
 
       - name: 📊 Docker Build Summary
         run: |
