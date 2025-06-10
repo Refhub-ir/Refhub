@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 public static class ViewComponentExtensions
 {
@@ -18,7 +17,7 @@ public static class ViewComponentExtensions
             .ToArray();
 
         // Handler -> User -> Layout
-        var path =string.Join('/',folders) ;
+        var path = string.Join('/', folders);
 
         // ~/ViewComponents/Views/User/Layout/ProFileUser_ProfileLayoutView.cshtml
         return $"~/Components/{path}/{componentName}.cshtml";

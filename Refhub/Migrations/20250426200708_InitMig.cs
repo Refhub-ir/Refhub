@@ -2,21 +2,20 @@
 
 #nullable disable
 
-namespace Refhub_Ir.Migrations
+namespace Refhub.Migrations;
+
+/// <inheritdoc />
+public partial class InitMig : Migration
 {
     /// <inheritdoc />
-    public partial class InitMig : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
 
-        }
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
 
-        }
     }
 }

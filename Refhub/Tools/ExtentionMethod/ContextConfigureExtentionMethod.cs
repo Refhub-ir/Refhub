@@ -1,20 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Refhub_Ir.Data.Context;
-using Refhub_Ir.Tools.Static;
+﻿using Microsoft.EntityFrameworkCore;
+using Refhub.Data.Context;
 
-namespace Refhub_Ir.Tools.ExtentionMethod
+namespace Refhub.Tools.ExtentionMethod;
+
+public static class ContextConfigureExtentionMethod
 {
-    public static class ContextConfigureExtentionMethod
+
+    public static IServiceCollection ConfigureContext(this IServiceCollection service, ConfigurationManager configuration)
     {
 
-        public static IServiceCollection ConfigureContext(this IServiceCollection service,ConfigurationManager configuration)
-        {
 
-
-            service.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-            return service;
-        }
+        service.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        return service;
     }
 }

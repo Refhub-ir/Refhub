@@ -1,4 +1,4 @@
-﻿namespace Refhub_Ir.Models.Books;
+﻿namespace Refhub.Models.Books;
 
 public class BookItemVM
 {
@@ -7,7 +7,7 @@ public class BookItemVM
     public string Slug { get; set; }
     public string CategoryName { get; set; }
     public string Authores { get; set; }
-   
+
     public string ImagePath { get; set; }
-    
+
 }

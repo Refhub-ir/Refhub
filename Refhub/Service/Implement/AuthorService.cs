@@ -1,128 +1,132 @@
-﻿using Refhub_Ir.Areas.Admin.DTOs;
-using Refhub_Ir.Data.Models;
-using Refhub_Ir.Models;
-using Refhub_Ir.Models.Books;
-using Refhub_Ir.Service.Interface;
-using Refhub_Ir.Tools.Static;
+﻿using Refhub.Data.Models;
+using Refhub.Models.Authors;
+using Refhub.Models.Books;
+using Refhub.Service.Interface;
+using Refhub.Tools.Static;
 
-namespace Refhub_Ir.Service.Implement
+namespace Refhub.Service.Implement;
+
+public class AuthorService : IAuthorService
 {
-    public class AuthorService : IAuthorService
+    private readonly IAuthorRepository _authorRepository;
+
+    public AuthorService(IAuthorRepository authorRepository)
     {
-        private readonly IAuthorRepository _authorRepository;
+        _authorRepository = authorRepository;
+    }
 
-        public AuthorService(IAuthorRepository authorRepository)
-        {
-            _authorRepository = authorRepository;
-        }
+    public async Task<List<AuthorVM>> GetAllAuthorsAsync(CancellationToken ct)
+    {
+        var authors = await _authorRepository.GetAllAsync(ct);
 
-        public async Task<List<AuthorVM>> GetAllAuthorsAsync( CancellationToken ct)
-        {
-            var authors = await _authorRepository.GetAllAsync(ct);
-
-            if (authors == null || authors.Count == 0)
-                return new List<AuthorVM>();
-
-            return authors.Select(a => new AuthorVM
+        return authors == null || authors.Count == 0
+            ? []
+            : authors.Select(a => new AuthorVM
             {
                 FullName = a.FullName,
                 Slug = a.Slug
             }).ToList();
+    }
+
+    public async Task<BooksList_VM> GetAllAuthorsBooksAsync(string slug, CancellationToken ct)
+    {
+        var viewModel = new BooksList_VM();
+
+        var author = await _authorRepository.GetAuthorWithBooksBySlugAsync(slug, ct);
+        if (author == null)
+        {
+            return viewModel;
         }
 
-        public async Task<BooksList_VM> GetAllAuthorsBooksAsync(string slug, CancellationToken ct)
+        var bookVMs = author.BookAuthors.Select(ba => new BookVM
         {
-            var viewModel = new BooksList_VM();
-
-            var author = await _authorRepository.GetAuthorWithBooksBySlugAsync(slug, ct);
-            if (author == null)
-                return viewModel;
-
-
-            var bookVMs = author.BookAuthors.Select(ba => new BookVM
-            {
-                Id = ba.Book.Id,
-                Title = ba.Book.Title,
-                ImagePath = ba.Book.ImagePath,
-                AuthorFullName = ba.Book.BookAuthors.FirstOrDefault()?.Author.FullName ?? AuthorMessage.Error_NotDefinde,
-            }).ToList();
+            Id = ba.Book.Id,
+            Title = ba.Book.Title,
+            ImagePath = ba.Book.ImagePath,
+            AuthorFullName = ba.Book.BookAuthors.FirstOrDefault()?.Author.FullName ?? AuthorMessage.Error_NotDefinde,
+        }).ToList();
 
 
 
-            viewModel = new BooksList_VM
-            {
-                Books = bookVMs,
-           
-                AuthorFilter = author.FullName,
+        viewModel = new BooksList_VM
+        {
+            Books = bookVMs,
 
-            };
-                  return viewModel;
+            AuthorFilter = author.FullName,
+
+        };
+        return viewModel;
+    }
+
+
+
+    public async Task<AuthorVM?> GetAuthorBySlugAsync(string slug, CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            return null;
         }
 
-
-
-        public async Task<AuthorVM?> GetAuthorBySlugAsync(string slug, CancellationToken ct)
-        {
-            if (string.IsNullOrWhiteSpace(slug))
-                return null;
-
-            var author = await _authorRepository.GetBySlugAsync(slug.Trim(), ct);
-            if (author == null)
-                return null;
-
-            return new AuthorVM
+        var author = await _authorRepository.GetBySlugAsync(slug.Trim(), ct);
+        return author == null
+            ? null
+            : new AuthorVM
             {
                 FullName = author.FullName,
                 Slug = author.Slug
             };
-        }
-
-
-        public async Task CreateAuthorAsync(AuthorVM authorVm, CancellationToken ct)
-        {
-            // چک کردن منحصربه‌فرد بودن Slug
-            if (await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: null, ct: ct))
-            {
-                throw new Exception(AuthorMessage.Error_SlugExists);
-            }
-
-            var author = new Author
-            {
-                FullName = authorVm.FullName,
-                Slug = authorVm.Slug
-            };
-
-            await _authorRepository.AddAsync(author, ct);
-        }
-
-
-        public async Task UpdateAuthorAsync(AuthorVM authorVm, string originalSlug, CancellationToken ct)
-        {
-            var author = await _authorRepository.GetBySlugAsync(originalSlug, ct);
-
-            if (author == null) throw new Exception(AuthorMessage.Error_AuthorNotfound);
-
-
-            if (authorVm.Slug != originalSlug &&
-                await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: originalSlug, ct: ct))
-            {
-                throw new Exception(AuthorMessage.Error_SlugExists);
-            }
-
-            author.FullName = authorVm.FullName;
-            author.Slug = authorVm.Slug;
-
-            await _authorRepository.UpdateAsync(author, ct);
-        }
-
-        public async Task DeleteAuthorAsync(string slug, CancellationToken ct)
-        {
-
-            var author = await _authorRepository.GetBySlugAsync(slug,ct);
-            if (author == null) throw new Exception(AuthorMessage.Error_AuthorNotfound);
-
-            await _authorRepository.DeleteAsync(slug, ct);
-        }
-
     }
+
+
+    public async Task CreateAuthorAsync(AuthorVM authorVm, CancellationToken ct)
+    {
+        // چک کردن منحصربه‌فرد بودن Slug
+        if (await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: null, ct: ct))
+        {
+            throw new Exception(AuthorMessage.Error_SlugExists);
+        }
+
+        var author = new Author
+        {
+            FullName = authorVm.FullName,
+            Slug = authorVm.Slug
+        };
+
+        await _authorRepository.AddAsync(author, ct);
+    }
+
+
+    public async Task UpdateAuthorAsync(AuthorVM authorVm, string originalSlug, CancellationToken ct)
+    {
+        var author = await _authorRepository.GetBySlugAsync(originalSlug, ct);
+
+        if (author == null)
+        {
+            throw new Exception(AuthorMessage.Error_AuthorNotfound);
+        }
+
+        if (authorVm.Slug != originalSlug &&
+            await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: originalSlug, ct: ct))
+        {
+            throw new Exception(AuthorMessage.Error_SlugExists);
+        }
+
+        author.FullName = authorVm.FullName;
+        author.Slug = authorVm.Slug;
+
+        await _authorRepository.UpdateAsync(author, ct);
+    }
+
+    public async Task DeleteAuthorAsync(string slug, CancellationToken ct)
+    {
+
+        var author = await _authorRepository.GetBySlugAsync(slug, ct);
+        if (author == null)
+        {
+            throw new Exception(AuthorMessage.Error_AuthorNotfound);
+        }
+
+        await _authorRepository.DeleteAsync(slug, ct);
+    }
+
 }

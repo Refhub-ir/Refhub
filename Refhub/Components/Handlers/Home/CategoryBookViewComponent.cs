@@ -1,19 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Refhub_Ir.Service.Interface;
-using Refhub_Ir.Service.Interfaces;
+using Refhub.Service.Interface;
 
-namespace Refhub_Ir.Components.Handlers.Home
+namespace Refhub.Components.Handlers.Home;
+
+public class CategoryBookViewComponent
+    (ICategoryService categoryService)
+    : ViewComponent
 {
-    public class CategoryBookViewComponent
-        (ICategoryService categoryService)
-        : ViewComponent
+
+    public async Task<IViewComponentResult> InvokeAsync(CancellationToken ct)
     {
-
-        public async Task<IViewComponentResult> InvokeAsync( CancellationToken ct)
-        {
-            string viewPath = this.GetDefaultViewPath();
-            return View(viewPath,await categoryService.GetAllCategoriesHomePageAsync(ct,8));
-        }
-
+        string viewPath = this.GetDefaultViewPath();
+        return View(viewPath, await categoryService.GetAllCategoriesHomePageAsync(ct, 8));
     }
+
 }

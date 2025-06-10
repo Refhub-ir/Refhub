@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Refhub_Ir.Areas.Admin.DTOs;
-using Refhub_Ir.Data.Context;
-using Refhub_Ir.Models.Books;
-using Refhub_Ir.Models.Categories;
-using Refhub_Ir.Models.DTO;
-using Refhub_Ir.Service.Interface;
-using Refhub_Ir.Tools.Static;
+using Refhub.Data.Context;
+using Refhub.Data.Models;
+using Refhub.Models.Authors;
+using Refhub.Models.Books;
+using Refhub.Models.Category;
+using Refhub.Models.DTO;
+using Refhub.Service.Interface;
+using Refhub.Tools.Static;
 
-namespace Refhub_Ir.Service.Implement;
+namespace Refhub.Service.Implement;
 
 public class BookService(AppDbContext context, IFileUploaderService uploaderService) : IBookService
 {

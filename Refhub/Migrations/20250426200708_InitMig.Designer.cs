@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Refhub_Ir.Data;
-using Refhub_Ir.Data.Context;
+using Refhub.Data;
+using Refhub.Data.Context;
 
 #nullable disable
 
-namespace Refhub_Ir.Migrations
+namespace Refhub.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250426200708_InitMig")]

@@ -1,10 +1,9 @@
-﻿namespace Refhub_Ir.Data.Models
+﻿namespace Refhub.Data.Models;
+
+public class BookKeyword
 {
-    public class BookKeyword
-    {
-        public int BookId { get; set; }
-        public Book Book { get; set; }
-        public int KeywordId { get; set; }
-        public Keyword Keyword { get; set; }
-    }
+    public int BookId { get; set; }
+    public Book Book { get; set; }
+    public int KeywordId { get; set; }
+    public Keyword Keyword { get; set; }
 }

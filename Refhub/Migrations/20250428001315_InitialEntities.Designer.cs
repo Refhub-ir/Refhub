@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Refhub_Ir.Data;
-using Refhub_Ir.Data.Context;
+using Refhub.Data;
+using Refhub.Data.Context;
 
 #nullable disable
 
-namespace Refhub_Ir.Migrations
+namespace Refhub.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250428001315_InitialEntities")]
@@ -25,7 +25,7 @@ namespace Refhub_Ir.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.Author", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.Author", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -47,7 +47,7 @@ namespace Refhub_Ir.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.Book", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,7 +81,7 @@ namespace Refhub_Ir.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.BookAuthor", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.BookAuthor", b =>
                 {
                     b.Property<int>("BookId")
                         .HasColumnType("int");
@@ -96,7 +96,7 @@ namespace Refhub_Ir.Migrations
                     b.ToTable("BookAuthors");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.BookKeyword", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.BookKeyword", b =>
                 {
                     b.Property<int>("BookId")
                         .HasColumnType("int");
@@ -111,7 +111,7 @@ namespace Refhub_Ir.Migrations
                     b.ToTable("BookKeywords");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.BookRelation", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.BookRelation", b =>
                 {
                     b.Property<int>("BookId")
                         .HasColumnType("int");
@@ -126,7 +126,7 @@ namespace Refhub_Ir.Migrations
                     b.ToTable("BookRelations");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.Category", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +152,7 @@ namespace Refhub_Ir.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.Keyword", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.Keyword", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -170,9 +170,9 @@ namespace Refhub_Ir.Migrations
                     b.ToTable("Keywords");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.Book", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.Book", b =>
                 {
-                    b.HasOne("Refhub_Ir.Models.Entities.Category", "Category")
+                    b.HasOne("Refhub.Models.Entities.Category", "Category")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -181,15 +181,15 @@ namespace Refhub_Ir.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.BookAuthor", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.BookAuthor", b =>
                 {
-                    b.HasOne("Refhub_Ir.Models.Entities.Author", "Author")
+                    b.HasOne("Refhub.Models.Entities.Author", "Author")
                         .WithMany("BookAuthors")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Refhub_Ir.Models.Entities.Book", "Book")
+                    b.HasOne("Refhub.Models.Entities.Book", "Book")
                         .WithMany("BookAuthors")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -200,15 +200,15 @@ namespace Refhub_Ir.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.BookKeyword", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.BookKeyword", b =>
                 {
-                    b.HasOne("Refhub_Ir.Models.Entities.Book", "Book")
+                    b.HasOne("Refhub.Models.Entities.Book", "Book")
                         .WithMany("BookKeywords")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Refhub_Ir.Models.Entities.Keyword", "Keyword")
+                    b.HasOne("Refhub.Models.Entities.Keyword", "Keyword")
                         .WithMany("BookKeywords")
                         .HasForeignKey("KeywordId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -219,15 +219,15 @@ namespace Refhub_Ir.Migrations
                     b.Navigation("Keyword");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.BookRelation", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.BookRelation", b =>
                 {
-                    b.HasOne("Refhub_Ir.Models.Entities.Book", "Book")
+                    b.HasOne("Refhub.Models.Entities.Book", "Book")
                         .WithMany("RelatedTo")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Refhub_Ir.Models.Entities.Book", "RelatedBook")
+                    b.HasOne("Refhub.Models.Entities.Book", "RelatedBook")
                         .WithMany("RelatedFrom")
                         .HasForeignKey("RelatedBookId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -238,12 +238,12 @@ namespace Refhub_Ir.Migrations
                     b.Navigation("RelatedBook");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.Author", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.Author", b =>
                 {
                     b.Navigation("BookAuthors");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.Book", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.Book", b =>
                 {
                     b.Navigation("BookAuthors");
 
@@ -254,12 +254,12 @@ namespace Refhub_Ir.Migrations
                     b.Navigation("RelatedTo");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.Category", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.Category", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Refhub_Ir.Models.Entities.Keyword", b =>
+            modelBuilder.Entity("Refhub.Models.Entities.Keyword", b =>
                 {
                     b.Navigation("BookKeywords");
                 });

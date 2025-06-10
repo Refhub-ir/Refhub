@@ -1,23 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Refhub_Ir.Models;
+using Refhub.Data.Models;
 
-namespace Refhub_Ir.Data.Configuration
+namespace Refhub.Data.Configuration;
+
+public class BookAuthorConfiguration : IEntityTypeConfiguration<BookAuthor>
 {
-    public class BookAuthorConfiguration : IEntityTypeConfiguration<BookAuthor>
+    public void Configure(EntityTypeBuilder<BookAuthor> builder)
     {
-        public void Configure(EntityTypeBuilder<BookAuthor> builder)
-        {
-            builder.HasKey(ba => new { ba.BookId, ba.AuthorId });
+        builder.HasKey(ba => new { ba.BookId, ba.AuthorId });
 
 
-            builder.HasOne(ba => ba.Book)
-            .WithMany(b => b.BookAuthors)
-            .HasForeignKey(ba => ba.BookId);
+        builder.HasOne(ba => ba.Book)
+        .WithMany(b => b.BookAuthors)
+        .HasForeignKey(ba => ba.BookId);
 
-            builder.HasOne(ba => ba.Author)
-                .WithMany(a => a.BookAuthors)
-                .HasForeignKey(ba => ba.AuthorId);
-        }
+        builder.HasOne(ba => ba.Author)
+            .WithMany(a => a.BookAuthors)
+            .HasForeignKey(ba => ba.AuthorId);
     }
 }

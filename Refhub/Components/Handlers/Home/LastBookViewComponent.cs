@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Refhub_Ir.Service.Interface;
+using Refhub.Service.Interface;
 
-namespace Refhub_Ir.Components.Handlers.Home
+namespace Refhub.Components.Handlers.Home;
+
+public class LastBookViewComponent
+    (IBookService bookService)
+    : ViewComponent
 {
-    public class LastBookViewComponent
-        (IBookService bookService)
-        : ViewComponent
+
+    public async Task<IViewComponentResult> InvokeAsync(CancellationToken ct)
     {
-
-        public async Task<IViewComponentResult> InvokeAsync( CancellationToken ct)
-        {
-            string viewPath = this.GetDefaultViewPath();
-            return View(viewPath,await bookService.GetLastBooksAsync(ct));
-        }
-
+        string viewPath = this.GetDefaultViewPath();
+        return View(viewPath, await bookService.GetLastBooksAsync(ct));
     }
+
 }

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Refhub_Ir.Areas.Admin.DTOs;
-using Refhub_Ir.Data.Context;
-using Refhub_Ir.Models.Books;
-using Refhub_Ir.Service.Interface;
+using Refhub.Data.Context;
+using Refhub.Service.Interface;
 
 public class AuthorController(IAuthorService authorService, AppDbContext _context) : Controller
 {

@@ -1,113 +1,94 @@
 ﻿using ErrorOr;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Refhub_Ir.Models.Users;
-using Refhub_Ir.Service.Interface;
-using Refhub_Ir.Tools.Static;
+using Refhub.Data.Models;
+using Refhub.Models.Users;
+using Refhub.Service.Interface;
+using Refhub.Tools.Static;
 
-namespace Refhub_Ir.Service.Implement
+namespace Refhub.Service.Implement;
+
+public class UserService(
+        UserManager<ApplicationUser> _userManager,
+        RoleManager<IdentityRole> _roleManager,
+        SignInManager<ApplicationUser> _signInManager)
+       : IUserService
 {
-    public class UserService(
-            UserManager<ApplicationUser> _userManager,
-            RoleManager<IdentityRole> _roleManager,
-            SignInManager<ApplicationUser> _signInManager)
-           : IUserService
+    public async Task Logout(CancellationToken ct)
     {
-        public async Task Logout(CancellationToken ct)
+        await _signInManager.SignOutAsync();
+    }
+
+    public async Task<IEnumerable<UserListAdminVM>> GetListUserAdminPanelAsync(string? name, CancellationToken ct)
+    {
+
+        var users = _userManager.Users.AsQueryable();
+
+        if (!string.IsNullOrEmpty(name))
         {
-            await _signInManager.SignOutAsync();
+            users = users.Where(a => a.UserName.Contains(name));
+        }
+        var result = new List<UserListAdminVM>();
+
+        foreach (var user in users)
+        {
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+
+            result.Add(new UserListAdminVM
+            {
+                Id = user.Id,
+                FullName = user.UserName,
+                Email = user.Email,
+                UserName = user.UserName,
+                IsAdmin = isAdmin
+            });
+        }
+        return result;
+    }
+
+    public async Task<ErrorOr<UserListAdminVM>> AddToRoleForUserInAdminPanelAsync(string id, CancellationToken ct)
+    {
+        var user = await _userManager.Users.FirstOrDefaultAsync(a => a.Id.Equals(id), ct);
+        if (user == null)
+        {
+            return Error.NotFound("User.NotFound", "کاربر مورد نظر یافت نشد");
         }
 
-        public async Task<IEnumerable<UserListAdminVM>> GetListUserAdminPanelAsync(string? name, CancellationToken ct)
+        if (!await _roleManager.RoleExistsAsync(RolesNameStatic.Admin).ConfigureAwait(false))
         {
-
-            var users = _userManager.Users.AsQueryable();
-
-            if (!string.IsNullOrEmpty(name))
-            {
-                users = users.Where(a => a.UserName.Contains(name));
-            }
-            var result = new List<UserListAdminVM>();
-
-            foreach (var user in users)
-            {
-                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-
-                result.Add(new UserListAdminVM
-                {
-                    Id = user.Id,
-                    FullName = user.UserName,
-                    Email = user.Email,
-                    UserName = user.UserName,
-                    IsAdmin = isAdmin
-                });
-            }
-            return result;
+            await _roleManager.CreateAsync(new IdentityRole(RolesNameStatic.Admin)).ConfigureAwait(false);
         }
 
-        public async Task<ErrorOr<UserListAdminVM>> AddToRoleForUserInAdminPanelAsync(string id, CancellationToken ct)
+        IdentityResult res = await _userManager.IsInRoleAsync(user, RolesNameStatic.Admin)
+            ? await _userManager.RemoveFromRoleAsync(user, RolesNameStatic.Admin)
+            : await _userManager.AddToRoleAsync(user, RolesNameStatic.Admin);
+        return res.Succeeded ? (ErrorOr<UserListAdminVM>)new UserListAdminVM() : (ErrorOr<UserListAdminVM>)Error.Validation(ErrorMessageAuthenticationStatic.Error_AddToRole);
+    }
+
+    public async Task<ErrorOr<LoginVM>> Login(LoginVM model, CancellationToken ct)
+    {
+        var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+        return result.Succeeded ? (ErrorOr<LoginVM>)model : (ErrorOr<LoginVM>)Error.NotFound(ErrorMessageAuthenticationStatic.Error_Login);
+    }
+
+    public async Task<ErrorOr<RegisterVM>> Register(RegisterVM model, CancellationToken ct)
+    {
+        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        var result = await _userManager.CreateAsync(user, model.Password);
+
+        if (result.Succeeded)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(a => a.Id.Equals(id), ct);
-            if (user == null)
-            {
-                return Error.NotFound("User.NotFound", "کاربر مورد نظر یافت نشد");
-            }
-
-            if (!await _roleManager.RoleExistsAsync(RolesNameStatic.Admin).ConfigureAwait(false))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(RolesNameStatic.Admin)).ConfigureAwait(false);
-            }
-                
-            IdentityResult res;
-
-            if (await _userManager.IsInRoleAsync(user, RolesNameStatic.Admin))
-            {
-                res = await _userManager.RemoveFromRoleAsync(user, RolesNameStatic.Admin);
-            }
-            else
-            {
-                res = await _userManager.AddToRoleAsync(user, RolesNameStatic.Admin);
-
-            }
-            if (res.Succeeded)
-            {
-                return new UserListAdminVM();
-            }
-            else
-            {
-                return Error.Validation(ErrorMessageAuthenticationStatic.Error_AddToRole);
-            }
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return model;
         }
 
-        public async Task<ErrorOr<LoginVM>> Login(LoginVM model, CancellationToken ct)
+        foreach (var error in result.Errors)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-            if (result.Succeeded)
-                return model;
-            else
-                return Error.NotFound(ErrorMessageAuthenticationStatic.Error_Login);
+            return error.Code is "DuplicateUserName" or "DuplicateEmail"
+                ? (ErrorOr<RegisterVM>)Error.Validation(ErrorMessageAuthenticationStatic.Error_Invalid_Email)
+                : (ErrorOr<RegisterVM>)Error.Validation(ErrorMessageAuthenticationStatic.Error_Register);
         }
 
-        public async Task<ErrorOr<RegisterVM>> Register(RegisterVM model, CancellationToken ct)
-        {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return model;
-            }
-
-            foreach (var error in result.Errors)
-            {
-                if (error.Code == "DuplicateUserName" || error.Code == "DuplicateEmail")
-                    return Error.Validation(ErrorMessageAuthenticationStatic.Error_Invalid_Email);
-                else
-                    return Error.Validation(ErrorMessageAuthenticationStatic.Error_Register);
-            }
-
-            return Error.Conflict();
-        }
+        return Error.Conflict();
     }
 }

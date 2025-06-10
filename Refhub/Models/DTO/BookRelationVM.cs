@@ -1,12 +1,11 @@
-﻿using Refhub_Ir.Models.Books;
+﻿using Refhub.Models.Books;
 
-namespace Refhub_Ir.Models.DTO
+namespace Refhub.Models.DTO;
+
+public class BookRelationVM
 {
-    public class BookRelationVM
-    {
-        public int BookId { get; set; }
-        public BookVM Book { get; set; } = new();
-        public int RelatedBookId { get; set; }
-        public BookVM RelatedBook { get; set; } = new();
-    }
+    public int BookId { get; set; }
+    public BookVM Book { get; set; } = new();
+    public int RelatedBookId { get; set; }
+    public BookVM RelatedBook { get; set; } = new();
 }
