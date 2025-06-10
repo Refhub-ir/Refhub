@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOTNET_VERSION: "8.0.x"
+  DOTNET_VERSION: "9.x.x"
   SOLUTION_PATH: "./Refhub.sln"
   PROJECT_PATH: "./Refhub/Refhub.csproj"
   BUILD_CONFIGURATION: "Release"
