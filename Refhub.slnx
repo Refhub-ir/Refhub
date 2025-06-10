@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Refhub.Test/Refhub.Test.csproj" />
+    <Project Path="Refhub/Refhub.csproj" />
+  </Folder>
+</Solution>
