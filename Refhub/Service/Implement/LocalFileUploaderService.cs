@@ -4,7 +4,7 @@ namespace Refhub.Service.Implement;
 
 public class LocalFileUploaderService : IFileUploaderService
 {
-    public async Task<string> UpdloadFile(IFormFile file, string directoryName, string Type, string Name)
+    public async Task<string> UploadFile(IFormFile file, string directoryName, string Type, string Name)
     {
         if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", Type)))
         {
@@ -34,5 +34,10 @@ public class LocalFileUploaderService : IFileUploaderService
             File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", Type, directoryName, Name));
         }
 
+    }
+
+    public Task DeleteFile(string realUrl)
+    {
+        throw new NotImplementedException();
     }
 }
