@@ -1,8 +1,18 @@
-﻿namespace Refhub.Tools.Static;
+﻿using Refhub.Models.Enums;
+
+namespace Refhub.Tools.Static;
 
 public static class FolderNameStatic
 {
-    public static string GetDirectoryImages = "Images";
-    public static string GetDirectoryBooks = "Books";
-    public static string GetDirectoryFiles = "Files";
+    public static string GetDirectoryName(DirectoryTypes folder)
+    {
+        return folder switch
+        {
+            DirectoryTypes.Images => nameof(DirectoryTypes.Images),
+            DirectoryTypes.Books => nameof(DirectoryTypes.Books),
+            DirectoryTypes.Files => nameof(DirectoryTypes.Files),
+
+            _ => "Order"
+        };
+    }
 }
