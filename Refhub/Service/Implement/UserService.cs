@@ -52,7 +52,7 @@ public class UserService(
         var user = await _userManager.Users.FirstOrDefaultAsync(a => a.Id.Equals(id), ct);
         if (user == null)
         {
-            return Error.NotFound("User.NotFound", "کاربر مورد نظر یافت نشد");
+            return Error.NotFound("User.NotFound", _messageService.Get("User_NotFound"));
         }
 
         if (!await _roleManager.RoleExistsAsync(RolesNameStatic.Admin).ConfigureAwait(false))

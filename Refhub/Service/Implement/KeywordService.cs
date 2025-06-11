@@ -2,6 +2,7 @@
 using Refhub.Data.Context;
 using Refhub.Data.Models;
 using Refhub.Models.Keywords;
+using Refhub.Resources;
 using Refhub.Service.Interface;
 
 namespace Refhub.Service.Implement;
@@ -9,9 +10,12 @@ namespace Refhub.Service.Implement;
 public class KeywordService : IKeywordService
 {
     private readonly AppDbContext _context;
-    public KeywordService(AppDbContext context)
+    private readonly IMessageService _messageService;
+
+    public KeywordService(AppDbContext context, IMessageService messageService)
     {
         _context = context;
+        _messageService = messageService;
     }
 
     public async Task AddKeywordAsync(CreateKeywordVM model, CancellationToken ct)
@@ -19,7 +23,7 @@ public class KeywordService : IKeywordService
         var exists = await _context.Keywords.AnyAsync(k => k.Word.ToLower() == model.Word.ToLower(), ct);
         if (exists)
         {
-            throw new Exception("این کلیدواژه قبلاً ثبت شده است.");
+            throw new Exception(_messageService.Get("Keyword_Notfound"));
         }
 
         var keyword = new Keyword
