@@ -1,21 +1,34 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Refhub.Resources;
+using System.ComponentModel.DataAnnotations;
 
 namespace Refhub.Models.Users;
 
 public class RegisterVM
 {
-    [Required(ErrorMessage = "ایمیل خود را وارد کنید")]
-    [EmailAddress(ErrorMessage = "فرمت ایمیل درست نیست")]
-    public string Email { get; set; }
+    [Required(
+        ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.Email_Required))]
+    [EmailAddress(
+        ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.Email_Format_Invalid))]
+    public required string Email { get; set; }
 
-    [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$", ErrorMessage = "حداقل یک حرف انگلیسی داشته باشه|حداقل یک عدد هم داشته باشه|طولش حداقل ۶ کاراکتر باشه")]
-    [Required(ErrorMessage = "رمز عبورفراموش نشه ")]
+    [Required(
+       ErrorMessageResourceType = typeof(Messages),
+       ErrorMessageResourceName = nameof(Messages.Password_Required))]
+    [RegularExpression(
+       @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$",
+       ErrorMessageResourceType = typeof(Messages),
+       ErrorMessageResourceName = nameof(Messages.Password_Regex_Invalid))]
     [DataType(DataType.Password)]
-    public string Password { get; set; }
+    public required string Password { get; set; }
 
-
-    [Required(ErrorMessage = "تکرار رمز خود را وارد کن")]
+    [Required(
+        ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.ConfirmPassword_Required)]
     [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "رمز عبور و تکرار آن یکسان نیست .")]
-    public string ConfirmPassword { get; set; }
+    [Compare("Password",
+        ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.ConfirmPassword_Compare_Invalid)]
+    public required string ConfirmPassword { get; set; }
 }
