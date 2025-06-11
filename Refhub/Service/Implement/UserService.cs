@@ -10,6 +10,7 @@ namespace Refhub.Service.Implement;
 
 public class UserService(
         UserManager<ApplicationUser> _userManager,
+        IMessageService _messageService,
         RoleManager<IdentityRole> _roleManager,
         SignInManager<ApplicationUser> _signInManager)
        : IUserService
@@ -62,13 +63,13 @@ public class UserService(
         IdentityResult res = await _userManager.IsInRoleAsync(user, RolesNameStatic.Admin)
             ? await _userManager.RemoveFromRoleAsync(user, RolesNameStatic.Admin)
             : await _userManager.AddToRoleAsync(user, RolesNameStatic.Admin);
-        return res.Succeeded ? (ErrorOr<UserListAdminVM>)new UserListAdminVM() : (ErrorOr<UserListAdminVM>)Error.Validation(ErrorMessageAuthenticationStatic.Error_AddToRole);
+        return res.Succeeded ? (ErrorOr<UserListAdminVM>)new UserListAdminVM() : (ErrorOr<UserListAdminVM>)Error.Validation(_messageService.Get("Account_Error_AddToRole"));
     }
 
     public async Task<ErrorOr<LoginVM>> Login(LoginVM model, CancellationToken ct)
     {
         var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-        return result.Succeeded ? (ErrorOr<LoginVM>)model : (ErrorOr<LoginVM>)Error.NotFound(ErrorMessageAuthenticationStatic.Error_Login);
+        return result.Succeeded ? (ErrorOr<LoginVM>)model : (ErrorOr<LoginVM>)Error.NotFound(_messageService.Get("Account_LoginInvalid"));
     }
 
     public async Task<ErrorOr<RegisterVM>> Register(RegisterVM model, CancellationToken ct)
@@ -85,8 +86,8 @@ public class UserService(
         foreach (var error in result.Errors)
         {
             return error.Code is "DuplicateUserName" or "DuplicateEmail"
-                ? (ErrorOr<RegisterVM>)Error.Validation(ErrorMessageAuthenticationStatic.Error_Invalid_Email)
-                : (ErrorOr<RegisterVM>)Error.Validation(ErrorMessageAuthenticationStatic.Error_Register);
+                ? (ErrorOr<RegisterVM>)Error.Validation(_messageService.Get("The email entered is already registered."))
+                : (ErrorOr<RegisterVM>)Error.Validation(_messageService.Get("Account_RegisterInValid"));
         }
 
         return Error.Conflict();
