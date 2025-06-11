@@ -13,6 +13,7 @@ public static class AddServiceExtentionMethod
         collection.AddScoped<IAuthorService, AuthorService>();
         collection.AddScoped<IKeywordService, KeywordService>();
         collection.AddScoped<IUserService, UserService>();
+        collection.AddScoped<IMessageService, MessageService>();
 
         collection.AddScoped<IFileUploaderService, LocalFileUploaderService>();
         return collection;
