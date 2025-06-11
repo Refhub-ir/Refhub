@@ -70,6 +70,15 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error has occurred..
+        /// </summary>
+        public static string Account_Error_AddToRole {
+            get {
+                return ResourceManager.GetString("Account_Error_AddToRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The login attempt is invalid..
         /// </summary>
         public static string Account_LoginInvalid {
@@ -142,6 +151,15 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the category book title.
+        /// </summary>
+        public static string Book_Title_CategoryRequired {
+            get {
+                return ResourceManager.GetString("Book_Title_CategoryRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the book title.
         /// </summary>
         public static string Book_TitleRequired {
@@ -151,11 +169,137 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the description of category book .
+        /// </summary>
+        public static string Category_Description {
+            get {
+                return ResourceManager.GetString("Category_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password Invalid.
+        /// </summary>
+        public static string ConfirmPassword_Compare_Invalid {
+            get {
+                return ResourceManager.GetString("ConfirmPassword_Compare_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Confirm Password !.
+        /// </summary>
+        public static string ConfirmPassword_Required {
+            get {
+                return ResourceManager.GetString("ConfirmPassword_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Email is not Valid !.
+        /// </summary>
+        public static string Email_Format_Invalid {
+            get {
+                return ResourceManager.GetString("Email_Format_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the Email .
+        /// </summary>
+        public static string Email_Required {
+            get {
+                return ResourceManager.GetString("Email_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author not found.
+        /// </summary>
+        public static string Error_AuthorNotfound {
+            get {
+                return ResourceManager.GetString("Error_AuthorNotfound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uncertain.
+        /// </summary>
+        public static string Error_NotDefinde {
+            get {
+                return ResourceManager.GetString("Error_NotDefinde", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slug has already been used..
+        /// </summary>
+        public static string Error_SlugExists {
+            get {
+                return ResourceManager.GetString("Error_SlugExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FullName is Required.
         /// </summary>
         public static string FullNameRequired {
             get {
                 return ResourceManager.GetString("FullNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyword notfound.
+        /// </summary>
+        public static string Keyword_Notfound {
+            get {
+                return ResourceManager.GetString("Keyword_Notfound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to chooese a keyword !.
+        /// </summary>
+        public static string Keyword_Required {
+            get {
+                return ResourceManager.GetString("Keyword_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to choese a name of slug.
+        /// </summary>
+        public static string Name_Slug_Required {
+            get {
+                return ResourceManager.GetString("Name_Slug_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must contain at least one letter, one number and 6 characters..
+        /// </summary>
+        public static string Password_Regex_Invalid {
+            get {
+                return ResourceManager.GetString("Password_Regex_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter The Password !.
+        /// </summary>
+        public static string Password_Required {
+            get {
+                return ResourceManager.GetString("Password_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember Me ! .
+        /// </summary>
+        public static string RememberMe_Display {
+            get {
+                return ResourceManager.GetString("RememberMe_Display", resourceCulture);
             }
         }
         
@@ -174,6 +318,15 @@ namespace Refhub.Resources {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User is not found.
+        /// </summary>
+        public static string User_NotFound {
+            get {
+                return ResourceManager.GetString("User_NotFound", resourceCulture);
             }
         }
     }
