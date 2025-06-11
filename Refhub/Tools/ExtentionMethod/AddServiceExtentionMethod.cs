@@ -1,4 +1,5 @@
 ﻿using Refhub.Service.Implement;
+using Refhub.Service.Implement.S3_Sample.Service;
 using Refhub.Service.Interface;
 
 namespace Refhub.Tools.ExtentionMethod;
@@ -14,7 +15,7 @@ public static class AddServiceExtentionMethod
         collection.AddScoped<IKeywordService, KeywordService>();
         collection.AddScoped<IUserService, UserService>();
 
-        collection.AddScoped<IFileUploaderService, LocalFileUploaderService>();
+        collection.AddScoped<IFileUploaderService, S3FileUploaderService>();
         return collection;
     }
 }
