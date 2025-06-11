@@ -22,6 +22,7 @@ public class Program
 
 
         #region CustomExtentionMethod 
+        builder.BindS3Model();
         builder.Services.AddCustomService();
         builder.Services.ConfigureContext(builder.Configuration);
         builder.Services.ConfigureCookie();
