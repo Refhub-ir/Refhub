@@ -156,4 +156,16 @@
   <data name="Account_LoginInvalid" xml:space="preserve">
     <value>The login attempt is invalid.</value>
   </data>
+  <data name="Error_NotDefinde" xml:space="preserve">
+    <value>Uncertain</value>
+  </data>
+  <data name="Error_SlugExists" xml:space="preserve">
+    <value>Slug has already been used.</value>
+  </data>
+  <data name="Error_AuthorNotfound" xml:space="preserve">
+    <value>Author not found</value>
+  </data>
+  <data name="Account_Error_AddToRole" xml:space="preserve">
+    <value>An error has occurred.</value>
+  </data>
 </root>

@@ -156,4 +156,16 @@
   <data name="Account_LoginInvalid" xml:space="preserve">
     <value>تلاش برای ورود نامعتبر است.</value>
   </data>
+  <data name="Error_NotDefinde" xml:space="preserve">
+    <value>نامشخص</value>
+  </data>
+  <data name="Error_SlugExists" xml:space="preserve">
+    <value>اسلاگ قبلاً استفاده شده است</value>
+  </data>
+  <data name="Error_AuthorNotfound" xml:space="preserve">
+    <value>نویسنده پیدا نشد</value>
+  </data>
+  <data name="Account_Error_AddToRole" xml:space="preserve">
+    <value>خطایی رخ داده است</value>
+  </data>
 </root>
