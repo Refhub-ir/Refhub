@@ -9,10 +9,12 @@ namespace Refhub.Service.Implement;
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;
+    private readonly IMessageService _messageService;
 
-    public AuthorService(IAuthorRepository authorRepository)
+    public AuthorService(IAuthorRepository authorRepository, IMessageService messageService)
     {
         _authorRepository = authorRepository;
+        _messageService = messageService;
     }
 
     public async Task<List<AuthorVM>> GetAllAuthorsAsync(CancellationToken ct)
@@ -43,7 +45,7 @@ public class AuthorService : IAuthorService
             Id = ba.Book.Id,
             Title = ba.Book.Title,
             ImagePath = ba.Book.ImagePath,
-            AuthorFullName = ba.Book.BookAuthors.FirstOrDefault()?.Author.FullName ?? AuthorMessage.Error_NotDefinde,
+            AuthorFullName = ba.Book.BookAuthors.FirstOrDefault()?.Author.FullName ?? _messageService.Get("Error_NotDefinde"),
         }).ToList();
 
 
@@ -83,7 +85,7 @@ public class AuthorService : IAuthorService
         // چک کردن منحصربه‌فرد بودن Slug
         if (await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: null, ct: ct))
         {
-            throw new Exception(AuthorMessage.Error_SlugExists);
+            throw new Exception(_messageService.Get("Error_SlugExists") );
         }
 
         var author = new Author
@@ -102,13 +104,13 @@ public class AuthorService : IAuthorService
 
         if (author == null)
         {
-            throw new Exception(AuthorMessage.Error_AuthorNotfound);
+            throw new Exception(_messageService.Get("Error_AuthorNotfound"));
         }
 
         if (authorVm.Slug != originalSlug &&
             await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: originalSlug, ct: ct))
         {
-            throw new Exception(AuthorMessage.Error_SlugExists);
+            throw new Exception(_messageService.Get("Error_SlugExists"));
         }
 
         author.FullName = authorVm.FullName;
@@ -123,7 +125,7 @@ public class AuthorService : IAuthorService
         var author = await _authorRepository.GetBySlugAsync(slug, ct);
         if (author == null)
         {
-            throw new Exception(AuthorMessage.Error_AuthorNotfound);
+            throw new Exception(_messageService.Get("Error_AuthorNotfound"));
         }
 
         await _authorRepository.DeleteAsync(slug, ct);
