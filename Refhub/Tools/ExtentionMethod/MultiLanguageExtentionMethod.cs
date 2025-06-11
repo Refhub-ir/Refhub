@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Refhub.Service.Implement;
 using Refhub.Service.Interface;
-using Refhub_Ir.Service.Implement;
-using Refhub_Ir.Service.Interface;
-using Refhub_Ir.Service.Interfaces;
+
 
 namespace Refhub_Ir.Tools.ExtentionMethod;
 
