@@ -63,9 +63,9 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The email entered is already registered..
         /// </summary>
-        public static string Account_EmailAleady {
+        public static string Account_EmailAlready {
             get {
-                return ResourceManager.GetString("Account_EmailAleady", resourceCulture);
+                return ResourceManager.GetString("Account_EmailAlready", resourceCulture);
             }
         }
         
@@ -90,9 +90,9 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Registration encountered an error..
         /// </summary>
-        public static string Account_RegisterInValid {
+        public static string Account_RegisterInvalid {
             get {
-                return ResourceManager.GetString("Account_RegisterInValid", resourceCulture);
+                return ResourceManager.GetString("Account_RegisterInvalid", resourceCulture);
             }
         }
         
@@ -234,9 +234,9 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Author not found.
         /// </summary>
-        public static string Error_AuthorNotfound {
+        public static string Error_AuthorNotFound {
             get {
-                return ResourceManager.GetString("Error_AuthorNotfound", resourceCulture);
+                return ResourceManager.GetString("Error_AuthorNotFound", resourceCulture);
             }
         }
         
@@ -270,18 +270,18 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Keyword found.
         /// </summary>
-        public static string Keyword_found {
+        public static string Keyword_Found {
             get {
-                return ResourceManager.GetString("Keyword_found", resourceCulture);
+                return ResourceManager.GetString("Keyword_Found", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keyword notfound.
+        ///   Looks up a localized string similar to Keyword not found.
         /// </summary>
-        public static string Keyword_Notfound {
+        public static string Keyword_NotFound {
             get {
-                return ResourceManager.GetString("Keyword_Notfound", resourceCulture);
+                return ResourceManager.GetString("Keyword_NotFound", resourceCulture);
             }
         }
         
@@ -295,11 +295,11 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to choose a name of slug.
+        ///   Looks up a localized string similar to The name must be a maximum of 50 characters..
         /// </summary>
-        public static string Name_Slug_Required {
+        public static string Name_Max_50 {
             get {
-                return ResourceManager.GetString("Name_Slug_Required", resourceCulture);
+                return ResourceManager.GetString("Name_Max_50", resourceCulture);
             }
         }
         
@@ -327,6 +327,24 @@ namespace Refhub.Resources {
         public static string RememberMe_Display {
             get {
                 return ResourceManager.GetString("RememberMe_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The slug must be a maximum of 450 characters..
+        /// </summary>
+        public static string Slug_Max_450 {
+            get {
+                return ResourceManager.GetString("Slug_Max_450", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a slug name.
+        /// </summary>
+        public static string Slug_NameRequired {
+            get {
+                return ResourceManager.GetString("Slug_NameRequired", resourceCulture);
             }
         }
         
