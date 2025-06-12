@@ -17,7 +17,8 @@ public class RegisterVM
        ErrorMessageResourceType = typeof(Messages),
        ErrorMessageResourceName = nameof(Messages.Password_Required))]
     [RegularExpression(
-       @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$",
+// At least one letter, one digit, 6-64 chars, allow specials.
+        @"^(?=.*[A-Za-z])(?=.*\d).{6,64}$",
        ErrorMessageResourceType = typeof(Messages),
        ErrorMessageResourceName = nameof(Messages.Password_Regex_Invalid))]
     [DataType(DataType.Password)]
@@ -25,10 +26,10 @@ public class RegisterVM
 
     [Required(
         ErrorMessageResourceType = typeof(Messages),
-        ErrorMessageResourceName = nameof(Messages.ConfirmPassword_Required)]
+        ErrorMessageResourceName = nameof(Messages.ConfirmPassword_Required))]
     [DataType(DataType.Password)]
     [Compare("Password",
         ErrorMessageResourceType = typeof(Messages),
-        ErrorMessageResourceName = nameof(Messages.ConfirmPassword_Compare_Invalid)]
+        ErrorMessageResourceName = nameof(Messages.ConfirmPassword_Compare_Invalid))]
     public required string ConfirmPassword { get; set; }
 }
