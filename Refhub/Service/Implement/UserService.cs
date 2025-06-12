@@ -63,7 +63,12 @@ public class UserService(
         IdentityResult res = await _userManager.IsInRoleAsync(user, RolesNameStatic.Admin)
             ? await _userManager.RemoveFromRoleAsync(user, RolesNameStatic.Admin)
             : await _userManager.AddToRoleAsync(user, RolesNameStatic.Admin);
-        return res.Succeeded ? (ErrorOr<UserListAdminVM>)new UserListAdminVM() : (ErrorOr<UserListAdminVM>)Error.Validation(_messageService.Get("Account_Error_AddToRole"));
+
+        if (res.Succeeded)
+                return new UserListAdminVM();
+        
+            var details = string.Join(" | ", res.Errors.Select(e => e.Description));
+        return Error.Validation($"{_messageService.Get("Account_Error_AddToRole")}: {details}");
     }
 
     public async Task<ErrorOr<LoginVM>> Login(LoginVM model, CancellationToken ct)
@@ -86,7 +91,7 @@ public class UserService(
         foreach (var error in result.Errors)
         {
             return error.Code is "DuplicateUserName" or "DuplicateEmail"
-                ? (ErrorOr<RegisterVM>)Error.Validation(_messageService.Get("The email entered is already registered."))
+                ? (ErrorOr<RegisterVM>)Error.Validation(_messageService.Get("Account_EmailAleady"))
                 : (ErrorOr<RegisterVM>)Error.Validation(_messageService.Get("Account_RegisterInValid"));
         }
 
