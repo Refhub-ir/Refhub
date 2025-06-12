@@ -26,11 +26,5 @@ public class LanguageController(IMessageService messageService) : Controller
         return RedirectToAction("Index","Home");
     }
 
-    [Route("/TestMessage")]
-    public IActionResult TestMessage()
-    {
-
-        return Content(messageService.Get("Title"));
-    }
 
 }
