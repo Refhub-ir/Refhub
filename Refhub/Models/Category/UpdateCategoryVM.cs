@@ -7,7 +7,7 @@ public class UpdateCategoryVM
 {
     public int Id { get; set; }
     [Required(ErrorMessageResourceType = typeof(Messages),
-        ErrorMessageResourceName = nameof(Messages.Book_Title_CategoryRequired))]
+        ErrorMessageResourceName = nameof(Messages.Category_NameRequired))]
     public string Name { get; set; }
     [Required(ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Name_Slug_Required))]
