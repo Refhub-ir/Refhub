@@ -157,7 +157,7 @@
     <value>رفهاب</value>
   </data>
   <data name="User_NotFound" xml:space="preserve">
-    <value>کاربر مورد نظر یافت نشد !</value>
+    <value>کاربر مورد نظر یافت نشد!</value>
   </data>
   <data name="Keyword_Notfound" xml:space="preserve">
     <value>کلید واژه یافت نشد .</value>
@@ -166,16 +166,16 @@
     <value>رمز عبور و تکرار آن یکسان نیست</value>
   </data>
   <data name="ConfirmPassword_Required" xml:space="preserve">
-    <value>تکرار رمز عبور فراموش نشه ! </value>
+    <value>تکرار رمز عبور فراموش نشه! </value>
   </data>
   <data name="RememberMe_Display" xml:space="preserve">
-    <value>مرا به خاطر بسپار ! </value>
+    <value>مرا به خاطر بسپار! </value>
   </data>
   <data name="Password_Required" xml:space="preserve">
-    <value>رمز عبور فراموش نشه !</value>
+    <value>رمز عبور فراموش نشه!</value>
   </data>
   <data name="Password_Regex_Invalid" xml:space="preserve">
-    <value>رباید حداقل یک حرف، یک عدد و ۶ کاراکتر داشته باشدفهاب</value>
+    <value>باید حداقل یک حرف، یک عدد و ۶ کاراکتر داشته باشد</value>
   </data>
   <data name="Email_Required" xml:space="preserve">
     <value>ایمیل خود را  وارد کنید.</value>
@@ -195,7 +195,7 @@
   <data name="Account_LoginInvalid" xml:space="preserve">
     <value>تلاش برای ورود نامعتبر است.</value>
   </data>
-  <data name="Error_NotDefinde" xml:space="preserve">
+  <data name="Error_NotDefined" xml:space="preserve">
     <value>نامشخص</value>
   </data>
   <data name="Error_SlugExists" xml:space="preserve">
@@ -206,5 +206,14 @@
   </data>
   <data name="Account_Error_AddToRole" xml:space="preserve">
     <value>خطایی رخ داده است</value>
+  </data>
+  <data name="Keyword_found" xml:space="preserve">
+    <value>کلید واژه یافت شد.</value>
+  </data>
+  <data name="Book_SlugMaxLength" xml:space="preserve">
+    <value> طول عنوان در مرورگر حداکثر 450 حرف باشد</value>
+  </data>
+  <data name="Book_AnotherIdMinLength" xml:space="preserve">
+    <value>حداقل یک نویسنده مرتبط مورد نیاز است.</value>
   </data>
 </root>

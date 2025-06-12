@@ -148,7 +148,7 @@
     <value>Enter the description of category book </value>
   </data>
   <data name="Name_Slug_Required" xml:space="preserve">
-    <value>choese a name of slug</value>
+    <value>choose a name of slug</value>
   </data>
   <data name="Book_AnotherIdRequired" xml:space="preserve">
     <value>Choose a writer</value>
@@ -166,13 +166,13 @@
     <value>Confirm Password Invalid</value>
   </data>
   <data name="ConfirmPassword_Required" xml:space="preserve">
-    <value>Enter Confirm Password !</value>
+    <value>Enter Confirm Password!</value>
   </data>
   <data name="RememberMe_Display" xml:space="preserve">
-    <value>Remember Me ! </value>
+    <value>Remember Me! </value>
   </data>
   <data name="Password_Required" xml:space="preserve">
-    <value>Enter The Password !</value>
+    <value>Enter The Password!</value>
   </data>
   <data name="Password_Regex_Invalid" xml:space="preserve">
     <value>Must contain at least one letter, one number and 6 characters.</value>
@@ -181,10 +181,10 @@
     <value>Enter the Email </value>
   </data>
   <data name="Email_Format_Invalid" xml:space="preserve">
-    <value>The Email is not Valid !</value>
+    <value>The Email is not Valid!</value>
   </data>
   <data name="Keyword_Required" xml:space="preserve">
-    <value>&#x8;chooese a keyword !</value>
+    <value>choose a keyword!</value>
   </data>
   <data name="Account_EmailAleady" xml:space="preserve">
     <value>The email entered is already registered.</value>
@@ -195,7 +195,7 @@
   <data name="Account_LoginInvalid" xml:space="preserve">
     <value>The login attempt is invalid.</value>
   </data>
-  <data name="Error_NotDefinde" xml:space="preserve">
+  <data name="Error_NotDefined" xml:space="preserve">
     <value>Uncertain</value>
   </data>
   <data name="Error_SlugExists" xml:space="preserve">
@@ -206,5 +206,14 @@
   </data>
   <data name="Account_Error_AddToRole" xml:space="preserve">
     <value>An error has occurred.</value>
+  </data>
+  <data name="Keyword_found" xml:space="preserve">
+    <value>Keyword found</value>
+  </data>
+  <data name="Book_SlugMaxLength" xml:space="preserve">
+    <value>The title length in the browser should be a maximum of 450 characters.</value>
+  </data>
+  <data name="Book_AnotherIdMinLength" xml:space="preserve">
+    <value>At least one associated author is required.</value>
   </data>
 </root>

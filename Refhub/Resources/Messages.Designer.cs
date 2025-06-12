@@ -97,6 +97,15 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to At least one associated author is required..
+        /// </summary>
+        public static string Book_AnotherIdMinLength {
+            get {
+                return ResourceManager.GetString("Book_AnotherIdMinLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose a writer.
         /// </summary>
         public static string Book_AnotherIdRequired {
@@ -138,6 +147,15 @@ namespace Refhub.Resources {
         public static string Book_PageCountRequired {
             get {
                 return ResourceManager.GetString("Book_PageCountRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The title length in the browser should be a maximum of 450 characters..
+        /// </summary>
+        public static string Book_SlugMaxLength {
+            get {
+                return ResourceManager.GetString("Book_SlugMaxLength", resourceCulture);
             }
         }
         
@@ -187,7 +205,7 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter Confirm Password !.
+        ///   Looks up a localized string similar to Enter Confirm Password!.
         /// </summary>
         public static string ConfirmPassword_Required {
             get {
@@ -196,7 +214,7 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Email is not Valid !.
+        ///   Looks up a localized string similar to The Email is not Valid!.
         /// </summary>
         public static string Email_Format_Invalid {
             get {
@@ -225,9 +243,9 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Uncertain.
         /// </summary>
-        public static string Error_NotDefinde {
+        public static string Error_NotDefined {
             get {
-                return ResourceManager.GetString("Error_NotDefinde", resourceCulture);
+                return ResourceManager.GetString("Error_NotDefined", resourceCulture);
             }
         }
         
@@ -250,6 +268,15 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keyword found.
+        /// </summary>
+        public static string Keyword_found {
+            get {
+                return ResourceManager.GetString("Keyword_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keyword notfound.
         /// </summary>
         public static string Keyword_Notfound {
@@ -259,7 +286,7 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to chooese a keyword !.
+        ///   Looks up a localized string similar to choose a keyword!.
         /// </summary>
         public static string Keyword_Required {
             get {
@@ -268,7 +295,7 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to choese a name of slug.
+        ///   Looks up a localized string similar to choose a name of slug.
         /// </summary>
         public static string Name_Slug_Required {
             get {
@@ -286,7 +313,7 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter The Password !.
+        ///   Looks up a localized string similar to Enter The Password!.
         /// </summary>
         public static string Password_Required {
             get {
@@ -295,7 +322,7 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remember Me ! .
+        ///   Looks up a localized string similar to Remember Me! .
         /// </summary>
         public static string RememberMe_Display {
             get {
