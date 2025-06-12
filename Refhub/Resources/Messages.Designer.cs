@@ -169,15 +169,6 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the category book title.
-        /// </summary>
-        public static string Book_Title_CategoryRequired {
-            get {
-                return ResourceManager.GetString("Book_Title_CategoryRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enter the book title.
         /// </summary>
         public static string Book_TitleRequired {
@@ -192,6 +183,15 @@ namespace Refhub.Resources {
         public static string Category_Description {
             get {
                 return ResourceManager.GetString("Category_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the category book title.
+        /// </summary>
+        public static string Category_NameRequired {
+            get {
+                return ResourceManager.GetString("Category_NameRequired", resourceCulture);
             }
         }
         

@@ -141,7 +141,7 @@
   <data name="Book_CategoryIdRequired" xml:space="preserve">
     <value>یک دسته بندی انتخاب کنید</value>
   </data>
-  <data name="Book_Title_CategoryRequired" xml:space="preserve">
+  <data name="Category_NameRequired" xml:space="preserve">
     <value>لطفا نام دسته بندی را وارد کنید.</value>
   </data>
   <data name="Category_Description" xml:space="preserve">

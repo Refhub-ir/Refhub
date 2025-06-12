@@ -141,7 +141,7 @@
   <data name="Book_CategoryIdRequired" xml:space="preserve">
     <value>Choose a category</value>
   </data>
-  <data name="Book_Title_CategoryRequired" xml:space="preserve">
+  <data name="Category_NameRequired" xml:space="preserve">
     <value>Enter the category book title</value>
   </data>
   <data name="Category_Description" xml:space="preserve">
