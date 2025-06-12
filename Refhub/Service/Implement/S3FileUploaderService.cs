@@ -45,7 +45,7 @@ namespace Refhub.Service.Implement
             private string GenerateS3Url(string key)
             {
                 // برای آروان کلاد:
-                return $"https://{_bucketName}.{_region}/{key}";
+                return $"https://{_region}/{_bucketName}.{_region}/{key}";
             }
 
             private string GetKey(string realUrl)
