@@ -45,7 +45,7 @@ public class AuthorService : IAuthorService
             Id = ba.Book.Id,
             Title = ba.Book.Title,
             ImagePath = ba.Book.ImagePath,
-            AuthorFullName = ba.Book.BookAuthors.FirstOrDefault()?.Author.FullName ?? _messageService.Get("Error_NotDefinde"),
+            AuthorFullName = ba.Book.BookAuthors.FirstOrDefault()?.Author.FullName ?? _messageService.Get("Error_NotDefined"),
         }).ToList();
 
 
