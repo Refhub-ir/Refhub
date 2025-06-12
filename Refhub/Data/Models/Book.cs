@@ -14,7 +14,7 @@ public class Book
     public int CategoryId { get; set; }
 
     public string? UserId { get; set; }
-    public bool? IsDelete { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     // Navigation Properties
     // Preventing NullReferenceException by initializing collections.

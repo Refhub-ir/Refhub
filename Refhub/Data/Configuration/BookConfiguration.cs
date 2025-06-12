@@ -12,7 +12,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Title).IsRequired().HasMaxLength(155);
-        builder.HasIndex(b => b.Slug).IsUnique().HasFilter("IsDelete = 0");
+        builder.HasIndex(b => b.Slug).IsUnique().HasFilter("IsDeleted = 0");
         builder.Property(b => b.Slug).IsRequired();
         builder.Property(b => b.PageCount).IsRequired();
         builder.Property(b => b.FilePath).IsRequired();
