@@ -261,6 +261,9 @@ namespace Refhub.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PageCount")
                         .HasColumnType("int");
 
@@ -281,7 +284,8 @@ namespace Refhub.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("Slug")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("IsDelete = 0");
 
                     b.HasIndex("UserId");
 
