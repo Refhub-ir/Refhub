@@ -268,6 +268,8 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
             {
                 await uploaderService.DeleteFile( book.FilePath);
             }
+            context.BookAuthors.RemoveRange(book.BookAuthors);
+
 
             context.Books.Remove(book);
             await context.SaveChangesAsync(ct);
