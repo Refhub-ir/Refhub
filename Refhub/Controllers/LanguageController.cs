@@ -5,7 +5,7 @@ using Refhub.Service.Interface;
 
 namespace Refhub.Controllers;
 
-public class LanguageController(IMessageService messageService) : Controller
+public class LanguageController : Controller
 {
 
 
