@@ -17,7 +17,8 @@ public class LoginVM
         ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Password_Required))]
     [RegularExpression(
-        @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$",
+        // At least one letter, one digit, 6-64 chars, allow specials.
+        @"^(?=.*[A-Za-z])(?=.*\d).{6,64}$",
         ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Password_Regex_Invalid))]
     [DataType(DataType.Password)]
