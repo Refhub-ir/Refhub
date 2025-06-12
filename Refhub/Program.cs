@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Refhub.Data.Context;
-using Refhub.Tools.ExtentionMethod;
+using Refhub.Tools.ExtensionMethod;
 
 
 namespace Refhub;
