@@ -14,9 +14,13 @@ public class UpdateBookVM
 
     [Required(ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Book_SlugRequired))]
+   
+    [MaxLength(450,ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.Book_SlugMaxLength))]
     public string Slug { get; set; }
 
-    [Required(ErrorMessageResourceType = typeof(Messages),
+    [Range(1, int.MaxValue,
+        ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Book_PageCountRequired))]
     public int PageCount { get; set; }
 
@@ -32,7 +36,7 @@ public class UpdateBookVM
         ErrorMessageResourceName = nameof(Messages.Book_CategoryIdRequired))]
     public int CategoryId { get; set; }
 
-    [Required(ErrorMessageResourceType = typeof(Messages),
-        ErrorMessageResourceName = nameof(Messages.Book_AnotherIdRequired))]
+    [MinLength(450, ErrorMessageResourceType = typeof(Messages),
+        ErrorMessageResourceName = nameof(Messages.Book_AnotherIdMinLength))]
     public List<int> AnotherId { get; set; }
 }
