@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 
-namespace Refhub.Tools.ExtentionMethod;
+namespace Refhub.Tools.ExtensionMethod;
 
-public static class MultiLanguageExtentionMethod
+public static class MultiLanguageExtensionMethod
 {
     public static WebApplication UseMultiLanguage(this WebApplication app)
     {
