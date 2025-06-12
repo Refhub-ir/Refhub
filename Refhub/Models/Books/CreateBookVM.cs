@@ -37,7 +37,7 @@ public class CreateBookVM
 
     [Required(ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Book_AnotherIdRequired))]
-    [MinLength(450, ErrorMessageResourceType = typeof(Messages),
+    [MinLength(1, ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Book_AnotherIdMinLength))]
     public List<int> AnotherId { get; set; }
 }
