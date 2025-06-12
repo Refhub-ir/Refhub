@@ -88,6 +88,29 @@ namespace Refhub.Service.Implement
 
                 await _s3Client.DeleteObjectAsync(request);
             }
+
+            public async Task<Stream> DownloadFileAsync(string fileName)
+            {
+                var request = new GetObjectRequest
+                {
+                    BucketName = _bucketName,
+                    Key = fileName // مثلاً: "images/profile.jpg"
+                };
+
+                try
+                {
+                    using var response = await _s3Client.GetObjectAsync(request);
+                    var memoryStream = new MemoryStream();
+                    await response.ResponseStream.CopyToAsync(memoryStream);
+                    memoryStream.Position = 0; // مهم! برای اینکه موقع Return از ابتدا خونده بشه
+                    return memoryStream;
+                }
+                catch (AmazonS3Exception ex)
+                {
+                    // مثلاً اگر فایل وجود نداشت یا کلید اشتباه بود
+                    throw new Exception($"خطا در دانلود فایل از S3: {ex.Message}", ex);
+                }
+            }
         }
     }
 
