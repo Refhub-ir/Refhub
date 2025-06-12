@@ -10,20 +10,20 @@ public class LanguageController(IMessageService messageService) : Controller
 
 
     [Route("/fa")]
-    public IActionResult persian()
+    public IActionResult Persian()
     {
         Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
             CookieRequestCultureProvider.MakeCookieValue(new RequestCulture("fa-IR")),
             new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""));
     }
     [Route("/en")]
-    public IActionResult english()
+    public IActionResult English()
     {
         Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
             CookieRequestCultureProvider.MakeCookieValue(new RequestCulture("en-US")),
             new CookieOptions() { Expires = DateTimeOffset.UtcNow.AddYears(1) });
-        return RedirectToAction("Index","Home");
+        return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""));
     }
 
 
