@@ -1,7 +1,9 @@
-﻿using Refhub.Data.Models;
+﻿using Microsoft.IdentityModel.Tokens;
+using Refhub.Data.Models;
 using Refhub.Models.Authors;
 using Refhub.Models.Books;
 using Refhub.Service.Interface;
+using Refhub.Tools.Exceptions;
 using Refhub.Tools.Static;
 
 namespace Refhub.Service.Implement;
@@ -45,7 +47,10 @@ public class AuthorService : IAuthorService
             Id = ba.Book.Id,
             Title = ba.Book.Title,
             ImagePath = ba.Book.ImagePath,
-            AuthorFullName = ba.Book.BookAuthors.FirstOrDefault()?.Author.FullName ?? _messageService.Get("Error_NotDefined"),
+            AuthorFullName = string.Join(", ",
+                                 ba.Book.BookAuthors.Select(x => x.Author.FullName))
+                             ?? _messageService.Get("Error_NotDefined"),
+
         }).ToList();
 
 
@@ -85,7 +90,7 @@ public class AuthorService : IAuthorService
         // چک کردن منحصربه‌فرد بودن Slug
         if (await _authorRepository.SlugExistsAsync(slug: authorVm.Slug, excludeSlug: null, ct: ct))
         {
-            throw new Exception(_messageService.Get("Error_SlugExists") );
+            throw new DuplicateSlugException(_messageService.Get("Error_SlugExists"));
         }
 
         var author = new Author
@@ -104,7 +109,7 @@ public class AuthorService : IAuthorService
 
         if (author == null)
         {
-            throw new Exception(_messageService.Get("Error_AuthorNotfound"));
+            throw new Exception(_messageService.Get("Error_AuthorNotFound"));
         }
 
         if (authorVm.Slug != originalSlug &&
@@ -125,7 +130,7 @@ public class AuthorService : IAuthorService
         var author = await _authorRepository.GetBySlugAsync(slug, ct);
         if (author == null)
         {
-            throw new Exception(_messageService.Get("Error_AuthorNotfound"));
+            throw new Exception(_messageService.Get("Error_AuthorNotFound"));
         }
 
         await _authorRepository.DeleteAsync(slug, ct);
