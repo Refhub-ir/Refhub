@@ -1,7 +1,7 @@
 ﻿using Refhub.Service.Implement;
 using Refhub.Service.Interface;
 
-namespace Refhub.Tools.ExtentionMethod;
+namespace Refhub.Tools.ExtensionMethod;
 
 public static class AddServiceExtentionMethod
 {
