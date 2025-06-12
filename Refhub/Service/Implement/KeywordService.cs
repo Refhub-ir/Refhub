@@ -20,10 +20,11 @@ public class KeywordService : IKeywordService
 
     public async Task AddKeywordAsync(CreateKeywordVM model, CancellationToken ct)
     {
-        var exists = await _context.Keywords.AnyAsync(k => k.Word.ToLower() == model.Word.ToLower(), ct);
+        var exists = await _context.Keywords
+                          .AnyAsync(k => EF.Functions.Collate(k.Word, "SQL_Latin1_General_CP1_CI_AI") == model.Word, ct);
         if (exists)
         {
-            throw new Exception(_messageService.Get("Keyword_found"));
+            throw new Exception(_messageService.Get("Keyword_Found"));
         }
 
         var keyword = new Keyword
