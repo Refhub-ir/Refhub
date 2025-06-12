@@ -153,7 +153,7 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
             {
                 AuthorId = a
             }).ToList();
-            
+
             var filePath = await uploaderService.UploadFile(book.File, FolderNameStatic.GetDirectoryName(DirectoryTypes.Files), FolderNameStatic.GetDirectoryName(DirectoryTypes.Books), book.Slug);
             var imagePath = await uploaderService.UploadFile(book.Image, FolderNameStatic.GetDirectoryName(DirectoryTypes.Images), FolderNameStatic.GetDirectoryName(DirectoryTypes.Books), book.Slug);
 
@@ -209,7 +209,7 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
             {
                 if (!string.IsNullOrWhiteSpace(existingBook.FilePath))
                 {
-                    await uploaderService.DeleteFile( existingBook.FilePath);
+                    await uploaderService.DeleteFile(existingBook.FilePath);
                 }
 
                 existingBook.FilePath = await uploaderService.UploadFile(book.File, FolderNameStatic.GetDirectoryName(DirectoryTypes.Files), FolderNameStatic.GetDirectoryName(DirectoryTypes.Books), book.Slug);
@@ -253,7 +253,9 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
     {
         try
         {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == bookId, ct);
+            var book = await context.Books
+                                    .Include(b => b.BookAuthors)
+                                    .FirstOrDefaultAsync(b => b.Id == bookId, ct);
             if (book == null)
             {
                 return false;
@@ -261,15 +263,19 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
 
             if (!string.IsNullOrWhiteSpace(book.ImagePath))
             {
-                await uploaderService.DeleteFile( book.ImagePath);
+                await uploaderService.DeleteFile(book.ImagePath);
             }
 
             if (!string.IsNullOrWhiteSpace(book.FilePath))
             {
-                await uploaderService.DeleteFile( book.FilePath);
+                await uploaderService.DeleteFile(book.FilePath);
             }
-            context.BookAuthors.RemoveRange(book.BookAuthors);
 
+            var relations = await context.BookRelations
+                                           .Where(br => br.BookId == bookId || br.RelatedBookId == bookId)
+                                           .ToListAsync(ct);
+            if (relations.Any())
+                context.BookRelations.RemoveRange(relations);
 
             context.Books.Remove(book);
             await context.SaveChangesAsync(ct);
