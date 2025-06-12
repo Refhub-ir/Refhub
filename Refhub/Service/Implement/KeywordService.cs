@@ -23,7 +23,7 @@ public class KeywordService : IKeywordService
         var exists = await _context.Keywords.AnyAsync(k => k.Word.ToLower() == model.Word.ToLower(), ct);
         if (exists)
         {
-            throw new Exception(_messageService.Get("Keyword_Notfound"));
+            throw new Exception(_messageService.Get("Keyword_found"));
         }
 
         var keyword = new Keyword
