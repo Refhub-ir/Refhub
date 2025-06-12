@@ -38,5 +38,5 @@ public class UpdateBookVM
 
     [MinLength(1, ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Book_AnotherIdMinLength))]
-    public List<int> AnotherId { get; set; }
+    public List<int> AnotherId { get; set; } = new();
 }
