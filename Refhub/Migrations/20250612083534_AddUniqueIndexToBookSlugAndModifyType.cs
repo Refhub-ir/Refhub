@@ -36,7 +36,7 @@ namespace Refhub.Migrations
                 name: "Slug",
                 table: "Books",
                 type: "nvarchar(max)",
-                nullable: false,
+                nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(450)");
         }
