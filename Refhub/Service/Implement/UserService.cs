@@ -88,12 +88,11 @@ public class UserService(
             return model;
         }
 
-        foreach (var error in result.Errors)
-        {
-            return error.Code is "DuplicateUserName" or "DuplicateEmail"
-                ? (ErrorOr<RegisterVM>)Error.Validation(_messageService.Get("Account_EmailAleady"))
-                : (ErrorOr<RegisterVM>)Error.Validation(_messageService.Get("Account_RegisterInValid"));
-        }
+        var firstErr = result.Errors.FirstOrDefault();
+        if (firstErr != null)
+               return firstErr.Code is "DuplicateUserName" or "DuplicateEmail"
+                                                                        ? Error.Validation(_messageService.Get("Account_EmailAlready"))
+                                                                                  : Error.Validation(_messageService.Get("Account_RegisterInvalid"));
 
         return Error.Conflict();
     }
