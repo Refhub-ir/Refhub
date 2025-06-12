@@ -1,11 +1,8 @@
 ﻿using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Refhub.Service.Implement;
-using Refhub.Service.Interface;
 
-
-namespace Refhub_Ir.Tools.ExtentionMethod;
+namespace Refhub.Tools.ExtentionMethod;
 
 public static class MultiLanguageExtentionMethod
 {
@@ -38,7 +35,7 @@ public static class MultiLanguageExtentionMethod
         {
             option.ResourcesPath = "Resources";
         }).AddDataAnnotationsLocalization();
-        ;
+        
         return mvc;
     }
 }
