@@ -7,6 +7,7 @@ namespace Refhub.Data.Seed
 {
     public static class ExcelSeeder
     {
+        // Read Data from Author File
         public static List<Author> ReadAuthorsFromExcel(string filePath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
