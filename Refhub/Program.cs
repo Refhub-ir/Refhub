@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Refhub.Data.Context;
+using Refhub.Data.Models;
 using Refhub.Data.Seed;
 using Refhub.Tools.ExtentionMethod;
 
@@ -67,20 +68,8 @@ public class Program
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-        // Seed Data Configuration 
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorData.xlsx");
-        var authors = ExcelSeeder.ReadAuthorsFromExcel(filePath);
-
-        using (var scope = app.Services.CreateScope())
-        {
-            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-            if (!db.Authors.Any())
-            {
-                db.Authors.AddRange(authors);
-                db.SaveChanges();
-            }
-        }
+        // Seed initial data from Excel files
+        DataSeeder.SeedInitialData(app.Services);
 
         app.Run();
     }
