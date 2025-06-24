@@ -10,14 +10,12 @@ namespace Refhub.Service.Implement
         using Amazon.Runtime;
         using Amazon.S3;
         using Amazon.S3.Model;
-        using Amazon.S3.Transfer;
-        using Microsoft.Extensions.Configuration;
 
 
 
 
 
-        public class S3FileUploaderService: IFileUploaderService
+        public class S3FileUploaderService : IFileUploaderService
         {
             private readonly string _bucketName;
             private readonly string _region;
@@ -45,19 +43,21 @@ namespace Refhub.Service.Implement
             private string GenerateS3Url(string key)
             {
                 // برای آروان کلاد:
-                return $"https://{_region}/{_bucketName}.{_region}/{key}";
+                return $"{_s3Options.Value.ServiceURL}/{_bucketName}/{key}";
             }
+
 
             private string GetKey(string realUrl)
             {
                 // برای آروان کلاد:
-                
-                return realUrl.Replace($"https://{_bucketName}.{_region}/","");
+
+                return realUrl.Replace($"{_s3Options.Value.ServiceURL}/{_bucketName}/", "");
+
             }
             public async Task<string> UploadFile(IFormFile file, string directoryName, string type, string name)
             {
                 var bucketName = _bucketName;
-                var key = $"{directoryName}/{type}/{name.Replace(" ","-")}{Path.GetExtension(file.FileName)}";
+                var key = $"{directoryName}/{type}/{name.Replace(" ", "-")}{Path.GetExtension(file.FileName)}";
 
                 using var stream = file.OpenReadStream();
                 var request = new PutObjectRequest
@@ -77,7 +77,7 @@ namespace Refhub.Service.Implement
 
             public async Task DeleteFile(string realUrl)
             {
-           
+
                 var key = GetKey(realUrl);
 
                 var request = new DeleteObjectRequest
