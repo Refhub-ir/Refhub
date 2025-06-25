@@ -167,6 +167,37 @@ namespace Refhub.Data.Seed
             return categories;
         }
 
+        // Read Data from BookRelation Excel file
+        public static List<BookRelation> ReadBookRelationFromExcel(string filePath)
+        {
+            License();
+            var bookRelations = new List<BookRelation>();
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var workSheet = package.Workbook.Worksheets[0];
+                var rowCount = workSheet.Dimension.Rows;
+
+                for (int row = 2; row < rowCount; row++)
+                {
+                    var bookId = workSheet.Cells[row, 1].Text;
+                    var relationBookId = workSheet.Cells[row, 2].Text;
+
+                    if (!String.IsNullOrWhiteSpace(bookId) && !String.IsNullOrWhiteSpace(relationBookId))
+                    {
+                        bookRelations.Add(new BookRelation
+                        {
+                            BookId = Convert.ToInt32(bookId),
+                            RelatedBookId = Convert.ToInt32(relationBookId)
+                        });
+                    }
+                }
+            }
+            return bookRelations;
+        }
+
+
+   
 
     }
 }
