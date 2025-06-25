@@ -17,7 +17,7 @@ namespace Refhub.Data.Seed
             var authors = ExcelSeeder.ReadAuthorsFromExcel(authorPath);
             db.Authors.AddRange(authors);
 
-            
+            // Book
             var bookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookData.xlsx");
             var books = ExcelSeeder.ReadBooksFromExcel(bookPath);
             db.Books.AddRange(books);
