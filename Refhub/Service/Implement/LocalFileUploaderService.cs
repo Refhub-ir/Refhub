@@ -4,40 +4,55 @@ namespace Refhub.Service.Implement;
 
 public class LocalFileUploaderService : IFileUploaderService
 {
-    public async Task<string> UploadFile(IFormFile file, string directoryName, string Type, string Name)
+    private readonly string _rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files");
+
+    public async Task<string> UploadFile(IFormFile file, string directoryName, string type, string name)
     {
-        if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", Type)))
+        // ایجاد مسیر دایرکتوری نهایی
+        string targetDirectory = Path.Combine(_rootPath, type, directoryName);
+
+        // ایجاد پوشه‌ها در صورت نبود
+        if (!Directory.Exists(targetDirectory))
         {
-            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", Type));
+            Directory.CreateDirectory(targetDirectory);
         }
 
-        if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", Type, directoryName)))
+        // تمیزسازی و ساخت نام یکتا
+        name = name.Replace(" ", "-") + "_" + Path.GetRandomFileName().Replace(".", "");
+        string fileName = name + Path.GetExtension(file.FileName);
+        string fullPath = Path.Combine(targetDirectory, fileName);
+
+        // ذخیره فایل به صورت async
+        using (Stream stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync: true))
         {
-            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", Type, directoryName));
+            await file.CopyToAsync(stream);
         }
 
-        Name = Name.Replace(" ", "-") + new Random().Next(1111, 9999);
-        string name = Name + Path.GetExtension(file.FileName);
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", Type, directoryName, name);
-        using (Stream stream = new FileStream(path, FileMode.Create))
-        {
-            file.CopyTo(stream);
-        }
-
-        return name;
-    }
-
-    public async Task DeleteFile(string directoryName, string Type, string Name)
-    {
-        if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", Type, directoryName, Name)))
-        {
-            File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", Type, directoryName, Name));
-        }
-
+        return fileName;
     }
 
     public Task DeleteFile(string realUrl)
     {
-        throw new NotImplementedException();
+        string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", realUrl.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
+
+        if (File.Exists(fullPath))
+        {
+            File.Delete(fullPath);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task<Stream> DownloadFileAsync(string fileName)
+    {
+        string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
+
+        if (!File.Exists(fullPath))
+        {
+            throw new FileNotFoundException("فایل پیدا نشد", fileName);
+        }
+
+        Stream fileStream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
+        return Task.FromResult(fileStream);
     }
 }
