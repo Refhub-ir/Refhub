@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Refhub.Service.Implement.S3_Sample.Service;
 using Refhub.Service.Interface;
 
@@ -29,8 +30,17 @@ public class BookController(IBookService bookService,IFileUploaderService _s3Fil
     {
         try
         {
-            var stream = await _s3FileUploaderService.DownloadFileAsync(fileName);
-            return File(stream, "application/octet-stream", fileName);
+            // دریافت فایل از S3
+            var stream = await _s3FileUploaderService.DownloadFileAsync(fileName, ct);
+
+            // تعیین نوع فایل با توجه به پسوند
+            var contentTypeProvider = new FileExtensionContentTypeProvider();
+            if (!contentTypeProvider.TryGetContentType(fileName, out string contentType))
+            {
+                contentType = "application/octet-stream"; // پیش‌فرض اگر پسوند ناشناس باشد
+            }
+
+            return File(stream, contentType, fileName);
         }
         catch (AmazonS3Exception s3Ex)
         {
