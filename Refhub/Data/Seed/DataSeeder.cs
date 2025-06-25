@@ -39,7 +39,15 @@ namespace Refhub.Data.Seed
             var bookRelation = ExcelSeeder.ReadBooksFromExcel(bookKeywordPath);
             db.BookKeywords.AddRange(bookRelation);
 
-            // 
+            // Category
+            var categoryPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "CategorynData");
+            var Category = ExcelSeeder.ReadBooksFromExcel(bookKeywordPath);
+            db.BookKeywords.AddRange(Category);
+
+            // Keyword
+            var keywordPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "KeywordData");
+            var Keyword = ExcelSeeder.ReadBooksFromExcel(bookKeywordPath);
+            db.BookKeywords.AddRange(Keyword);
 
             db.SaveChanges();
         }
