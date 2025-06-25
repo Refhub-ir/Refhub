@@ -136,6 +136,37 @@ namespace Refhub.Data.Seed
             return keywords;
         }
 
+        // Read Data from Category Excel file
+        public static List<Category> ReadCategoryFromExcel(string filePath)
+        {
+            License();
+            var categories = new List<Category>();
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var workSheet = package.Workbook.Worksheets[0];
+                int rowCount = workSheet.Dimension.Rows;
+
+                for (int row = 2; row < rowCount; row++)
+                {
+                    var name = workSheet.Cells[row, 1].Text;
+                    var slug = workSheet.Cells[row, 2].Text;
+                    var description = workSheet.Cells[row, 3].Text;
+
+                    if (!String.IsNullOrWhiteSpace(name) && !String.IsNullOrWhiteSpace(slug) && !String.IsNullOrWhiteSpace(description))
+                    {
+                        categories.Add(new Category
+                        {
+                            Name = name,
+                            Description = description,
+                            slug = slug
+                        });
+                    }
+                }
+            }
+            return categories;
+        }
+
 
     }
 }
