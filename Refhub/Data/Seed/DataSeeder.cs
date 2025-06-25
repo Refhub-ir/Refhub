@@ -23,6 +23,12 @@ namespace Refhub.Data.Seed
             db.Books.AddRange(books);
 
 
+            // AuthorBook
+            var authorBookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorBookData");
+            var authorBook = ExcelSeeder.ReadBooksFromExcel(authorBookPath);
+            db.Books.AddRange(authorBook);
+
+            
 
             db.SaveChanges();
         }
