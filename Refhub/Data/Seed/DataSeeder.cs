@@ -12,23 +12,19 @@ namespace Refhub.Data.Seed
 
             db.Database.Migrate();
 
-            // Authors
-            //if (!db.Authors.Any())
-            //{
-                var authorPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorData.xlsx");
 
+            var authorPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorData.xlsx");
             var authors = ExcelSeeder.ReadAuthorsFromExcel(authorPath);
             db.Authors.AddRange(authors);
-            //}
 
-            // Books
-            //if (!db.Books.Any())
-            //{
-            //    var bookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookData.xlsx");
-            //    var books = ExcelSeeder.ReadBooksFromExcel(bookPath);
-            //    db.Books.AddRange(books);
-            //}
-                db.SaveChanges();
+
+            var bookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookData.xlsx");
+            var books = ExcelSeeder.ReadBooksFromExcel(bookPath);
+            db.Books.AddRange(books);
+
+
+
+            db.SaveChanges();
         }
     }
 }
