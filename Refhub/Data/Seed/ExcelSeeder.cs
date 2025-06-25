@@ -196,8 +196,33 @@ namespace Refhub.Data.Seed
             return bookRelations;
         }
 
+        // Read Data from BookKeyword Excel file
+        public static List<BookKeyword> ReadBookKeywordFromExcel(string filePath)
+        {
+            License();
+            var keywords = new List<BookKeyword>();
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var workSheet = package.Workbook.Worksheets[0];
+                var rowCount = workSheet.Dimension.Rows;
 
-   
+                for (int row = 2; row < keywords.Count; row++)
+                {
+                    var bookId = workSheet.Cells[row, 1].Text;
+                    var keywordId = workSheet.Cells[row, 2].Text;
+
+                    if (!String.IsNullOrWhiteSpace(bookId) && !String.IsNullOrWhiteSpace(keywordId))
+                    {
+                        keywords.Add(new BookKeyword
+                        {
+                            BookId = Convert.ToInt32(bookId),
+                            KeywordId = Convert.ToInt32(keywordId)
+                        });
+                    }
+                }
+                return keywords;
+            }
+        }
 
     }
 }
