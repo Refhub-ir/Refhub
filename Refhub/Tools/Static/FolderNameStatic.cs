@@ -12,7 +12,7 @@ public static class FolderNameStatic
             DirectoryTypes.Books => nameof(DirectoryTypes.Books),
             DirectoryTypes.Files => nameof(DirectoryTypes.Files),
 
-            _ => "Order"
+            _ => throw new ArgumentOutOfRangeException(nameof(folder), $"Unsupported directory type: {folder}")
         };
     }
 }
