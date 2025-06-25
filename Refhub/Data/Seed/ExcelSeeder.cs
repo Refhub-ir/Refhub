@@ -7,15 +7,21 @@ namespace Refhub.Data.Seed
 {
     public static class ExcelSeeder
     {
+        public static void License()
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        }
+
+
         // Read Data from Author File
         public static List<Author> ReadAuthorsFromExcel(string filePath)
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            License();
             var authors = new List<Author>();
 
             using (var package = new ExcelPackage(new FileInfo(filePath)))
             {
-                var workSheet = package.Workbook.workSheets[0];
+                var workSheet = package.Workbook.Worksheets[0];
                 int rowCount = workSheet.Dimension.Rows;
 
                 for (int row = 2; row <= rowCount; row++)
@@ -24,7 +30,7 @@ namespace Refhub.Data.Seed
                     var slug = workSheet.Cells[row, 2].Text;
 
                     if (!String.IsNullOrWhiteSpace(fullName) && !String.IsNullOrWhiteSpace(slug))
-                        {
+                    {
                         authors.Add(new Author
                         {
                             FullName = fullName,
@@ -39,14 +45,14 @@ namespace Refhub.Data.Seed
         // Read Data from Book File
         public static List<Book> ReadBooksFromExcel(string filePath)
         {
-            ExcelPackage.LicenseContext= LicenseContext.NonCommercial;
+            License();
             var books = new List<Book>();
             using (var package = new ExcelPackage(new FileInfo(filePath)))
             {
                 var workSheet = package.Workbook.Worksheets[0];
                 int rowCount = workSheet.Dimension.Rows;
 
-                for(int row = 2; row <= rowCount; row++)
+                for (int row = 2; row <= rowCount; row++)
                 {
                     var title = workSheet.Cells[row, 1].Text;
                     var slug = workSheet.Cells[row, 2].Text;
@@ -77,5 +83,59 @@ namespace Refhub.Data.Seed
             }
             return books;
         }
+
+        // Read Data from BookAuthor Excel file
+        public static List<BookAuthor> ReadBookAuthorFromExcel(string filePath)
+        {
+            License();
+            var bookAuthors = new List<BookAuthor>();
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var workSheet = package.Workbook.Worksheets[0];
+                int rowCount = workSheet.Dimension.Rows;
+                for (int row = 2; row < rowCount; row++)
+                {
+                    var authorId = workSheet.Cells[row, 1].Text;
+                    var bookId = workSheet.Cells[row, 2].Text;
+
+                    if (!String.IsNullOrWhiteSpace(authorId) && !String.IsNullOrWhiteSpace(bookId))
+                        bookAuthors.Add(new BookAuthor
+                        {
+                            AuthorId = Convert.ToInt32(authorId),
+                            BookId = Convert.ToInt32(bookId)
+                        });
+                }
+            }
+            return bookAuthors;
+        }
+
+        // Read Data from KeyWord Excel file
+        public static List<Keyword> ReadKeywordFromExcel(string filePath)
+        {
+            License();
+            var keywords = new List<Keyword>();
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var workSheet = package.Workbook.Worksheets[0];
+                int rowCount = workSheet.Dimension.Rows;
+                for (int row = 2; row < rowCount; row++)
+                {
+                    var keyword = workSheet.Cells[row, 1].Text;
+
+                    if (!String.IsNullOrWhiteSpace(keyword))
+                    {
+                        keywords.Add(new Keyword
+                        {
+                            Word = keyword,
+                        });
+                    }
+                }
+            }
+            return keywords;
+        }
+
+
     }
 }
