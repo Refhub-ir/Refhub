@@ -5,6 +5,6 @@ public interface IFileUploaderService
     Task<string> UploadFile(IFormFile file, string directoryName, string Type, string Name);
   
     Task DeleteFile(string realUrl);
-    Task<Stream> DownloadFileAsync(string fileName);
+    Task<Stream> DownloadFileAsync(string fileName,CancellationToken ct);
 
 }
