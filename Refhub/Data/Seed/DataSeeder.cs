@@ -12,12 +12,12 @@ namespace Refhub.Data.Seed
 
             db.Database.Migrate();
 
-
+            // Author
             var authorPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorData.xlsx");
             var authors = ExcelSeeder.ReadAuthorsFromExcel(authorPath);
             db.Authors.AddRange(authors);
 
-
+            
             var bookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookData.xlsx");
             var books = ExcelSeeder.ReadBooksFromExcel(bookPath);
             db.Books.AddRange(books);
