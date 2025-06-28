@@ -1,11 +1,16 @@
-﻿namespace Refhub.Models.AppSetting
+﻿using System.ComponentModel.DataAnnotations;
+/// <summary>
+/// Strongly-typed binding for the “AWS:S3” section.  
+/// Do NOT commit real keys – store them in UserSecrets / env-vars.
+/// </summary>
+namespace Refhub.Models.AppSetting
 {
-    public class S3Configuration
+    public sealed class S3Configuration
     {
-        public string Region { get; set; }
-        public string AccessKey { get; set; }
-        public string SecretKey { get; set; }
-        public string BucketName { get; set; }
-        public string ServiceURL { get; set; }
+        [Required] public string Region { get; init; } = default!;
+        [Required] public string AccessKey { get; init; } = default!;
+        [Required] public string SecretKey { get; init; } = default!;
+        [Required] public string BucketName { get; init; } = default!;
+        public string? ServiceURL { get; init; }
     }
 }
