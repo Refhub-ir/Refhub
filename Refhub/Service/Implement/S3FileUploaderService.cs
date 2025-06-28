@@ -10,10 +10,7 @@ namespace Refhub.Service.Implement
         using Amazon.Runtime;
         using Amazon.S3;
         using Amazon.S3.Model;
-
-
-
-
+        using System.Threading;
 
         public class S3FileUploaderService : IFileUploaderService
         {
@@ -89,7 +86,7 @@ namespace Refhub.Service.Implement
                 await _s3Client.DeleteObjectAsync(request);
             }
 
-            public async Task<Stream> DownloadFileAsync(string fileName)
+            public async Task<Stream> DownloadFileAsync(string fileName, CancellationToken ct)
             {
                 var request = new GetObjectRequest
                 {
@@ -99,9 +96,9 @@ namespace Refhub.Service.Implement
 
                 try
                 {
-                    using var response = await _s3Client.GetObjectAsync(request);
+                    using var response = await _s3Client.GetObjectAsync(request,ct);
                     var memoryStream = new MemoryStream();
-                    await response.ResponseStream.CopyToAsync(memoryStream);
+                    await response.ResponseStream.CopyToAsync(memoryStream,ct);
                     memoryStream.Position = 0; // مهم! برای اینکه موقع Return از ابتدا خونده بشه
                     return memoryStream;
                 }
@@ -111,6 +108,8 @@ namespace Refhub.Service.Implement
                     throw new Exception($"خطا در دانلود فایل از S3: {ex.Message}", ex);
                 }
             }
+
+            
         }
     }
 
