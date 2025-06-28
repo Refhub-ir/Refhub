@@ -6,5 +6,4 @@ public interface IFileUploaderService
   
     Task DeleteFile(string realUrl);
     Task<Stream> DownloadFileAsync(string fileName,CancellationToken ct);
-
 }
