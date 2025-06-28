@@ -43,7 +43,7 @@ public class LocalFileUploaderService : IFileUploaderService
         return Task.CompletedTask;
     }
 
-    public Task<Stream> DownloadFileAsync(string fileName)
+    public Task<Stream> DownloadFileAsync(string fileName, CancellationToken ct)
     {
         string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
 
@@ -55,4 +55,6 @@ public class LocalFileUploaderService : IFileUploaderService
         Stream fileStream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
         return Task.FromResult(fileStream);
     }
+
+  
 }
