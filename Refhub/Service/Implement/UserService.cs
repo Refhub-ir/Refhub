@@ -10,6 +10,7 @@ namespace Refhub.Service.Implement;
 
 public class UserService(
         UserManager<ApplicationUser> _userManager,
+        IMessageService _messageService,
         RoleManager<IdentityRole> _roleManager,
         SignInManager<ApplicationUser> _signInManager)
        : IUserService
@@ -51,7 +52,7 @@ public class UserService(
         var user = await _userManager.Users.FirstOrDefaultAsync(a => a.Id.Equals(id), ct);
         if (user == null)
         {
-            return Error.NotFound("User.NotFound", "کاربر مورد نظر یافت نشد");
+            return Error.NotFound("User.NotFound", _messageService.Get("User_NotFound"));
         }
 
         if (!await _roleManager.RoleExistsAsync(RolesNameStatic.Admin).ConfigureAwait(false))
@@ -62,13 +63,18 @@ public class UserService(
         IdentityResult res = await _userManager.IsInRoleAsync(user, RolesNameStatic.Admin)
             ? await _userManager.RemoveFromRoleAsync(user, RolesNameStatic.Admin)
             : await _userManager.AddToRoleAsync(user, RolesNameStatic.Admin);
-        return res.Succeeded ? (ErrorOr<UserListAdminVM>)new UserListAdminVM() : (ErrorOr<UserListAdminVM>)Error.Validation(ErrorMessageAuthenticationStatic.Error_AddToRole);
+
+        if (res.Succeeded)
+                return new UserListAdminVM();
+        
+            var details = string.Join(" | ", res.Errors.Select(e => e.Description));
+        return Error.Validation($"{_messageService.Get("Account_Error_AddToRole")}: {details}");
     }
 
     public async Task<ErrorOr<LoginVM>> Login(LoginVM model, CancellationToken ct)
     {
         var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-        return result.Succeeded ? (ErrorOr<LoginVM>)model : (ErrorOr<LoginVM>)Error.NotFound(ErrorMessageAuthenticationStatic.Error_Login);
+        return result.Succeeded ? (ErrorOr<LoginVM>)model : (ErrorOr<LoginVM>)Error.NotFound(_messageService.Get("Account_LoginInvalid"));
     }
 
     public async Task<ErrorOr<RegisterVM>> Register(RegisterVM model, CancellationToken ct)
@@ -82,12 +88,11 @@ public class UserService(
             return model;
         }
 
-        foreach (var error in result.Errors)
-        {
-            return error.Code is "DuplicateUserName" or "DuplicateEmail"
-                ? (ErrorOr<RegisterVM>)Error.Validation(ErrorMessageAuthenticationStatic.Error_Invalid_Email)
-                : (ErrorOr<RegisterVM>)Error.Validation(ErrorMessageAuthenticationStatic.Error_Register);
-        }
+        var firstErr = result.Errors.FirstOrDefault();
+        if (firstErr != null)
+               return firstErr.Code is "DuplicateUserName" or "DuplicateEmail"
+                                                                        ? Error.Validation(_messageService.Get("Account_EmailAlready"))
+                                                                                  : Error.Validation(_messageService.Get("Account_RegisterInvalid"));
 
         return Error.Conflict();
     }

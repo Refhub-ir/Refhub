@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Refhub.Data.Context;
 
@@ -11,9 +12,11 @@ using Refhub.Data.Context;
 namespace Refhub.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250612083534_AddUniqueIndexToBookSlugAndModifyType")]
+    partial class AddUniqueIndexToBookSlugAndModifyType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,9 +264,6 @@ namespace Refhub.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<int>("PageCount")
                         .HasColumnType("int");
 
@@ -284,8 +284,7 @@ namespace Refhub.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("Slug")
-                        .IsUnique()
-                        .HasFilter("IsDeleted = 0");
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 

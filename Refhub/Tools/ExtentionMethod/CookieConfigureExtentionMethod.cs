@@ -1,4 +1,4 @@
-﻿namespace Refhub.Tools.ExtentionMethod;
+﻿namespace Refhub.Tools.ExtensionMethod;
 
 public static class CookieConfigureExtentionMethod
 {
