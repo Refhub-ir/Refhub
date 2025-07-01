@@ -24,7 +24,7 @@ public class KeywordService : IKeywordService
                           .AnyAsync(k => EF.Functions.Collate(k.Word, "SQL_Latin1_General_CP1_CI_AI") == model.Word, ct);
         if (exists)
         {
-            throw new Exception(_messageService.Get("Keyword_Found"));
+            throw new Exception(_messageService.Get("Keyword_AlreadyExists"));
         }
 
         var keyword = new Keyword
