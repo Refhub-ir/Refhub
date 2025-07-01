@@ -4,6 +4,7 @@ using Refhub.Data.Models;
 using Refhub.Models.Keywords;
 using Refhub.Resources;
 using Refhub.Service.Interface;
+using Refhub.Tools.Exceptions;
 
 namespace Refhub.Service.Implement;
 
@@ -24,7 +25,7 @@ public class KeywordService : IKeywordService
                           .AnyAsync(k => EF.Functions.Collate(k.Word, "SQL_Latin1_General_CP1_CI_AI") == model.Word, ct);
         if (exists)
         {
-            throw new Exception(_messageService.Get("Keyword_AlreadyExists"));
+            throw new DuplicateKeywordException(_messageService.Get("Keyword_AlreadyExists"));
         }
 
         var keyword = new Keyword
