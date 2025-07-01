@@ -130,7 +130,7 @@
     <value>عنوان در مرورگر را وارد کنید</value>
   </data>
   <data name="Book_PageCountRequired" xml:space="preserve">
-    <value>تعداد صفحه را وارد کنید انتخاب کنید</value>
+    <value>تعداد صفحات کتاب را وارد کنید</value>
   </data>
   <data name="Book_FileRequired" xml:space="preserve">
     <value>یک فایل انتخاب کنید</value>
@@ -151,7 +151,7 @@
     <value>لطفا نام اسلاگ را وارد کنید</value>
   </data>
   <data name="Book_AnotherIdRequired" xml:space="preserve">
-    <value>یک نویسند انتخاب کنید</value>
+    <value>یک نویسنده انتخاب کنید</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>رفهاب</value>
@@ -207,9 +207,6 @@
   <data name="Account_Error_AddToRole" xml:space="preserve">
     <value>خطایی رخ داده است</value>
   </data>
-  <data name="Keyword_Found" xml:space="preserve">
-    <value>کلید واژه یافت شد.</value>
-  </data>
   <data name="Book_SlugMaxLength" xml:space="preserve">
     <value> طول عنوان در مرورگر حداکثر 450 حرف باشد</value>
   </data>
@@ -221,5 +218,8 @@
   </data>
   <data name="Slug_Max_450" xml:space="preserve">
     <value>نام در مرورگر باید حداکثر 450 حرف باشد</value>
+  </data>
+  <data name="Keyword_AlreadyExists" xml:space="preserve">
+    <value>کلید واژه یافت شد.</value>
   </data>
 </root>
