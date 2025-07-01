@@ -2,24 +2,30 @@
 using Refhub.Data.Context;
 using Refhub.Data.Models;
 using Refhub.Models.Keywords;
+using Refhub.Resources;
 using Refhub.Service.Interface;
+using Refhub.Tools.Exceptions;
 
 namespace Refhub.Service.Implement;
 
 public class KeywordService : IKeywordService
 {
     private readonly AppDbContext _context;
-    public KeywordService(AppDbContext context)
+    private readonly IMessageService _messageService;
+
+    public KeywordService(AppDbContext context, IMessageService messageService)
     {
         _context = context;
+        _messageService = messageService;
     }
 
     public async Task AddKeywordAsync(CreateKeywordVM model, CancellationToken ct)
     {
-        var exists = await _context.Keywords.AnyAsync(k => k.Word.ToLower() == model.Word.ToLower(), ct);
+        var exists = await _context.Keywords
+                          .AnyAsync(k => EF.Functions.Collate(k.Word, "SQL_Latin1_General_CP1_CI_AI") == model.Word, ct);
         if (exists)
         {
-            throw new Exception("این کلیدواژه قبلاً ثبت شده است.");
+            throw new DuplicateKeywordException(_messageService.Get("Keyword_AlreadyExists"));
         }
 
         var keyword = new Keyword

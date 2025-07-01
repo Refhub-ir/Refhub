@@ -2,7 +2,7 @@
 using Refhub.Data.Context;
 using Refhub.Data.Models;
 
-namespace Refhub.Tools.ExtentionMethod;
+namespace Refhub.Tools.ExtensionMethod;
 
 public static class IdentityConfigureExtentionMethod
 {

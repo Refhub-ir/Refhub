@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Refhub.Data.Context;
-using Refhub.Tools.ExtentionMethod;
+using Refhub.Tools.ExtensionMethod;
 
 
 namespace Refhub;
@@ -12,7 +12,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllersWithViews().AddMultiLanguage();
 
 
         //Add  CUstomServices
@@ -49,7 +49,7 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-
+        app.UseMultiLanguage();
         app.UseRouting();
 
         app.UseAuthentication();

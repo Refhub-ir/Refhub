@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Refhub.Data.Context;
 
-namespace Refhub.Tools.ExtentionMethod;
+namespace Refhub.Tools.ExtensionMethod;
 
 public static class ContextConfigureExtentionMethod
 {
