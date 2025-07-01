@@ -21,7 +21,8 @@ public static class MultiLanguageExtensionMethod
             RequestCultureProviders = new List<IRequestCultureProvider>()
             {
                 new QueryStringRequestCultureProvider(),
-                new CookieRequestCultureProvider()
+               new CookieRequestCultureProvider(),
+               new AcceptLanguageHeaderRequestCultureProvider()   // honour browser language
             }
         };
         app.UseRequestLocalization(options);
@@ -30,12 +31,12 @@ public static class MultiLanguageExtensionMethod
 
     public static IMvcBuilder AddMultiLanguage(this IMvcBuilder mvc)
     {
-       
+
         mvc.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, option =>
         {
             option.ResourcesPath = "Resources";
         }).AddDataAnnotationsLocalization();
-        
+
         return mvc;
     }
 }
