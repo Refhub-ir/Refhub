@@ -1,10 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Refhub.Data.Models;
+﻿using Refhub.Data.Models;
 using Refhub.Models.Authors;
 using Refhub.Models.Books;
 using Refhub.Service.Interface;
 using Refhub.Tools.Exceptions;
-using Refhub.Tools.Static;
+
 
 namespace Refhub.Service.Implement;
 
@@ -45,7 +44,9 @@ public class AuthorService : IAuthorService
         var bookVMs = author.BookAuthors.Select(ba => new BookVM
         {
             Id = ba.Book.Id,
+         
             Title = ba.Book.Title,
+            ImagePath = ba.Book.ImagePath,
             AuthorFullName = string.Join(", ", ba.Book.BookAuthors
             .Select(x => x.Author.FullName)
             .Where(n => !string.IsNullOrWhiteSpace(n)))
@@ -54,7 +55,6 @@ public class AuthorService : IAuthorService
                 "" => _messageService.Get("Error_NotDefined"),
                 var s => s
             },
-
         }).ToList();
 
 
