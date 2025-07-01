@@ -46,10 +46,14 @@ public class AuthorService : IAuthorService
         {
             Id = ba.Book.Id,
             Title = ba.Book.Title,
-            ImagePath = ba.Book.ImagePath,
-            AuthorFullName = string.Join(", ",
-                                 ba.Book.BookAuthors.Select(x => x.Author.FullName))
-                             ?? _messageService.Get("Error_NotDefined"),
+            AuthorFullName = string.Join(", ", ba.Book.BookAuthors
+            .Select(x => x.Author.FullName)
+            .Where(n => !string.IsNullOrWhiteSpace(n)))
+            .Trim() switch
+            {
+                "" => _messageService.Get("Error_NotDefined"),
+                var s => s
+            },
 
         }).ToList();
 
