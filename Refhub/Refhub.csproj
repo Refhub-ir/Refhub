@@ -25,7 +25,7 @@
 
 	<ItemGroup>
 		<EmbeddedResource Update="Resources\Messages.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
+			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Messages.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<Compile Update="Resources\Messages.Designer.cs">
