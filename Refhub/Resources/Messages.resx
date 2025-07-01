@@ -207,7 +207,7 @@
   <data name="Account_Error_AddToRole" xml:space="preserve">
     <value>An error has occurred.</value>
   </data>
-  <data name="Keyword_Found" xml:space="preserve">
+  <data name="Keyword_AlreadyExists" xml:space="preserve">
     <value>Keyword found</value>
   </data>
   <data name="Book_SlugMaxLength" xml:space="preserve">
