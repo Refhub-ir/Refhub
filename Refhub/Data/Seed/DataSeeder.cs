@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Refhub.Data.Context;
+using Refhub.Data.Models;
+using Refhub.Models.DTO;
 
 namespace Refhub.Data.Seed
 {
@@ -24,30 +26,30 @@ namespace Refhub.Data.Seed
 
 
             // AuthorBook
-            var authorBookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorBookData");
-            var authorBook = ExcelSeeder.ReadBooksFromExcel(authorBookPath);
+            var authorBookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorBookData.xlsx");
+            var authorBook = ExcelSeeder.ReadBookAuthorFromExcel(authorBookPath);
             db.BookAuthors.AddRange(authorBook);
 
 
             // BookKeyword
-            var bookKeywordPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookKeywordData");
-            var bookKetword = ExcelSeeder.ReadBooksFromExcel(bookKeywordPath);
-            db.BookKeywords.AddRange(bookKetword);
+            var bookKeywordPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookKeywordData.xlsx");
+            var bookKeyword = ExcelSeeder.ReadBookKeywordFromExcel(bookKeywordPath);
+            db.BookKeywords.AddRange(bookKeyword);
 
             // BookRelation
-            var bookRelationPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookRelationData");
-            var bookRelation = ExcelSeeder.ReadBooksFromExcel(bookKeywordPath);
-            db.BookKeywords.AddRange(bookRelation);
+            var bookRelationPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookRelationData.xlsx");
+            var bookRelation = ExcelSeeder.ReadBookRelationFromExcel(bookRelationPath);
+            db.BookRelations.AddRange(bookRelation);
 
             // Category
-            var categoryPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "CategorynData");
-            var Category = ExcelSeeder.ReadBooksFromExcel(bookKeywordPath);
-            db.BookKeywords.AddRange(Category);
+            var categoryPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "CategoryData.xlsx");
+            var category = ExcelSeeder.ReadCategoryFromExcel(categoryPath);
+            db.Categories.AddRange(category);
 
             // Keyword
-            var keywordPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "KeywordData");
-            var Keyword = ExcelSeeder.ReadBooksFromExcel(bookKeywordPath);
-            db.BookKeywords.AddRange(Keyword);
+            var keywordPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "KeywordData.xlsx");
+            var keyword = ExcelSeeder.ReadKeywordFromExcel(keywordPath);
+            db.Keywords.AddRange(keyword);
 
             db.SaveChanges();
         }

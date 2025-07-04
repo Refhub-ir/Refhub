@@ -16,30 +16,45 @@ namespace Refhub.Data.Seed
         // Read Data from Author File
         public static List<Author> ReadAuthorsFromExcel(string filePath)
         {
-            License();
-            var authors = new List<Author>();
 
-            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            try
             {
-                var workSheet = package.Workbook.Worksheets[0];
-                int rowCount = workSheet.Dimension.Rows;
+                License();
+                var authors = new List<Author>();
 
-                for (int row = 2; row <= rowCount; row++)
+                using (var package = new ExcelPackage(new FileInfo(filePath)))
                 {
-                    var fullName = workSheet.Cells[row, 1].Text;
-                    var slug = workSheet.Cells[row, 2].Text;
+                    var workSheet = package.Workbook.Worksheets[0];
+                    int rowCount = workSheet.Dimension.Rows;
 
-                    if (!String.IsNullOrWhiteSpace(fullName) && !String.IsNullOrWhiteSpace(slug))
+                    for (int row = 2; row <= rowCount; row++)
                     {
-                        authors.Add(new Author
+                        var fullName = workSheet.Cells[row, 1].Text;
+                        var slug = workSheet.Cells[row, 2].Text;
+
+                        if (!String.IsNullOrWhiteSpace(fullName) && !String.IsNullOrWhiteSpace(slug))
                         {
-                            FullName = fullName,
-                            Slug = slug
-                        });
+                            authors.Add(new Author
+                            {
+                                FullName = fullName,
+                                Slug = slug
+                            });
+                        }
                     }
+                    return authors;
                 }
-                return authors;
+                // ... existing code ...
             }
+            catch (FileNotFoundException)
+            {
+                throw new InvalidOperationException($"Excel file not found: {filePath}");
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Error reading authors from Excel: {ex.Message}", ex);
+            }
+
+          
         }
 
         // Read Data from Book File
@@ -94,7 +109,7 @@ namespace Refhub.Data.Seed
             {
                 var workSheet = package.Workbook.Worksheets[0];
                 int rowCount = workSheet.Dimension.Rows;
-                for (int row = 2; row < rowCount; row++)
+                for (int row = 2; row <= rowCount; row++)
                 {
                     var authorId = workSheet.Cells[row, 1].Text;
                     var bookId = workSheet.Cells[row, 2].Text;
@@ -120,7 +135,7 @@ namespace Refhub.Data.Seed
             {
                 var workSheet = package.Workbook.Worksheets[0];
                 int rowCount = workSheet.Dimension.Rows;
-                for (int row = 2; row < rowCount; row++)
+                for (int row = 2; row <= rowCount; row++)
                 {
                     var keyword = workSheet.Cells[row, 1].Text;
 
@@ -178,7 +193,7 @@ namespace Refhub.Data.Seed
                 var workSheet = package.Workbook.Worksheets[0];
                 var rowCount = workSheet.Dimension.Rows;
 
-                for (int row = 2; row < rowCount; row++)
+                for (int row = 2; row <= rowCount; row++)
                 {
                     var bookId = workSheet.Cells[row, 1].Text;
                     var relationBookId = workSheet.Cells[row, 2].Text;
@@ -206,7 +221,7 @@ namespace Refhub.Data.Seed
                 var workSheet = package.Workbook.Worksheets[0];
                 var rowCount = workSheet.Dimension.Rows;
 
-                for (int row = 2; row < keywords.Count; row++)
+                for (int row = 2; row <= rowCount; row++)
                 {
                     var bookId = workSheet.Cells[row, 1].Text;
                     var keywordId = workSheet.Cells[row, 2].Text;
