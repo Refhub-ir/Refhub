@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Refhub.Resources;
+using System.ComponentModel.DataAnnotations;
 
 namespace Refhub.Models.Keywords;
 
@@ -6,6 +7,7 @@ public class EditKeywordVM
 {
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "کلمه کلیدی الزامی است")]
+    [Required(ErrorMessageResourceType = typeof(Messages),
+    ErrorMessageResourceName = nameof(Messages.Keyword_Required))]
     public string Word { get; set; }
 }

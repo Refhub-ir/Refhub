@@ -1,6 +1,6 @@
 ﻿using Refhub.Tools.Static;
 
-namespace Refhub.Tools.ExtentionMethod;
+namespace Refhub.Tools.ExtensionMethod;
 
 public static class PathImageExtionMethod
 {
