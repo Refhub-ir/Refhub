@@ -4,8 +4,7 @@ using Refhub.Service.Interface;
 
 namespace Refhub.Service.Implement
 {
-    namespace S3_Sample.Service
-    {
+   
         using Amazon;
         using Amazon.Runtime;
         using Amazon.S3;
@@ -111,6 +110,6 @@ namespace Refhub.Service.Implement
 
             
         }
-    }
+    
 
 }
