@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using Refhub.Service.Implement.S3_Sample.Service;
+
 using Refhub.Service.Interface;
 
 namespace Refhub.Controllers;
@@ -30,6 +30,10 @@ public class BookController(IBookService bookService,IFileUploaderService _s3Fil
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(fileName) || fileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+            {
+                return NotFound("خطا در دریافت فایل. لطفاً بعداً تلاش کنید.");
+            }
             // دریافت فایل از S3
             var stream = await _s3FileUploaderService.DownloadFileAsync(fileName, ct);
 
