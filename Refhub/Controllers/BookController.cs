@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-
+using Refhub.Models.Enums;
 using Refhub.Service.Interface;
+using Refhub.Tools.Static;
 
 namespace Refhub.Controllers;
 
@@ -35,7 +36,7 @@ public class BookController(IBookService bookService,IFileUploaderService _s3Fil
                 return NotFound("خطا در دریافت فایل. لطفاً بعداً تلاش کنید.");
             }
             // دریافت فایل از S3
-            var stream = await _s3FileUploaderService.DownloadFileAsync(fileName, ct);
+            var stream = await _s3FileUploaderService.DownloadFileAsync(fileName, ct, BucketNameStatic.GetName(BucketNames.BookPdf));
 
             // تعیین نوع فایل با توجه به پسوند
             var contentTypeProvider = new FileExtensionContentTypeProvider();
