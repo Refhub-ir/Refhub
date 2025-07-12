@@ -17,7 +17,9 @@ namespace Refhub.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)");
-
+            migrationBuilder.DropIndex(
+               name: "IX_Books_Slug",
+               table: "Books");
             migrationBuilder.CreateIndex(
                 name: "IX_Books_Slug",
                 table: "Books",
