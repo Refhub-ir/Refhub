@@ -100,6 +100,7 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
 
         var author = new Author { FullName = fullname, Slug = slug };
         await context.Authors.AddAsync(author, ct);
+        await context.SaveChangesAsync(ct);
         return true;
     }
 
@@ -149,6 +150,8 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
     {
         try
         {
+            if (context.Books.Any(a => a.Slug.Equals(book.Slug)))
+                return false;
             var bookAuthors = book.AnotherId.Select(a => new BookAuthor
             {
                 AuthorId = a
