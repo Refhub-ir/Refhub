@@ -6,10 +6,10 @@ public class LocalFileUploaderService : IFileUploaderService
 {
     private readonly string _rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files");
 
-    public async Task<string> UploadFile(IFormFile file, string directoryName, string type, string name)
+    public async Task<string> UploadFile(IFormFile file, string directoryName, string name)
     {
         // ایجاد مسیر دایرکتوری نهایی
-        string targetDirectory = Path.Combine(_rootPath, type, directoryName);
+        string targetDirectory = Path.Combine(_rootPath, directoryName);
 
         // ایجاد پوشه‌ها در صورت نبود
         if (!Directory.Exists(targetDirectory))
@@ -31,7 +31,7 @@ public class LocalFileUploaderService : IFileUploaderService
         return fileName;
     }
 
-    public Task DeleteFile(string realUrl)
+    public Task DeleteFile(string realUrl, string bucketName)
     {
         string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", realUrl.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
 
@@ -43,7 +43,7 @@ public class LocalFileUploaderService : IFileUploaderService
         return Task.CompletedTask;
     }
 
-    public Task<Stream> DownloadFileAsync(string fileName, CancellationToken ct)
+    public Task<Stream> DownloadFileAsync(string fileName, CancellationToken ct, string? bucketName)
     {
         string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
 
