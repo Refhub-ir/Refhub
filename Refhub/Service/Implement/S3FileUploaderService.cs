@@ -10,6 +10,7 @@ namespace Refhub.Service.Implement
     using Amazon.S3;
     using Amazon.S3.Model;
     using Refhub.Models.Enums;
+    using Refhub.Resources;
     using Refhub.Tools.Exceptions;
     using System.Threading;
 
@@ -53,7 +54,7 @@ namespace Refhub.Service.Implement
                 return realUrl.Substring(prefix.Length);
             }
 
-            throw new ArgumentException("آدرس مورد نظر با پیشوند تعیین‌شده شروع نمی‌شود.");
+            throw new ArgumentException("The provided URL does not start with the expected prefix.");
 
 
         }
@@ -61,7 +62,7 @@ namespace Refhub.Service.Implement
         public async Task<string> UploadFile(IFormFile file, string directoryName, string name)
         {
             var bucketName = directoryName;
-            var key = $"{name.Replace(" ", "-")}{Path.GetExtension(file.FileName)}";
+            var key = $"{name.Replace(" ", "-")}_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
 
             using var stream = file.OpenReadStream();
             var request = new PutObjectRequest
@@ -103,15 +104,12 @@ namespace Refhub.Service.Implement
             try
             {
                 using var response = await _s3Client.GetObjectAsync(request, ct);
-                var memoryStream = new MemoryStream();
-                await response.ResponseStream.CopyToAsync(memoryStream, ct);
-                memoryStream.Position = 0; // مهم! برای اینکه موقع Return از ابتدا خونده بشه
-                return memoryStream;
+                return response.ResponseStream;
             }
             catch (AmazonS3Exception ex)
             {
                 // مثلاً اگر فایل وجود نداشت یا کلید اشتباه بود
-                throw new FileDownloadException("خطا در دانلود فایل از S3", ex);
+                throw new FileDownloadException("Error downloading file from S3", ex);
             }
         }
 
