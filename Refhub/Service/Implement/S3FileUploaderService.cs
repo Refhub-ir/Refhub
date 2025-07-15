@@ -14,8 +14,6 @@ namespace Refhub.Service.Implement
 
     public class S3FileUploaderService : IFileUploaderService
     {
-        private readonly string _bucketName;
-        private readonly string _region;
         private readonly IAmazonS3 _s3Client;
         private readonly IOptions<S3Configuration> _s3Options;
 
@@ -27,14 +25,13 @@ namespace Refhub.Service.Implement
 
             var config = new AmazonS3Config
             {
-                RegionEndpoint = RegionEndpoint.USEast1, // منطقه ساختگی، چون ArvanRegion اختصاصی داره
+                RegionEndpoint = RegionEndpoint.GetBySystemName(s3Options.Value.Region), // Dynamically set region endpoint
                 ServiceURL = s3Options.Value.ServiceURL,
                 ForcePathStyle = true // بسیار مهم برای کار با آروان‌کلاد
             };
 
             _s3Client = new AmazonS3Client(credentials, config);
 
-            _region = s3Options.Value.Region;
             //_bucketName = s3Options.Value.BucketName;
         }
         private string GenerateS3Url(string key, string bucketName)
