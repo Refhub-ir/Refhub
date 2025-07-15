@@ -12,7 +12,7 @@ public static class BucketNameStatic
             BucketNames.BookImages => nameof(BucketNames.BookImages),
 
 
-            _ => throw new ArgumentOutOfRangeException(nameof(bucketNames), $"Unsupported directory type: {bucketNames}")
+            _ => throw new ArgumentOutOfRangeException(nameof(bucketNames), $"Unsupported bucket name: {bucketNames}")
         };
     }
 }
