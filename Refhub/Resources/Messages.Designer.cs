@@ -214,6 +214,15 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while downloading the file.
+        /// </summary>
+        public static string DownloadError {
+            get {
+                return ResourceManager.GetString("DownloadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Email is not Valid!.
         /// </summary>
         public static string Email_Format_Invalid {
@@ -259,11 +268,29 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The requested file was not found.
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FullName is Required.
         /// </summary>
         public static string FullNameRequired {
             get {
                 return ResourceManager.GetString("FullNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided file name is invalid.
+        /// </summary>
+        public static string InvalidFileName {
+            get {
+                return ResourceManager.GetString("InvalidFileName", resourceCulture);
             }
         }
         

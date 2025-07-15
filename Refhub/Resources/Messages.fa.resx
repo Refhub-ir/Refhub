@@ -207,6 +207,9 @@
   <data name="Account_Error_AddToRole" xml:space="preserve">
     <value>خطایی رخ داده است</value>
   </data>
+  <data name="Keyword_AlreadyExists" xml:space="preserve">
+    <value>کلید واژه یافت شد.</value>
+  </data>
   <data name="Book_SlugMaxLength" xml:space="preserve">
     <value> طول عنوان در مرورگر حداکثر 450 حرف باشد</value>
   </data>
@@ -219,7 +222,13 @@
   <data name="Slug_Max_450" xml:space="preserve">
     <value>نام در مرورگر باید حداکثر 450 حرف باشد</value>
   </data>
-  <data name="Keyword_AlreadyExists" xml:space="preserve">
-    <value>کلید واژه یافت شد.</value>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>فایل مورد نظر پیدا نشد.</value>
+  </data>
+  <data name="InvalidFileName" xml:space="preserve">
+    <value>نام فایل وارد شده نامعتبر است</value>
+  </data>
+  <data name="DownloadError" xml:space="preserve">
+    <value>خطا در دانلود فایل رخ داد</value>
   </data>
 </root>
