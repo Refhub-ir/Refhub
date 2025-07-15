@@ -150,7 +150,7 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
     {
         try
         {
-            if (context.Books.Any(a => a.Slug.Equals(book.Slug)))
+            if (await context.Books.AnyAsync(a => a.Slug.Equals(book.Slug), ct))
                 return false;
             var bookAuthors = book.AnotherId.Select(a => new BookAuthor
             {
