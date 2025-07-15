@@ -133,6 +133,15 @@ namespace Refhub.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The book image path must be a valid URL..
+        /// </summary>
+        public static string Book_ImagePathMustBeUrl {
+            get {
+                return ResourceManager.GetString("Book_ImagePathMustBeUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a Image.
         /// </summary>
         public static string Book_ImageRequired {

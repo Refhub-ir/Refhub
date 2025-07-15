@@ -231,4 +231,7 @@
   <data name="DownloadError" xml:space="preserve">
     <value>An error occurred while downloading the file</value>
   </data>
+  <data name="Book_ImagePathMustBeUrl" xml:space="preserve">
+    <value>The book image path must be a valid URL.</value>
+  </data>
 </root>
