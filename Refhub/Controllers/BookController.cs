@@ -8,7 +8,7 @@ using Refhub.Tools.Static;
 
 namespace Refhub.Controllers;
 
-public class BookController(IBookService bookService,IFileUploaderService _s3FileUploaderService,ILogger _logger) : Controller
+public class BookController(IBookService bookService,IFileUploaderService _s3FileUploaderService, ILogger<BookController> _logger) : Controller
 {
     [HttpGet("BookDetails/{slug}")]
     public async Task<IActionResult> BookDetails(string slug, CancellationToken ct)
