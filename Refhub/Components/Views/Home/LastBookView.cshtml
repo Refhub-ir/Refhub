@@ -3,70 +3,72 @@
 
 
 <section>
-	<div class="container">
-		<!-- Title -->
-		<div class="row mb-4">
-			<div class="col-lg-8 mx-auto text-center">
-				<h2 class="fs-3">اخرین کتال ها</h2>
-				<p class="mb-0">هر موضوعی را در هر زمان مطالعه کنید. هزاران کتاب آموزشی را با کمترین قیمت جستجو کنید!</p>
-			</div>
-		</div>
+    <div class="container">
+        <!-- Title -->
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="fs-3">اخرین کتال ها</h2>
+                <p class="mb-0">هر موضوعی را در هر زمان مطالعه کنید. هزاران کتاب آموزشی را با کمترین قیمت جستجو کنید!</p>
+            </div>
+        </div>
 
 
-		<!-- Tabs content START -->
-		<div class="tab-content" id="course-pills-tabContent">
-			<!-- Content START -->
-			<div class="tab-pane fade show active" id="course-pills-tabs-1" role="tabpanel" aria-labelledby="course-pills-tab-1">
-				<div class="row g-4">
-					
-					@foreach (var item in Model)
-					{
-						<!-- Card item START -->
-						<div class="col-sm-6 col-lg-4 col-xl-3">
-							<div class="card shadow h-100">
-								<!-- Image -->
-								<img src="@item.ImagePath" class="card-img-top" alt="@item.Title">
-								<!-- Card body -->
-								<div class="card-body pb-0">
-									<!-- Badge and favorite -->
-									<div class="d-flex justify-content-between mb-2">
-										<a href="#" class="badge bg-purple bg-opacity-10 text-purple">@item.CategoryName</a>
-										<a href="#" class="h6 mb-0"><i class="far fa-heart"></i></a>
-									</div>
-									<!-- Title -->
-									<h5 class="card-title fw-normal"><a href="#"> @item.Title</a></h5>
-								@* 	<p class="mb-2 text-truncate-2">با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک</p> *@
-									<!-- Rating star -->
-									<ul class="list-inline mb-0">
-										<li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-										<li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-										<li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-										<li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-										<li class="list-inline-item me-0 small"><i class="far fa-star text-warning"></i></li>
-										<li class="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
-									</ul>
-								</div>
-								<!-- Card footer -->
-								<div class="card-footer pt-0 pb-3">
-									<hr>
-									<div class="d-flex justify-content-between">
-										<span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>@item.Authores</span>
-									@* 	<span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>15 ویدیو</span> *@
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- Card item END -->
-					}
-				
-	
-					<!-- Card item END -->
-				</div> <!-- Row END -->
-			</div>
-			<!-- Content END -->
-	
-			<!-- Content END -->
-		</div>
-		<!-- Tabs content END -->
-	</div>
+        <!-- Tabs content START -->
+        <div class="tab-content" id="course-pills-tabContent">
+            <!-- Content START -->
+            <div class="tab-pane fade show active" id="course-pills-tabs-1" role="tabpanel" aria-labelledby="course-pills-tab-1">
+                <div class="row g-4">
+
+                    @foreach (var item in Model)
+                    {
+                        <!-- Card item START -->
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <div class="card shadow h-100">
+                                <!-- Image -->
+                                @if (!string.IsNullOrEmpty(item.ImagePath))
+                                {
+                                    <img src="@item.ImagePath" class="card-img-top" alt="@item.Title">
+                                }
+                                <!-- Card body -->
+                                <div class="card-body pb-0">
+                                    <!-- Badge and favorite -->
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <a href="#" class="badge bg-purple bg-opacity-10 text-purple">@item.CategoryName</a>
+                                        <a href="#" class="h6 mb-0"><i class="far fa-heart"></i></a>
+                                    </div>
+                                    <!-- Title -->
+                                    <h5 class="card-title fw-normal"><a href="#"> @item.Title</a></h5>
+                                    @* 	<p class="mb-2 text-truncate-2">با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک</p> *@
+                                    <!-- Rating star -->
+                                    <ul class="list-inline mb-0">
+                                        <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
+                                        <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
+                                        <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
+                                        <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
+                                        <li class="list-inline-item me-0 small"><i class="far fa-star text-warning"></i></li>
+                                        <li class="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
+                                    </ul>
+                                </div>
+                                <!-- Card footer -->
+                                <div class="card-footer pt-0 pb-3">
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>@item.Authores</span>
+                                        @* 	<span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>15 ویدیو</span> *@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card item END -->
+                    }
+
+
+                    <!-- Card item END -->
+                </div> <!-- Row END -->
+            </div>
+            <!-- Content END -->
+            <!-- Content END -->
+        </div>
+        <!-- Tabs content END -->
+    </div>
 </section>
