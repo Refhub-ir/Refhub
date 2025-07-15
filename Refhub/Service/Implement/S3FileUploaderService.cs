@@ -10,6 +10,7 @@ namespace Refhub.Service.Implement
     using Amazon.S3;
     using Amazon.S3.Model;
     using Refhub.Models.Enums;
+    using Refhub.Tools.Exceptions;
     using System.Threading;
 
     public class S3FileUploaderService : IFileUploaderService
@@ -41,15 +42,23 @@ namespace Refhub.Service.Implement
         }
 
 
-        private string GetKey(string realUrl ,string bucketName)
+        private string GetKey(string realUrl, string bucketName)
         {
             // برای آروان کلاد:
 
-            return realUrl.Replace($"{_s3Options.Value.ServiceURL}/{bucketName.ToLower()}/", "");
+            var prefix = $"{_s3Options.Value.ServiceURL}/{bucketName.ToLower()}/";
+
+            if (realUrl.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return realUrl.Substring(prefix.Length);
+            }
+
+            throw new ArgumentException("آدرس مورد نظر با پیشوند تعیین‌شده شروع نمی‌شود.");
+
 
         }
 
-        public async Task<string> UploadFile(IFormFile file, string directoryName,  string name)
+        public async Task<string> UploadFile(IFormFile file, string directoryName, string name)
         {
             var bucketName = directoryName;
             var key = $"{name.Replace(" ", "-")}{Path.GetExtension(file.FileName)}";
@@ -69,7 +78,7 @@ namespace Refhub.Service.Implement
             return GenerateS3Url(key, bucketName);
         }
 
-        public async Task DeleteFile(string realUrl,string? bucketName)
+        public async Task DeleteFile(string realUrl, string? bucketName)
         {
 
             var key = GetKey(realUrl, bucketName);
@@ -102,7 +111,7 @@ namespace Refhub.Service.Implement
             catch (AmazonS3Exception ex)
             {
                 // مثلاً اگر فایل وجود نداشت یا کلید اشتباه بود
-                throw new Exception($"خطا در دانلود فایل از S3: {ex.Message}", ex);
+                throw new FileDownloadException("خطا در دانلود فایل از S3", ex);
             }
         }
 
