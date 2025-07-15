@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Refhub.Models.Enums;
 using Refhub.Service.Implement;
 using Refhub.Service.Interface;
+using Refhub.Tools.Exceptions;
 using Refhub.Tools.Static;
 
 namespace Refhub.Controllers;
@@ -48,14 +49,15 @@ public class BookController(IBookService bookService,IFileUploaderService _s3Fil
 
             return File(stream, contentType, fileName);
         }
-        catch (AmazonS3Exception s3Ex)
+        catch (FileDownloadException s3Ex)
         {
-            _logger.LogError(s3Ex, "خطا در دانلود فایل از S3: {Message}", s3Ex.Message);
+            _logger.LogError(s3Ex, "Error downloading file from S3: {Message}", s3Ex.Message);
+
             return NotFound(_messageService.Get("FileNotFound"));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "خطای پیش‌بینی‌نشده هنگام دانلود فایل.");
+            _logger.LogError(ex, "Unexpected error occurred while downloading the file.");
             return StatusCode(500, _messageService.Get("DownloadError"));
         }
     }
