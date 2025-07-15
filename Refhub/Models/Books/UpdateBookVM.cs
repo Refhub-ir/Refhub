@@ -14,8 +14,8 @@ public class UpdateBookVM
 
     [Required(ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Book_SlugRequired))]
-   
-    [MaxLength(450,ErrorMessageResourceType = typeof(Messages),
+
+    [MaxLength(450, ErrorMessageResourceType = typeof(Messages),
         ErrorMessageResourceName = nameof(Messages.Book_SlugMaxLength))]
     public string Slug { get; set; }
 
@@ -28,10 +28,8 @@ public class UpdateBookVM
     public string? FilePath { get; set; }
 
     public IFormFile? Image { get; set; }
-    [Url(
-ErrorMessageResourceType = typeof(Messages),
-ErrorMessageResourceName = nameof(Messages.Book_ImagePathMustBeUrl)
-    )]
+    [Url(ErrorMessageResourceType = typeof(Messages),
+ErrorMessageResourceName = nameof(Messages.Book_ImagePathMustBeUrl))]
     public string? ImagePath { get; set; }
 
 
