@@ -104,7 +104,11 @@ namespace Refhub.Service.Implement
             try
             {
                 using var response = await _s3Client.GetObjectAsync(request, ct);
-                return response.ResponseStream;
+                var ms = new MemoryStream();
+                await response.ResponseStream.CopyToAsync(ms, ct);
+                ms.Position = 0;
+
+                return ms;
             }
             catch (AmazonS3Exception ex)
             {
