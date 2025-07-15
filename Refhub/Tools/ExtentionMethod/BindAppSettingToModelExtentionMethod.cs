@@ -4,7 +4,7 @@ using Refhub.Service.Interface;
 
 namespace Refhub.Tools.ExtensionMethod;
 
-public static class BindAppSettingToModelExtentionMethod
+public static class BindAppSettingToModelExtensionMethod
 {
     public static WebApplicationBuilder BindS3Model(this WebApplicationBuilder builder)
     {
