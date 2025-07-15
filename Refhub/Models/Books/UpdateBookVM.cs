@@ -28,7 +28,12 @@ public class UpdateBookVM
     public string? FilePath { get; set; }
 
     public IFormFile? Image { get; set; }
+    [Url(
+ErrorMessageResourceType = typeof(Messages),
+ErrorMessageResourceName = nameof(Messages.Book_ImagePathMustBeUrl)
+    )]
     public string? ImagePath { get; set; }
+
 
     public string? UserId { get; set; }
     // Foreign Key
