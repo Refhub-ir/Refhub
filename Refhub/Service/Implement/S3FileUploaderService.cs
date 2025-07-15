@@ -81,6 +81,8 @@ namespace Refhub.Service.Implement
 
         public async Task DeleteFile(string realUrl, string? bucketName)
         {
+            if (string.IsNullOrWhiteSpace(bucketName))
+                throw new ArgumentException("Bucket name cannot be null or empty", nameof(bucketName));
 
             var key = GetKey(realUrl, bucketName);
 
