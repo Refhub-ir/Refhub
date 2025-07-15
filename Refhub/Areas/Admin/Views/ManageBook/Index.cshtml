@@ -47,7 +47,7 @@
 								@foreach (var item in Model)
 								{
 									<tr>
-										<td><a href="#"> <img src="@item.ImagePath.ConvertForBookPathImage()" width="50" height="50" /></a></td>
+										<td><a href="#"> <img src="@item.ImagePath" width="50" height="50" /></a></td>
 										<td>@item.Title</td>
 										<td>
 											<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">حذف</a>
