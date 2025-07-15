@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Refhub.Models.Enums;
+using Refhub.Service.Implement;
 using Refhub.Service.Interface;
 using Refhub.Tools.Static;
 
 namespace Refhub.Controllers;
 
-public class BookController(IBookService bookService,IFileUploaderService _s3FileUploaderService, ILogger<BookController> _logger) : Controller
+public class BookController(IBookService bookService,IFileUploaderService _s3FileUploaderService, ILogger<BookController> _logger, IMessageService _messageService) : Controller
 {
     [HttpGet("BookDetails/{slug}")]
     public async Task<IActionResult> BookDetails(string slug, CancellationToken ct)
@@ -33,7 +34,7 @@ public class BookController(IBookService bookService,IFileUploaderService _s3Fil
         {
             if (string.IsNullOrWhiteSpace(fileName) || fileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
             {
-                return NotFound("خطا در دریافت فایل. لطفاً بعداً تلاش کنید.");
+                return NotFound(_messageService.Get("InvalidFileName"));
             }
             // دریافت فایل از S3
             var stream = await _s3FileUploaderService.DownloadFileAsync(fileName, ct, BucketNameStatic.GetName(BucketNames.BookPdf));
@@ -50,12 +51,12 @@ public class BookController(IBookService bookService,IFileUploaderService _s3Fil
         catch (AmazonS3Exception s3Ex)
         {
             _logger.LogError(s3Ex, "خطا در دانلود فایل از S3: {Message}", s3Ex.Message);
-            return NotFound("خطا در دریافت فایل. لطفاً بعداً تلاش کنید.");
+            return NotFound(_messageService.Get("FileNotFound"));
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "خطای پیش‌بینی‌نشده هنگام دانلود فایل.");
-            return StatusCode(500, "خطای غیرمنتظره‌ای رخ داده است. لطفاً با پشتیبانی تماس بگیرید.");
+            return StatusCode(500, _messageService.Get("DownloadError"));
         }
     }
 
