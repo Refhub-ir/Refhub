@@ -10,7 +10,7 @@ using Refhub.Tools.Static;
 
 namespace Refhub.Controllers;
 
-public class BookController(IBookService bookService,IFileUploaderService _s3FileUploaderService, ILogger<BookController> _logger, IMessageService _messageService) : Controller
+public class BookController(IBookService bookService, IFileUploaderService s3FileUploaderService, ILogger<BookController> logger, IMessageService messageService) : Controller
 {
     [HttpGet("BookDetails/{slug}")]
     public async Task<IActionResult> BookDetails(string slug, CancellationToken ct)
@@ -28,17 +28,21 @@ public class BookController(IBookService bookService,IFileUploaderService _s3Fil
 
 
     [Authorize]
-    [HttpGet("download/{fileName}")]
-    public async Task<IActionResult> DownloadFile(string fileName, CancellationToken ct)
+    [HttpGet("download")]
+    [HttpGet("download")]
+    public async Task<IActionResult> DownloadFile([FromQuery] string fileUrl, CancellationToken ct)
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(fileName) || fileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+            if (string.IsNullOrWhiteSpace(fileUrl) || !Uri.TryCreate(fileUrl, UriKind.Absolute, out _))
             {
-                return NotFound(_messageService.Get("InvalidFileName"));
+                return NotFound(messageService.Get("InvalidFileName"));
             }
             // دریافت فایل از S3
-            var stream = await _s3FileUploaderService.DownloadFileAsync(fileName, ct, BucketNameStatic.GetName(BucketNames.BookPdf));
+            var stream = await s3FileUploaderService.DownloadFileAsync(fileUrl, ct, BucketNameStatic.GetName(BucketNames.BookPdf));
+
+            // The file name for the user should be extracted from the URL
+            var fileName = Path.GetFileName(new Uri(fileUrl).AbsolutePath);
 
             // تعیین نوع فایل با توجه به پسوند
             var contentTypeProvider = new FileExtensionContentTypeProvider();
@@ -51,14 +55,14 @@ public class BookController(IBookService bookService,IFileUploaderService _s3Fil
         }
         catch (FileDownloadException s3Ex)
         {
-            _logger.LogError(s3Ex, "Error downloading file from S3: {Message}", s3Ex.Message);
+            logger.LogError(s3Ex, "Error downloading file from S3: {Message}", s3Ex.Message);
 
-            return NotFound(_messageService.Get("FileNotFound"));
+            return NotFound(messageService.Get("FileNotFound"));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error occurred while downloading the file.");
-            return StatusCode(500, _messageService.Get("DownloadError"));
+            logger.LogError(ex, "Unexpected error occurred while downloading the file.");
+            return StatusCode(500,messageService.Get("DownloadError"));
         }
     }
 
