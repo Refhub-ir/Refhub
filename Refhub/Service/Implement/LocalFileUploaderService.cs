@@ -28,8 +28,7 @@ public class LocalFileUploaderService : IFileUploaderService
         {
             await file.CopyToAsync(stream);
         }
-
-        return fileName;
+        return Path.Combine(directoryName, fileName).Replace(Path.DirectorySeparatorChar, '/');
     }
 
     public Task DeleteFile(string realUrl, string bucketName)
