@@ -93,7 +93,10 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
 
     public async Task<bool> CreateAnotherAsync(string fullname, string slug, CancellationToken ct)
     {
-
+        if (await context.Authors.AnyAsync(a => a.Slug == slug, ct))
+        {
+            return false;
+        }
 
         var author = new Author { FullName = fullname, Slug = slug };
         await context.Authors.AddAsync(author, ct);
