@@ -27,10 +27,13 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         .HasForeignKey(ba => ba.BookId);
 
         builder.HasMany(b => b.RelatedTo).WithOne(rt => rt.Book)
-            .HasForeignKey(bt => bt.BookId);
+            .HasForeignKey(bt => bt.BookId).OnDelete(DeleteBehavior.Cascade); ;
+        
+
+
 
         builder.HasMany(b => b.RelatedFrom).WithOne(rf => rf.RelatedBook)
-            .HasForeignKey(rf => rf.RelatedBookId);
+            .HasForeignKey(rf => rf.RelatedBookId).OnDelete(DeleteBehavior.Cascade); ;
 
 
         builder.HasOne(b => b.User).WithMany(rf => rf.Books)
