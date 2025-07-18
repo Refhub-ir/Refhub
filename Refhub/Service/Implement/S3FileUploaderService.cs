@@ -95,12 +95,16 @@ namespace Refhub.Service.Implement
             await _s3Client.DeleteObjectAsync(request);
         }
 
-        public async Task<Stream> DownloadFileAsync(string fileName, CancellationToken ct, string? bucketName)
+        public async Task<Stream> DownloadFileAsync(string fileUrl, CancellationToken ct, string? bucketName)
         {
+            if (string.IsNullOrWhiteSpace(bucketName))
+                throw new ArgumentException("Bucket name cannot be null or empty.", nameof(bucketName));
+
+            var key = GetKey(fileUrl, bucketName);
             var request = new GetObjectRequest
             {
                 BucketName = bucketName.ToLower(),
-                Key = fileName // مثلاً: "images/profile.jpg"
+                Key = key
             };
 
             try
