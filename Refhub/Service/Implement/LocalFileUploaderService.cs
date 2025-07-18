@@ -1,4 +1,5 @@
 ﻿using Refhub.Service.Interface;
+using Refhub.Tools.Exceptions;
 
 namespace Refhub.Service.Implement;
 
@@ -43,18 +44,18 @@ public class LocalFileUploaderService : IFileUploaderService
         return Task.CompletedTask;
     }
 
-    public Task<Stream> DownloadFileAsync(string fileName, CancellationToken ct, string? bucketName)
+    public Task<Stream> DownloadFileAsync(string fileUrl, CancellationToken ct, string? bucketName)
     {
-        string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
+        string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileUrl.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
 
         if (!File.Exists(fullPath))
         {
-            throw new FileNotFoundException("فایل پیدا نشد", fileName);
+            throw new FileDownloadException($"File not found at {fileUrl}", new FileNotFoundException());
         }
 
         Stream fileStream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
         return Task.FromResult(fileStream);
     }
 
-  
+
 }
