@@ -74,7 +74,7 @@
                             @if (!string.IsNullOrEmpty(Model.FilePath))
                             {
                                 <div class="mb-3">
-                                    <a href="@Url.Action("DownloadFile", "Book", new { fileName = Model.FilePath })" class="btn btn-primary">دانلود فایل اصلی کتاب</a>
+                                    <a href="@Url.Action("DownloadFile", "Book", new { fileUrl = Model.FilePath })" class="btn btn-primary">دانلود فایل اصلی کتاب</a>
                                 </div>
                             }
                             else
