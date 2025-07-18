@@ -257,8 +257,7 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
         try
         {
             var book = await context.Books
-                                    .Include(b => b.BookAuthors)
-                                    .FirstOrDefaultAsync(b => b.Id == bookId, ct);
+                                  .FirstOrDefaultAsync(b => b.Id == bookId, ct);
             if (book == null)
             {
                 return false;
