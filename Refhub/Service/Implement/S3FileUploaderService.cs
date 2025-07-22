@@ -58,9 +58,8 @@ namespace Refhub.Service.Implement
 
         }
 
-        public async Task<string> UploadFile(IFormFile file, string directoryName, string name)
+        public async Task<string> UploadFile(IFormFile file, string bucketName, string name)
         {
-            var bucketName = directoryName;
             var key = $"{name.Replace(" ", "-")}_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
 
             using var stream = file.OpenReadStream();
