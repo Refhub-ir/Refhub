@@ -94,7 +94,11 @@ namespace Refhub.Service.Implement
 
         public async Task<Stream> DownloadFileAsync(string fileUrl, CancellationToken ct, string bucketName)
         {
+            if (string.IsNullOrWhiteSpace(fileUrl))
+                throw new ArgumentException("File URL cannot be null or empty", nameof(fileUrl));
 
+            if (string.IsNullOrWhiteSpace(bucketName))
+                throw new ArgumentException("Bucket name cannot be null or empty", nameof(bucketName));
             var key = GetKey(fileUrl, bucketName);
             var request = new GetObjectRequest
             {
@@ -113,7 +117,6 @@ namespace Refhub.Service.Implement
             }
             catch (AmazonS3Exception ex)
             {
-                // مثلاً اگر فایل وجود نداشت یا کلید اشتباه بود
                 throw new FileDownloadException("Error downloading file from S3", ex);
             }
         }
