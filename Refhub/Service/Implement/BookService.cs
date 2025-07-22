@@ -100,7 +100,16 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
 
         var author = new Author { FullName = fullname, Slug = slug };
         await context.Authors.AddAsync(author, ct);
-        await context.SaveChangesAsync(ct);
+        try
+        {
+            await context.SaveChangesAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or handle it appropriately
+            Console.WriteLine($"Error saving changes: {ex.Message}");
+            throw;
+        }
         return true;
     }
 
