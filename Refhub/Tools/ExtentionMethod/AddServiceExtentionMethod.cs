@@ -1,4 +1,5 @@
 ﻿using Refhub.Service.Implement;
+
 using Refhub.Service.Interface;
 
 namespace Refhub.Tools.ExtensionMethod;
@@ -15,7 +16,7 @@ public static class AddServiceExtentionMethod
         collection.AddScoped<IUserService, UserService>();
         collection.AddScoped<IMessageService, MessageService>();
 
-        collection.AddScoped<IFileUploaderService, LocalFileUploaderService>();
+        collection.AddScoped<IFileUploaderService, S3FileUploaderService>();
         return collection;
     }
 }

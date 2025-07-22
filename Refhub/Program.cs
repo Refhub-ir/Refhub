@@ -3,6 +3,7 @@ using Refhub.Data.Context;
 using Refhub.Tools.ExtensionMethod;
 
 
+
 namespace Refhub;
 
 public class Program
@@ -22,6 +23,7 @@ public class Program
 
 
         #region CustomExtentionMethod 
+        builder.BindS3Model();
         builder.Services.AddCustomService();
         builder.Services.ConfigureContext(builder.Configuration);
         builder.Services.ConfigureCookie();

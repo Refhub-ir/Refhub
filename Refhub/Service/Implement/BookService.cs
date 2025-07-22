@@ -5,6 +5,7 @@ using Refhub.Models.Authors;
 using Refhub.Models.Books;
 using Refhub.Models.Category;
 using Refhub.Models.DTO;
+using Refhub.Models.Enums;
 using Refhub.Service.Interface;
 using Refhub.Tools.Static;
 
@@ -99,6 +100,16 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
 
         var author = new Author { FullName = fullname, Slug = slug };
         await context.Authors.AddAsync(author, ct);
+        try
+        {
+            await context.SaveChangesAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or handle it appropriately
+            Console.WriteLine($"Error saving changes: {ex.Message}");
+            throw;
+        }
         return true;
     }
 
@@ -148,13 +159,15 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
     {
         try
         {
+            if (await context.Books.AnyAsync(a => a.Slug.Equals(book.Slug), ct))
+                return false;
             var bookAuthors = book.AnotherId.Select(a => new BookAuthor
             {
                 AuthorId = a
             }).ToList();
 
-            var filePath = await uploaderService.UpdloadFile(book.File, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug);
-            var imagePath = await uploaderService.UpdloadFile(book.Image, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug);
+            var filePath = await uploaderService.UploadFile(book.File, BucketNameStatic.GetName(BucketNames.BookPdf), book.Slug);
+            var imagePath = await uploaderService.UploadFile(book.Image, BucketNameStatic.GetName(BucketNames.BookImages), book.Slug);
 
             if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrWhiteSpace(imagePath))
             {
@@ -208,20 +221,20 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
             {
                 if (!string.IsNullOrWhiteSpace(existingBook.FilePath))
                 {
-                    await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, existingBook.FilePath);
+                    await uploaderService.DeleteFile(existingBook.FilePath, BucketNameStatic.GetName(BucketNames.BookPdf));
                 }
 
-                existingBook.FilePath = await uploaderService.UpdloadFile(book.File, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug);
+                existingBook.FilePath = await uploaderService.UploadFile(book.File, BucketNameStatic.GetName(BucketNames.BookPdf), book.Slug);
             }
 
             if (book.Image != null)
             {
                 if (!string.IsNullOrWhiteSpace(existingBook.ImagePath))
                 {
-                    await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, existingBook.ImagePath);
+                    await uploaderService.DeleteFile(existingBook.ImagePath, BucketNameStatic.GetName(BucketNames.BookImages));
                 }
 
-                existingBook.ImagePath = await uploaderService.UpdloadFile(book.Image, FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.Slug);
+                existingBook.ImagePath = await uploaderService.UploadFile(book.Image, BucketNameStatic.GetName(BucketNames.BookImages), book.Slug);
             }
 
             // حذف نویسنده‌های قبلی و اضافه کردن جدید
@@ -252,7 +265,8 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
     {
         try
         {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == bookId, ct);
+            var book = await context.Books
+                                  .FirstOrDefaultAsync(b => b.Id == bookId, ct);
             if (book == null)
             {
                 return false;
@@ -260,13 +274,19 @@ public class BookService(AppDbContext context, IFileUploaderService uploaderServ
 
             if (!string.IsNullOrWhiteSpace(book.ImagePath))
             {
-                await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.ImagePath);
+                await uploaderService.DeleteFile(book.ImagePath, BucketNameStatic.GetName(BucketNames.BookImages));
             }
 
             if (!string.IsNullOrWhiteSpace(book.FilePath))
             {
-                await uploaderService.DeleteFile(FolderNameStatic.GetDirectoryBooks, FolderNameStatic.GetDirectoryImages, book.FilePath);
+                await uploaderService.DeleteFile(book.FilePath, BucketNameStatic.GetName(BucketNames.BookPdf));
             }
+
+            var relations = await context.BookRelations
+                                           .Where(br => br.BookId == bookId || br.RelatedBookId == bookId)
+                                           .ToListAsync(ct);
+            if (relations.Any())
+                context.BookRelations.RemoveRange(relations);
 
             context.Books.Remove(book);
             await context.SaveChangesAsync(ct);

@@ -222,4 +222,16 @@
   <data name="Slug_Max_450" xml:space="preserve">
     <value>The slug must be a maximum of 450 characters.</value>
   </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>The requested file was not found</value>
+  </data>
+  <data name="InvalidFileName" xml:space="preserve">
+    <value>The provided file name is invalid</value>
+  </data>
+  <data name="DownloadError" xml:space="preserve">
+    <value>An error occurred while downloading the file</value>
+  </data>
+  <data name="Book_ImagePathMustBeUrl" xml:space="preserve">
+    <value>The book image path must be a valid URL.</value>
+  </data>
 </root>

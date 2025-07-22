@@ -2,70 +2,77 @@
 @using Refhub.Tools.ExtensionMethod
 @model IEnumerable<BookVM>
 @{
-	Layout = "_AdminLayout";
-	ViewBag.TitleHeaderPage = "مدیریت کتاب ها";
+    Layout = "_AdminLayout";
+    ViewBag.TitleHeaderPage = "مدیریت کتاب ها";
 }
 @{
-	var searchText = Context.Request.Query["searchtext"].ToString();
+    var searchText = Context.Request.Query["searchtext"].ToString();
 }
 
 <section class="content">
-	<div class="container-fluid">
+    <div class="container-fluid">
 
-		<!-- /.row -->
-		<div class="row">
-			<div class="col-12">
-				<div class="card">
-					<div class="card-header">
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
 
-						<a type="button" class="btn btn-block btn-success col-2" asp-area="Admin" asp-controller="ManageBook" asp-action="Create">ساخت کتاب جدید</a>
-						<div class="card-tools">
-							<form method="get" asp-action="Index" asp-controller="ManageBook" asp-area="Admin">
-								<div class="input-group input-group-sm" style="width: 200px;">
-									<input type="text" name="searchtext" class="form-control float-right" placeholder="جستجو"
-										   value="@searchText" />
-									<div class="input-group-append">
-										<button type="submit" class="btn btn-default">
-											<i class="fa fa-search"></i>
-										</button>
-									</div>
-								</div>
-							</form>
-						</div>
+                        <a type="button" class="btn btn-block btn-success col-2" asp-area="Admin" asp-controller="ManageBook" asp-action="Create">ساخت کتاب جدید</a>
+                        <div class="card-tools">
+                            <form method="get" asp-action="Index" asp-controller="ManageBook" asp-area="Admin">
+                                <div class="input-group input-group-sm" style="width: 200px;">
+                                    <input type="text" name="searchtext" class="form-control float-right" placeholder="جستجو"
+                                           value="@searchText" />
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
 
-					</div>
-					<!-- /.card-header -->
-					<div class="card-body table-responsive p-0">
-						<table class="table table-hover">
-							<tbody>
-								<tr>
-									<th style="width: 10px">#</th>
-									<th>نام کتاب</th>
-									<th>عملیات</th>
-								</tr>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>نام کتاب</th>
+                                    <th>عملیات</th>
+                                </tr>
 
-								@foreach (var item in Model)
-								{
-									<tr>
-										<td><a href="#"> <img src="@item.ImagePath.ConvertForBookPathImage()" width="50" height="50" /></a></td>
-										<td>@item.Title</td>
-										<td>
-											<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">حذف</a>
-											<a asp-action="Update" asp-route-id="@item.Id" class="btn btn-info">ویرایش</a>
-										</td>
-									</tr>
-								}
-					
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="#">
+                                                @if (!string.IsNullOrEmpty(item.ImagePath))
+                                                {
+                                                    <img src="@item.ImagePath" width="50" height="50" />
+                                                }
+                                            </a>
+                                        </td>
+                                        <td>@item.Title</td>
+                                        <td>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">حذف</a>
+                                            <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-info">ویرایش</a>
+                                        </td>
+                                    </tr>
+                                }
 
-							</tbody>
-						</table>
-					</div>
-					<!-- /.card-body -->
-				</div>
-				<!-- /.card -->
-			</div>
-		</div><!-- /.row -->
-	</div><!-- /.container-fluid -->
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
 </section>
 @* @section Scripts {
 	<partial name="_ValidationScriptsPartial" />

@@ -22,7 +22,7 @@
                         @if (!string.IsNullOrEmpty(Model.ImagePath))
                         {
                             <div class="mb-4">
-                                <img src="@Url.Content(Model.ImagePath.ConvertForBookPathImage())" alt="@(Model.Title ?? "کتاب")" class="img-fluid rounded" style="max-width: 300px; max-height: 400px;" />
+                                <img src="@Url.Content(Model.ImagePath)" alt="@(Model.Title ?? "کتاب")" class="img-fluid rounded" style="max-width: 300px; max-height: 400px;" />
                             </div>
                         }
                         else
@@ -74,7 +74,8 @@
                             @if (!string.IsNullOrEmpty(Model.FilePath))
                             {
                                 <div class="mb-3">
-                                    <a href="@Url.Action("DownloadFile", "Book", new { filePath = Model.FilePath.ConvertForBookPathFile() })" class="btn btn-primary">دانلود فایل اصلی کتاب</a>
+                                 
+                                    <a href="@Url.Action("DownloadFile", "Book", new { fileUrl = Model.FilePath })" class="btn btn-primary">دانلود فایل اصلی کتاب</a>
                                 </div>
                             }
                             else
@@ -90,7 +91,7 @@
                                         @if (!string.IsNullOrEmpty(relatedBook.RelatedBook?.FilePath))
                                         {
                                             <li>
-                                                <a href="@Url.Action("DownloadFile", "Book", new { filePath = relatedBook.RelatedBook.FilePath })" class="btn btn-secondary mb-2">
+                                                <a href="@Url.Action("DownloadFile", "Book", new { fileUrl = relatedBook.RelatedBook.FilePath })" class="btn btn-secondary mb-2">
                                                     دانلود فایل: @(relatedBook.RelatedBook?.Title ?? "بدون عنوان")
                                                 </a>
                                             </li>

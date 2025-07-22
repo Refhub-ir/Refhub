@@ -22,7 +22,7 @@ namespace Refhub.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Messages {
+    public class Messages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Refhub.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Refhub.Resources.Messages", typeof(Messages).Assembly);
@@ -51,7 +51,7 @@ namespace Refhub.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The email entered is already registered..
         /// </summary>
-        internal static string Account_EmailAlready {
+        public static string Account_EmailAlready {
             get {
                 return ResourceManager.GetString("Account_EmailAlready", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to An error has occurred..
         /// </summary>
-        internal static string Account_Error_AddToRole {
+        public static string Account_Error_AddToRole {
             get {
                 return ResourceManager.GetString("Account_Error_AddToRole", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The login attempt is invalid..
         /// </summary>
-        internal static string Account_LoginInvalid {
+        public static string Account_LoginInvalid {
             get {
                 return ResourceManager.GetString("Account_LoginInvalid", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Registration encountered an error..
         /// </summary>
-        internal static string Account_RegisterInvalid {
+        public static string Account_RegisterInvalid {
             get {
                 return ResourceManager.GetString("Account_RegisterInvalid", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to At least one associated author is required..
         /// </summary>
-        internal static string Book_AnotherIdMinLength {
+        public static string Book_AnotherIdMinLength {
             get {
                 return ResourceManager.GetString("Book_AnotherIdMinLength", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Choose a writer.
         /// </summary>
-        internal static string Book_AnotherIdRequired {
+        public static string Book_AnotherIdRequired {
             get {
                 return ResourceManager.GetString("Book_AnotherIdRequired", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Choose a category.
         /// </summary>
-        internal static string Book_CategoryIdRequired {
+        public static string Book_CategoryIdRequired {
             get {
                 return ResourceManager.GetString("Book_CategoryIdRequired", resourceCulture);
             }
@@ -126,16 +126,25 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select a file.
         /// </summary>
-        internal static string Book_FileRequired {
+        public static string Book_FileRequired {
             get {
                 return ResourceManager.GetString("Book_FileRequired", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The book image path must be a valid URL..
+        /// </summary>
+        public static string Book_ImagePathMustBeUrl {
+            get {
+                return ResourceManager.GetString("Book_ImagePathMustBeUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a Image.
         /// </summary>
-        internal static string Book_ImageRequired {
+        public static string Book_ImageRequired {
             get {
                 return ResourceManager.GetString("Book_ImageRequired", resourceCulture);
             }
@@ -144,7 +153,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter the number of pages and select.
         /// </summary>
-        internal static string Book_PageCountRequired {
+        public static string Book_PageCountRequired {
             get {
                 return ResourceManager.GetString("Book_PageCountRequired", resourceCulture);
             }
@@ -153,7 +162,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The title length in the browser should be a maximum of 450 characters..
         /// </summary>
-        internal static string Book_SlugMaxLength {
+        public static string Book_SlugMaxLength {
             get {
                 return ResourceManager.GetString("Book_SlugMaxLength", resourceCulture);
             }
@@ -162,7 +171,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter the title in the browser..
         /// </summary>
-        internal static string Book_SlugRequired {
+        public static string Book_SlugRequired {
             get {
                 return ResourceManager.GetString("Book_SlugRequired", resourceCulture);
             }
@@ -171,7 +180,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter the book title.
         /// </summary>
-        internal static string Book_TitleRequired {
+        public static string Book_TitleRequired {
             get {
                 return ResourceManager.GetString("Book_TitleRequired", resourceCulture);
             }
@@ -180,7 +189,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter the description of category book .
         /// </summary>
-        internal static string Category_Description {
+        public static string Category_Description {
             get {
                 return ResourceManager.GetString("Category_Description", resourceCulture);
             }
@@ -189,7 +198,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter the category book title.
         /// </summary>
-        internal static string Category_NameRequired {
+        public static string Category_NameRequired {
             get {
                 return ResourceManager.GetString("Category_NameRequired", resourceCulture);
             }
@@ -198,7 +207,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Confirm Password Invalid.
         /// </summary>
-        internal static string ConfirmPassword_Compare_Invalid {
+        public static string ConfirmPassword_Compare_Invalid {
             get {
                 return ResourceManager.GetString("ConfirmPassword_Compare_Invalid", resourceCulture);
             }
@@ -207,16 +216,25 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter Confirm Password!.
         /// </summary>
-        internal static string ConfirmPassword_Required {
+        public static string ConfirmPassword_Required {
             get {
                 return ResourceManager.GetString("ConfirmPassword_Required", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while downloading the file.
+        /// </summary>
+        public static string DownloadError {
+            get {
+                return ResourceManager.GetString("DownloadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Email is not Valid!.
         /// </summary>
-        internal static string Email_Format_Invalid {
+        public static string Email_Format_Invalid {
             get {
                 return ResourceManager.GetString("Email_Format_Invalid", resourceCulture);
             }
@@ -225,7 +243,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter the Email .
         /// </summary>
-        internal static string Email_Required {
+        public static string Email_Required {
             get {
                 return ResourceManager.GetString("Email_Required", resourceCulture);
             }
@@ -234,7 +252,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Author not found.
         /// </summary>
-        internal static string Error_AuthorNotFound {
+        public static string Error_AuthorNotFound {
             get {
                 return ResourceManager.GetString("Error_AuthorNotFound", resourceCulture);
             }
@@ -243,7 +261,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Uncertain.
         /// </summary>
-        internal static string Error_NotDefined {
+        public static string Error_NotDefined {
             get {
                 return ResourceManager.GetString("Error_NotDefined", resourceCulture);
             }
@@ -252,25 +270,43 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Slug has already been used..
         /// </summary>
-        internal static string Error_SlugExists {
+        public static string Error_SlugExists {
             get {
                 return ResourceManager.GetString("Error_SlugExists", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The requested file was not found.
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FullName is Required.
         /// </summary>
-        internal static string FullNameRequired {
+        public static string FullNameRequired {
             get {
                 return ResourceManager.GetString("FullNameRequired", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided file name is invalid.
+        /// </summary>
+        public static string InvalidFileName {
+            get {
+                return ResourceManager.GetString("InvalidFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keyword found.
         /// </summary>
-        internal static string Keyword_AlreadyExists {
+        public static string Keyword_AlreadyExists {
             get {
                 return ResourceManager.GetString("Keyword_AlreadyExists", resourceCulture);
             }
@@ -279,7 +315,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Keyword not found.
         /// </summary>
-        internal static string Keyword_NotFound {
+        public static string Keyword_NotFound {
             get {
                 return ResourceManager.GetString("Keyword_NotFound", resourceCulture);
             }
@@ -288,7 +324,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to choose a keyword!.
         /// </summary>
-        internal static string Keyword_Required {
+        public static string Keyword_Required {
             get {
                 return ResourceManager.GetString("Keyword_Required", resourceCulture);
             }
@@ -297,7 +333,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The name must be a maximum of 50 characters..
         /// </summary>
-        internal static string Name_Max_50 {
+        public static string Name_Max_50 {
             get {
                 return ResourceManager.GetString("Name_Max_50", resourceCulture);
             }
@@ -306,7 +342,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Must contain at least one letter, one number and 6 characters..
         /// </summary>
-        internal static string Password_Regex_Invalid {
+        public static string Password_Regex_Invalid {
             get {
                 return ResourceManager.GetString("Password_Regex_Invalid", resourceCulture);
             }
@@ -315,7 +351,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter The Password!.
         /// </summary>
-        internal static string Password_Required {
+        public static string Password_Required {
             get {
                 return ResourceManager.GetString("Password_Required", resourceCulture);
             }
@@ -324,7 +360,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Remember Me! .
         /// </summary>
-        internal static string RememberMe_Display {
+        public static string RememberMe_Display {
             get {
                 return ResourceManager.GetString("RememberMe_Display", resourceCulture);
             }
@@ -333,7 +369,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The slug must be a maximum of 450 characters..
         /// </summary>
-        internal static string Slug_Max_450 {
+        public static string Slug_Max_450 {
             get {
                 return ResourceManager.GetString("Slug_Max_450", resourceCulture);
             }
@@ -342,7 +378,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Choose a slug name.
         /// </summary>
-        internal static string Slug_NameRequired {
+        public static string Slug_NameRequired {
             get {
                 return ResourceManager.GetString("Slug_NameRequired", resourceCulture);
             }
@@ -351,7 +387,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Slug  is Required.
         /// </summary>
-        internal static string SlugRequired {
+        public static string SlugRequired {
             get {
                 return ResourceManager.GetString("SlugRequired", resourceCulture);
             }
@@ -360,7 +396,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to refhub.
         /// </summary>
-        internal static string Title {
+        public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
             }
@@ -369,7 +405,7 @@ namespace Refhub.Resources {
         /// <summary>
         ///   Looks up a localized string similar to User is not found.
         /// </summary>
-        internal static string User_NotFound {
+        public static string User_NotFound {
             get {
                 return ResourceManager.GetString("User_NotFound", resourceCulture);
             }
