@@ -34,7 +34,6 @@ namespace Refhub.Service.Implement
 
             _s3Client = new AmazonS3Client(credentials, config);
 
-            //_bucketName = s3Options.Value.BucketName;
         }
         private string GenerateS3Url(string key, string bucketName)
         {
