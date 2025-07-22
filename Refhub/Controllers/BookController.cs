@@ -29,7 +29,6 @@ public class BookController(IBookService bookService, IFileUploaderService s3Fil
 
     [Authorize]
     [HttpGet("download")]
-    [HttpGet("download")]
     public async Task<IActionResult> DownloadFile([FromQuery] string fileUrl, CancellationToken ct)
     {
         try
