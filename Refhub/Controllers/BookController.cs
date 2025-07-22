@@ -27,7 +27,7 @@ public class BookController(IBookService bookService, IFileUploaderService s3Fil
     }
     private bool IsValidFileUrl(string fileUrl)
     {
-        return !string.IsNullOrWhiteSpace(fileUrl) || !Uri.TryCreate(fileUrl, UriKind.Absolute, out _);
+        return !string.IsNullOrWhiteSpace(fileUrl) && Uri.TryCreate(fileUrl, UriKind.Absolute, out _);
     }
 
     [Authorize]
