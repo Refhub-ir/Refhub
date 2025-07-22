@@ -72,7 +72,7 @@ namespace Refhub.Service.Implement
                 InputStream = stream,
                 ContentType = file.ContentType,
 
-                CannedACL = S3CannedACL.PublicRead
+                CannedACL = S3CannedACL.Private
             };
 
             await _s3Client.PutObjectAsync(request);
