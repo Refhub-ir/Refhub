@@ -25,7 +25,10 @@ public class BookController(IBookService bookService, IFileUploaderService s3Fil
 
         return bookDetails == null ? NotFound() : View(bookDetails);
     }
-
+    private bool IsValidFileUrl(string fileUrl)
+    {
+        return !string.IsNullOrWhiteSpace(fileUrl) || !Uri.TryCreate(fileUrl, UriKind.Absolute, out _);
+    }
 
     [Authorize]
     [HttpGet("download")]
@@ -33,10 +36,12 @@ public class BookController(IBookService bookService, IFileUploaderService s3Fil
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(fileUrl) || !Uri.TryCreate(fileUrl, UriKind.Absolute, out _))
+            if (!IsValidFileUrl(fileUrl))
             {
                 return NotFound(messageService.Get("InvalidFileName"));
             }
+           
+         
             // دریافت فایل از S3
             var stream = await s3FileUploaderService.DownloadFileAsync(fileUrl, ct, BucketNameStatic.GetName(BucketNames.BookPdf));
 
