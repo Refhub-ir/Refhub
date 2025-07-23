@@ -17,6 +17,10 @@ public static class AddServiceExtentionMethod
         collection.AddScoped<IMessageService, MessageService>();
 
         collection.AddScoped<IFileUploaderService, S3FileUploaderService>();
+
+        // Configure Swagger
+        collection.ConfigureSwagger();
+
         return collection;
     }
 }

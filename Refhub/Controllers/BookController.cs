@@ -40,8 +40,8 @@ public class BookController(IBookService bookService, IFileUploaderService s3Fil
             {
                 return NotFound(messageService.Get("InvalidFileName"));
             }
-           
-         
+
+
             // دریافت فایل از S3
             var stream = await s3FileUploaderService.DownloadFileAsync(fileUrl, ct, BucketNameStatic.GetName(BucketNames.BookPdf));
 
@@ -66,12 +66,13 @@ public class BookController(IBookService bookService, IFileUploaderService s3Fil
         catch (Exception ex)
         {
             logger.LogError(ex, "Unexpected error occurred while downloading the file.");
-            return StatusCode(500,messageService.Get("DownloadError"));
+            return StatusCode(500, messageService.Get("DownloadError"));
         }
     }
 
     private readonly int _pageSize = 3;
     [Route("/books")]
+    [HttpGet]
     public async Task<IActionResult> List(string searchText, string authorFilter, string categoryFilter, int page = 1, CancellationToken cancellationToken = default)
     {
         var viewModel = await bookService.GetListAsync(searchText, authorFilter, categoryFilter, _pageSize, page, cancellationToken);

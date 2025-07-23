@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Refhub.Data.Context;
 using Refhub.Tools.ExtensionMethod;
+using Refhub.Tools.Utilities;
 
 
 
@@ -49,6 +50,9 @@ public class Program
             app.UseHsts();
         }
 
+        // Configure Swagger
+        app.UseSwaggerWithUI(app.Environment);
+
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseMultiLanguage();
@@ -67,6 +71,10 @@ public class Program
         app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        // Configure browser launching based on environment variables
+        app.UseBrowserLaunchMode();
+
         app.Run();
     }
 }
