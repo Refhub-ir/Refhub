@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Refhub.Data.Context;
+using Refhub.Data.Models;
+using Refhub.Data.Seed;
 using Refhub.Tools.ExtensionMethod;
 using Refhub.Tools.Utilities;
 
@@ -74,6 +76,17 @@ public class Program
 
         // Configure browser launching based on environment variables
         app.UseBrowserLaunchMode();
+
+        // Seed initial data from Excel files
+        try
+        {
+            DataSeeder.SeedInitialData(app.Services);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to seed data: {ex.Message}");
+            // Continue startup even if seeding fails in development
+        }
 
         app.Run();
     }
