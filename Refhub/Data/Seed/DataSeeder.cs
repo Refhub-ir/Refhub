@@ -9,49 +9,111 @@ namespace Refhub.Data.Seed
     {
         public static void SeedInitialData(IServiceProvider serviceProvider)
         {
-            using var scope = serviceProvider.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            try
+            {
+                using var scope = serviceProvider.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            db.Database.Migrate();
+                db.Database.Migrate();
 
-            // Author
-            var authorPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorData.xlsx");
-            var authors = ExcelSeeder.ReadAuthorsFromExcel(authorPath);
-            db.Authors.AddRange(authors);
+                // Check if data already exists to avoid duplicates
+                if (db.Authors.Any())
+                {
+                    Console.WriteLine("Database already seeded. Skipping...");
+                    return;
+                }
 
-            // Book
-            var bookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookData.xlsx");
-            var books = ExcelSeeder.ReadBooksFromExcel(bookPath);
-            db.Books.AddRange(books);
+                // Author
+                var authorPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorData.xlsx");
+                if (File.Exists(authorPath))
+                {
+                    var authors = ExcelSeeder.ReadAuthorsFromExcel(authorPath);
+                    if (authors.Any())
+                    {
+                        db.Authors.AddRange(authors);
+                    }
+                }
 
+                // Category (seed before books since books reference categories)
+                var categoryPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "CategoryData.xlsx");
+                if (File.Exists(categoryPath))
+                {
+                    var categories = ExcelSeeder.ReadCategoryFromExcel(categoryPath);
+                    if (categories.Any())
+                    {
+                        db.Categories.AddRange(categories);
+                    }
+                }
 
-            // AuthorBook
-            var authorBookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorBookData.xlsx");
-            var authorBook = ExcelSeeder.ReadBookAuthorFromExcel(authorBookPath);
-            db.BookAuthors.AddRange(authorBook);
+                // Keyword (seed before BookKeyword)
+                var keywordPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "KeywordData.xlsx");
+                if (File.Exists(keywordPath))
+                {
+                    var keywords = ExcelSeeder.ReadKeywordFromExcel(keywordPath);
+                    if (keywords.Any())
+                    {
+                        db.Keywords.AddRange(keywords);
+                    }
+                }
 
+                // Save basic entities first
+                db.SaveChanges();
 
-            // BookKeyword
-            var bookKeywordPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookKeywordData.xlsx");
-            var bookKeyword = ExcelSeeder.ReadBookKeywordFromExcel(bookKeywordPath);
-            db.BookKeywords.AddRange(bookKeyword);
+                // Book
+                var bookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookData.xlsx");
+                if (File.Exists(bookPath))
+                {
+                    var books = ExcelSeeder.ReadBooksFromExcel(bookPath);
+                    if (books.Any())
+                    {
+                        db.Books.AddRange(books);
+                    }
+                }
 
-            // BookRelation
-            var bookRelationPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookRelationData.xlsx");
-            var bookRelation = ExcelSeeder.ReadBookRelationFromExcel(bookRelationPath);
-            db.BookRelations.AddRange(bookRelation);
+                // Save books before relationships
+                db.SaveChanges();
 
-            // Category
-            var categoryPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "CategoryData.xlsx");
-            var category = ExcelSeeder.ReadCategoryFromExcel(categoryPath);
-            db.Categories.AddRange(category);
+                // AuthorBook
+                var authorBookPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "AuthorBookData.xlsx");
+                if (File.Exists(authorBookPath))
+                {
+                    var authorBooks = ExcelSeeder.ReadBookAuthorFromExcel(authorBookPath);
+                    if (authorBooks.Any())
+                    {
+                        db.BookAuthors.AddRange(authorBooks);
+                    }
+                }
 
-            // Keyword
-            var keywordPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "KeywordData.xlsx");
-            var keyword = ExcelSeeder.ReadKeywordFromExcel(keywordPath);
-            db.Keywords.AddRange(keyword);
+                // BookKeyword
+                var bookKeywordPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookKeywordData.xlsx");
+                if (File.Exists(bookKeywordPath))
+                {
+                    var bookKeywords = ExcelSeeder.ReadBookKeywordFromExcel(bookKeywordPath);
+                    if (bookKeywords.Any())
+                    {
+                        db.BookKeywords.AddRange(bookKeywords);
+                    }
+                }
 
-            db.SaveChanges();
+                // BookRelation
+                var bookRelationPath = Path.Combine(Directory.GetCurrentDirectory(), "SeedData", "BookRelationData.xlsx");
+                if (File.Exists(bookRelationPath))
+                {
+                    var bookRelations = ExcelSeeder.ReadBookRelationFromExcel(bookRelationPath);
+                    if (bookRelations.Any())
+                    {
+                        db.BookRelations.AddRange(bookRelations);
+                    }
+                }
+
+                db.SaveChanges();
+                Console.WriteLine("Database seeding completed successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during database seeding: {ex.Message}");
+                throw;
+            }
         }
     }
 }

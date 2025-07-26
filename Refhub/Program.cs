@@ -77,9 +77,16 @@ public class Program
         // Configure browser launching based on environment variables
         app.UseBrowserLaunchMode();
 
-
         // Seed initial data from Excel files
-        DataSeeder.SeedInitialData(app.Services);
+        try
+        {
+            DataSeeder.SeedInitialData(app.Services);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to seed data: {ex.Message}");
+            // Continue startup even if seeding fails in development
+        }
 
         app.Run();
     }
