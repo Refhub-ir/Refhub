@@ -3,6 +3,8 @@ using Refhub.Data.Context;
 using Refhub.Data.Models;
 using Refhub.Data.Seed;
 using Refhub.Tools.ExtensionMethod;
+using Refhub.Tools.Utilities;
+
 
 
 namespace Refhub;
@@ -24,6 +26,7 @@ public class Program
 
 
         #region CustomExtentionMethod 
+        builder.BindS3Model();
         builder.Services.AddCustomService();
         builder.Services.ConfigureContext(builder.Configuration);
         builder.Services.ConfigureCookie();
@@ -49,6 +52,9 @@ public class Program
             app.UseHsts();
         }
 
+        // Configure Swagger
+        app.UseSwaggerWithUI(app.Environment);
+
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseMultiLanguage();
@@ -67,6 +73,10 @@ public class Program
         app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        // Configure browser launching based on environment variables
+        app.UseBrowserLaunchMode();
+
 
         // Seed initial data from Excel files
         DataSeeder.SeedInitialData(app.Services);

@@ -8,6 +8,7 @@ public class LanguageController : Controller
 
 
     [Route("/fa")]
+    [HttpGet]
     public IActionResult Persian()
     {
         Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
@@ -22,6 +23,7 @@ public class LanguageController : Controller
         return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""));
     }
     [Route("/en")]
+    [HttpGet]
     public IActionResult English()
     {
         Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,

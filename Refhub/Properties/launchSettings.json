@@ -9,29 +9,34 @@
     }
   },
   "profiles": {
-    "http": {
+    "https-with-app": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "http://localhost:5110",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "https://localhost:7065;http://localhost:5110",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "LAUNCH_MODE": "app"
       }
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
+    "https-with-swagger": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7065;http://localhost:5110",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "LAUNCH_MODE": "swagger"
+      }
+    },
+    "https-with-both": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7065;http://localhost:5110",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "LAUNCH_MODE": "both"
       }
     }
   }

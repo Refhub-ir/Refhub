@@ -18,6 +18,11 @@ namespace Refhub.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)");
 
+            migrationBuilder.Sql(@"
+                IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_Books_Slug' AND object_id = OBJECT_ID('Books'))
+                BEGIN
+                    DROP INDEX IX_Books_Slug ON Books;
+                END");
             migrationBuilder.CreateIndex(
                 name: "IX_Books_Slug",
                 table: "Books",
